@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
+import { LayoutMain } from './components/Layout';
 import { Home } from './components/Home';
 import { Login } from './components/Login';
 import { Category } from './components/Category';
@@ -10,11 +10,11 @@ export default class App extends Component {
 
   render() {
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
+      <LayoutMain>
+        <Route exact path='/' component={Category} />
         <Route path='/category' component={Category} />
         <Route path='/login' component={Login} />
-      </Layout>
+      </LayoutMain>
     );
   }
 }
