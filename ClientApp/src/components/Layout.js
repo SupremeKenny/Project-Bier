@@ -13,9 +13,13 @@ export class LayoutMain extends Component {
     return (
       <Layout className="layout">
         <NavMenu />
-        <Content style={{ padding: '0 50px' }}>
-        {this.props.children}
-        </Content>
+        <Row style={{display:'flex'}}>
+          
+          <Col span={14} style={{ margin: 'auto'}}>
+            {this.props.children}
+          </Col>
+        </Row>
+        
         <Footer style={{ textAlign: 'center' }}>
           Ant Design ©2018 Created by Ant UED
       </Footer>
