@@ -9,7 +9,7 @@ using Project_Bier.Data;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20180923223737_InitialCreate")]
+    [Migration("20180924165749_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,6 +145,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("StreetNumber");
 
+                    b.Property<Guid>("AssociatedUser");
+
                     b.Property<string>("CityName")
                         .IsRequired();
 
@@ -156,7 +158,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("WebshopUserId");
 
-                    b.HasKey("PostalCode", "StreetNumber");
+                    b.HasKey("PostalCode", "StreetNumber", "AssociatedUser");
 
                     b.HasIndex("WebshopUserId");
 

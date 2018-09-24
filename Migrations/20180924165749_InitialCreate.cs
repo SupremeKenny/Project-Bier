@@ -81,11 +81,12 @@ namespace ProjectBier.Migrations
                     StreetName = table.Column<string>(nullable: false),
                     CityName = table.Column<string>(nullable: false),
                     Country = table.Column<string>(nullable: false),
+                    AssociatedUser = table.Column<Guid>(nullable: false),
                     WebshopUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => new { x.PostalCode, x.StreetNumber });
+                    table.PrimaryKey("PK_Addresses", x => new { x.PostalCode, x.StreetNumber, x.AssociatedUser });
                     table.ForeignKey(
                         name: "FK_Addresses_AspNetUsers_WebshopUserId",
                         column: x => x.WebshopUserId,

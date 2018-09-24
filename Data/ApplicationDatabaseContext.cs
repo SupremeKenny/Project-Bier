@@ -16,7 +16,7 @@ namespace Project_Bier.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ShippingAddress>().HasKey(c => new { c.PostalCode, c.StreetNumber });
+            modelBuilder.Entity<ShippingAddress>().HasKey(c => new { c.PostalCode, c.StreetNumber, c.AssociatedUser });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

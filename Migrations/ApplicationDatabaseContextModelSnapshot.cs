@@ -143,6 +143,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("StreetNumber");
 
+                    b.Property<Guid>("AssociatedUser");
+
                     b.Property<string>("CityName")
                         .IsRequired();
 
@@ -154,7 +156,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("WebshopUserId");
 
-                    b.HasKey("PostalCode", "StreetNumber");
+                    b.HasKey("PostalCode", "StreetNumber", "AssociatedUser");
 
                     b.HasIndex("WebshopUserId");
 

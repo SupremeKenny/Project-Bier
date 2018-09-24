@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Project_Bier.Models 
+namespace Project_Bier.Models
 {
     /// <summary>  
     ///  Class encapsulating a physical address
@@ -11,18 +11,21 @@ namespace Project_Bier.Models
     public class ShippingAddress
     {
         [Required]
-        public string PostalCode {get; set;}
+        public string PostalCode { get; set; }
 
         [Required]
-        public string StreetNumber {get; set;}
+        public string StreetNumber { get; set; }
 
         [Required]
-        public string StreetName {get; set;}
+        public string StreetName { get; set; }
 
         [Required]
-        public string CityName {get; set;}
+        public string CityName { get; set; }
 
         [Required]
-        public string Country {get; set;}
+        public string Country { get; set; }
+
+        [Required]
+        public Guid AssociatedUser { get; set; }
     }
 }
