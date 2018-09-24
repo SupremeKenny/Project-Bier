@@ -15,7 +15,7 @@ export class LayoutMain extends Component {
         <NavMenu />
         <Row style={{display:'flex'}}>
           
-          <Col span={14} style={{ margin: 'auto'}}>
+          <Col style={{ margin: 'auto'}}>
             {this.props.children}
           </Col>
         </Row>

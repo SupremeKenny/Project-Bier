@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Menu, Input } from 'antd';
 import './NavMenu.css';
 import 'antd/dist/antd.css';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,32 +16,40 @@ const { Header } = Layout;
 
 export class NavMenu extends Component {
   displayName = NavMenu.name
-
   render() {
     return (
-      <Header style={{ background: 'black' }}>
+      <Header>
+        <Row style={{display:'flex'}} > 
+          <Col md={24} lg={20} xl={16} style={{ margin: 'auto'}}>
         
-        <Row style={{display:'flex'}}>
-          
-          <Col span={14} style={{ margin: 'auto'}}><div className="logo" > <img src="logo.png" /></div><Menu
+          <Menu
             theme="dark"
             mode="horizontal"
             selectable={false}
-            style={{ background: 'black', lineHeight: '64px', display: 'flex' }}
+            className="menu header"
           >
+           <Menu.Item className='logo'> <img src="logo.png" /></Menu.Item>
+            <Menu.Item key="search" className="search">
+              <Search
+                placeholder="Zoek naar producten... "
+                onSearch={value => console.log(value)}/>
+            </Menu.Item>
+            
+            <Menu.Item>
+              <Button type="primary">Inloggen</Button>
+            </Menu.Item>
 
-            <Menu.Item key="cart" style={{ margin: 'auto' }}><Search
-              placeholder="Search for products... "
-              onSearch={value => console.log(value)}
-              style={{ width: 600, float: 'middle' }} /></Menu.Item>
-            <Menu.Item key="fav" ><FontAwesomeIcon icon="star" style={{ fontSize: 28, color: '#ffa502' }} /></Menu.Item>
-            <Menu.Item key="cart" ><FontAwesomeIcon icon="shopping-cart" style={{ fontSize: 28, color: 'white' }} /></Menu.Item>
-          </Menu></Col>
+            <Menu.Item key="fav">
+              <FontAwesomeIcon icon="star" style={{ fontSize: 24, color: '#ffa502' }} />
+            </Menu.Item>
+
+            <Menu.Item key="cart" >
+              <FontAwesomeIcon icon="shopping-cart" style={{ fontSize: 24, color: 'white' }} />
+            </Menu.Item>
+          </Menu>
+          </Col>
         </Row>
-
-      </Header>
-
-
+    </Header>
     );
   }
 }
