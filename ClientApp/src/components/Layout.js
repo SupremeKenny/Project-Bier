@@ -13,16 +13,12 @@ export class LayoutMain extends Component {
     return (
       <Layout className="layout">
         <NavMenu />
-        <Row style={{display:'flex'}}>
-          
-          <Col style={{ margin: 'auto'}}>
-            {this.props.children}
-          </Col>
-        </Row>
-        
+        <Content >
+          {this.props.children}
+        </Content>
         <Footer style={{ textAlign: 'center' }}>
-          
-      </Footer>
+
+        </Footer>
       </Layout>
     );
   }
