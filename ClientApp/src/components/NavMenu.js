@@ -20,14 +20,18 @@ export class NavMenu extends Component {
       <Header>
         <Row style={{ display: 'flex' }} >
           <Col md={24} lg={20} xl={16} style={{ margin: 'auto' }}>
-
             <Menu
               theme="dark"
               mode="horizontal"
               selectable={false}
-              className="menu header"
-            >
-              <Menu.Item className='logo'> <img src="logo.png" /></Menu.Item>
+              className="menu header">
+
+              <Menu.Item className='logo'>
+                <Link to="/">
+                  <img src="logo.png" />
+                </Link>
+              </Menu.Item>
+
               <Menu.Item key="search" className="search">
                 <Search
                   placeholder="Zoek naar producten... "
