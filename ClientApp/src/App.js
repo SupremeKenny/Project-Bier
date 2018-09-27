@@ -1,20 +1,16 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { LayoutMain } from './components/Layout';
-import { LoginPage } from './components/Login';
-import { Category } from './components/Category';
-import { Main } from './components/Main';
+import React, { Component } from "react";
+import { Route } from "react-router";
+import { Layout } from "./components/Layout.js";
+import { Category } from "./components/Category.js";
 
 export default class App extends Component {
-  displayName = App.name
+  displayName = App.name;
 
   render() {
     return (
-      <LayoutMain>
-        <Route exact path='/' component={Main} />
-        <Route path='/category' component={Category} />
-        <Route path='/login' component={LoginPage} />
-      </LayoutMain>
+      <Layout>
+        <Route exact path="/" component={Category} />
+      </Layout>
     );
   }
 }
