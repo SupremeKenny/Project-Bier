@@ -7,7 +7,8 @@
 
 
 /build
-ClientApp/src/semantic/dist
+ClientApp/src/semantic/*
+!/ClientApp/src/semantic/src/themes/bier
 
 #Astah files
 *.asta.lock
