@@ -1,0 +1,22 @@
+/*-------------------
+       Fonts
+--------------------*/
+
+@fontName          : 'Karla';
+@fontSmoothing     : antialiased;
+
+
+@headerFont        : 'Raleway', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@pageFont          : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+
+
+
+
+
+@red: #ff4757;
+@blue:#1e90ff;
+@orange: #ffa502;
+@green: #2ed573;
+@black:#222f3e;
+@purple:#6c5ce7;
