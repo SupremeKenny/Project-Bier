@@ -1,4 +1,3 @@
-import "semantic-ui-css/semantic.min.css";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
@@ -12,8 +11,11 @@ import {
   Responsive,
   Segment,
   Sidebar,
-  Visibility
+  Visibility,
+  Dropdown
 } from "semantic-ui-react";
+
+const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 
 class DesktopContainer extends Component {
   state = {};
@@ -32,54 +34,74 @@ class DesktopContainer extends Component {
           onBottomPassed={this.showFixedMenu}
           onBottomPassedReverse={this.hideFixedMenu}
         >
-          <Segment inverted textAlign="center" vertical>
-            <Menu
-              fixed={fixed ? "top" : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size="large"
-              style={{ color: "#2f3542" }}
-            >
-              <Container>
-                <Menu.Item>
-                  <Link to="/">
-                    <Image src="logo.png" />
-                  </Link>
-                </Menu.Item>
+          <Menu
+            fixed={fixed ? "top" : null}
+            inverted
+            size="large"
+            color="black"
+            style={menuStyle}
+          >
+            <Container>
+              <Menu.Item>
+                <Link to="/">
+                  <Image src="logo.png" />
+                </Link>
+              </Menu.Item>
 
-                <Menu.Item style={{ flexGrow: 1 }} >
-                  <Input
-                    action={{
-                      color: "teal",
-                      labelPosition: "right",
-                      icon: "search",
-                      content: "Zoek"
-                    }}
-                    actionPosition="right"
-                    placeholder="Zoeken naar producten..."
-                    
-                  />
-                </Menu.Item>
+              <Menu.Item style={{ flexGrow: 1 }}>
+                <Input
+                  action={{
+                    color: "blue",
+                    labelPosition: "right",
+                    icon: "search",
+                    content: "Zoek"
+                  }}
+                  actionPosition="right"
+                  placeholder="Zoeken naar producten..."
+                />
+              </Menu.Item>
 
-                <Menu.Item >
-                  <Link to="/">
-                    <Button primary={!fixed}>Inloggen</Button>
-                  </Link>
-                  <Link to="/">
-                    <Button icon color="red">
-                      <Icon name="heart" />
-                    </Button>
-                  </Link>
-                  <Link to="/">
-                    <Button icon color="yellow">
-                      <Icon name="shop" />
-                    </Button>
-                  </Link>
-                </Menu.Item>
-             </Container>
-            </Menu>
-          </Segment>
+              <Menu.Item>
+                <Link to="/">
+                  <Button color="green">Inloggen</Button>
+                </Link>
+                <Link to="/">
+                  <Button icon color="red">
+                    <Icon name="heart" />
+                  </Button>
+                </Link>
+                <Link to="/">
+                  <Button icon color="yellow">
+                    <Icon name="shop" />
+                  </Button>
+                </Link>
+              </Menu.Item>
+            </Container>
+          </Menu>
+
+          <Menu
+            fixed={fixed ? "top" : null}
+            inverted
+            size="large"
+            color="black"
+            style={menuStyle}
+          >
+            <Container>
+              <Dropdown item text="Categorieën">
+                <Dropdown.Menu>
+                  <Dropdown.Item>Alcholvrij</Dropdown.Item>
+                  <Dropdown.Item>Amber</Dropdown.Item>
+                  <Dropdown.Item>Pils</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              <Menu.Item>
+                Aanbiedingen
+              </Menu.Item>
+              <Menu.Item>
+                Best Sellers
+              </Menu.Item>
+            </Container>
+          </Menu>
         </Visibility>
 
         {children}
