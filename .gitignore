@@ -7,7 +7,7 @@
 
 
 /build
-ClientApp/src/semantic/*
+/ClientApp/src/semantic/
 !/ClientApp/src/semantic/src/themes/bier
 
 #Astah files

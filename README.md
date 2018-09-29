@@ -9,6 +9,20 @@ The admin can edit and delete user and product data. He or she can also view sta
 
 (This README is currently a stub and will be expanded later.)
 
+## Running the project
+
+Make sure you have the .NET Core SDK and NodeJS installed. Before trying to run the project always run a
+'dotnet restore'
+
+in the main folder of the project. This command wil get all the missing packages of the backend. When done change the terminal folder to ClientApp and run 
+'npm install'
+
+This will install all packages for the frontend, which are defined in package.json. There will be a prompt to install semantic UI. This is needed to have custom themes for Semantic UI. Enter the following in the prompt:
+
+![Prompt](https://jsramblings.com/images/semantic-ui-theme/step5.PNG)
+
+Make sure you install semantic in the correct folder: src/semantic ! 
+
 ##  Tech Stack
 * React + Ant Design
 * ASP .NET Core
