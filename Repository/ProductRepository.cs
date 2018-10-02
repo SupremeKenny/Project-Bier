@@ -2,11 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Project_Bier.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Project_Bier.Repository
 {
+    /// <summary>
+    /// Concrete implementation of the product repository
+    /// </summary>
     public class ProductRepository : IProductRepository
     {
+        private ApplicationDatabaseContext applicationDatabaseContext;
+
+        public ProductRepository(ApplicationDatabaseContext applicationDatabaseContext) 
+        {
+            this.applicationDatabaseContext = applicationDatabaseContext;
+        }
         public void AddProduct(Product product)
         {
             throw new NotImplementedException();
@@ -17,9 +28,10 @@ namespace Project_Bier.Repository
             throw new NotImplementedException();
         }
 
-        public Product GetProductByGuid(Guid guid)
+        public Product GetProductByGuid(String id)
         {
-            throw new NotImplementedException();
+            return applicationDatabaseContext.Products
+                .FirstOrDefault(p => p.Id == id);
         }
 
         public Product GetProductByPrettyUrl(string url)

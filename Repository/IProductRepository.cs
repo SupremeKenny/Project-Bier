@@ -22,7 +22,7 @@ namespace Project_Bier.Repository
 
         void AddProducts(Product[] products);
 
-        Product GetProductByGuid(Guid guid);
+        Product GetProductByGuid(String id);
 
         Product GetProductByPrettyUrl(String url);
 
