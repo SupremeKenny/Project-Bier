@@ -13,58 +13,86 @@ import {
   Icon,
   Popup,
   Divider,
-  Table
+  Table,
+  Loader,
+  Dimmer
 } from "semantic-ui-react";
 
 export class ProductPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      product: {},
+      loaded: false
+    }
+  }
+
+  componentWillMount() {
+    fetch("https://localhost:5001/product/fetch?id=1").then(results => {
+      results.json().then(data => {
+        console.log(data.product)
+        this.setState({ product: data.product, loaded: true });
+      })
+    })
+  }
+
   render() {
-    return (
-      <MainContainer>
-        <Breadcrumb>
-          <Breadcrumb.Section link>Home</Breadcrumb.Section>
-          <Breadcrumb.Divider icon="right angle" />
-          <Breadcrumb.Section link>Beers</Breadcrumb.Section>
-          <Breadcrumb.Divider icon="right angle" />
-          <Breadcrumb.Section active>Lorem Ipsum</Breadcrumb.Section>
-        </Breadcrumb>
-        <Divider />
-        <MiddleContainer>
-          <DescriptionContainer
-            title="Thornbridge Am:Pm"
-            descriptionText="Goukleurig bier met een oranje schijn, stevige witte schuimkraag. Dit bier zit vol tropisch fruit. De fruitige nasmaak van deze lichte doordrinker gaat gepaard met een stevig bitter karakter."
-          >
-            <Information />
+    console.log(this.state.product);
+    if (!this.state.loaded) {
+      return (<Segment>
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      </Segment>)
+    }
+    else
+      return (
+        <MainContainer>
+          <Breadcrumb>
+            <Breadcrumb.Section link>Home</Breadcrumb.Section>
+            <Breadcrumb.Divider icon="right angle" />
+            <Breadcrumb.Section link>Beers</Breadcrumb.Section>
+            <Breadcrumb.Divider icon="right angle" />
+            <Breadcrumb.Section active>{this.state.product.name}</Breadcrumb.Section>
+          </Breadcrumb>
+          <Divider />
+          <MiddleContainer>
+            <DescriptionContainer
+              title={this.state.product.name}
+              descriptionText={this.state.product.description}
+            >
+              <Information brand={this.state.product.brand}/>
 
-            <PriceDisplay price="2.99" />
-            <Divider hidden />
-            <div>
-              <Button color="green" size="large">
-                Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
-              </Button>
+              <PriceDisplay price={this.state.product.price} />
+              <Divider hidden />
+              <div>
+                <Button color="green" size="large">
+                  Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
+                </Button>
 
-              <Popup
-                trigger={
-                  <Button icon color="red">
-                    <Icon name="heart" />
-                  </Button>
-                }
-                content="Voeg toe aan verlanglijstje"
-                position="bottom left"
-              />
-            </div>
-          </DescriptionContainer>
+                <Popup
+                  trigger={
+                    <Button icon color="red">
+                      <Icon name="heart" />
+                    </Button>
+                  }
+                  content="Voeg toe aan verlanglijstje"
+                  position="bottom left"
+                />
+              </div>
+            </DescriptionContainer>
 
-          <ImageContainer
-            url={
-              "https://www.beerwulf.com/globalassets/thornbridge---am-pm-33cl.png?h=500&rev=427151746"
-            }
-          />
-        </MiddleContainer>
-      </MainContainer>
-    );
+            <ImageContainer
+              url={
+                this.state.product.url
+              }
+            />
+          </MiddleContainer>
+        </MainContainer>
+      );
   }
 }
-const headerSX = {fontFamily:"Raleway", fontSize: 38, color:'#2f3542'};
+const headerSX = { fontFamily: "Raleway", fontSize: 38, color: '#2f3542' };
 const MainContainer = ({ children }) => {
   const sx = {
     paddingTop: "2em"
@@ -168,7 +196,7 @@ const Information = props => {
                 <Header.Content>Brouwer</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>Thornbridge</Table.Cell>
+            <Table.Cell>{props.brand}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
