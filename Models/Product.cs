@@ -15,9 +15,9 @@ namespace Project_Bier.Models
             public Guid ProductGuid { get; set; } 
             public string Name {get; set;}
             public decimal Price {get; set;}
-            public Category Category {get; set;}
             public Boolean Available {get; set;}
             public string Description {get; set;} 
             public string Brand { get; set;}
+            public Category category { get; set; }
     }
 }
