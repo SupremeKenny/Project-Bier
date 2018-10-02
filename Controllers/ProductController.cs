@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Repository;
 using Microsoft.AspNetCore.Http;
+using Project_Bier.Models;
 
 namespace Project_Bier.Controllers
 {
@@ -19,9 +20,13 @@ namespace Project_Bier.Controllers
         }
 
         [HttpGet]
-        public IActionResult Fetch()
+        public IActionResult Fetch(String id)
         {
-            return Ok(new {message="wubbulubbadubdub"});
+            Product product = productRepository.GetProductByGuid(id);
+            if(product == null) {
+                return NotFound();
+            }
+            return Json(new {product = product});
         }
     }
 }
