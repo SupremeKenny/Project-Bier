@@ -6,9 +6,10 @@
 # Semantic
 
 
-/build
+
 /ClientApp/src/semantic/
 !/ClientApp/src/semantic/src/themes/bier
+!/ClientApp/src/semantic/tasks/build/assets.js
 
 #Astah files
 *.asta.lock
@@ -35,6 +36,8 @@ bin/
 Bin/
 obj/
 Obj/
+
+
 
 # Visual Studio 2015 cache/options directory
 .vs/
