@@ -28,7 +28,8 @@ export class ProductPage extends React.Component {
   }
 
   componentWillMount() {
-    fetch("https://localhost:5001/product/fetch?id=1").then(results => {
+    console.log(this.props.match.params.id);
+    fetch("https://localhost:5001/product/fetch?id=" + this.props.match.params.id).then(results => {
       results.json().then(data => {
         console.log(data.product)
         this.setState({ product: data.product, loaded: true });
@@ -60,6 +61,7 @@ export class ProductPage extends React.Component {
             <DescriptionContainer
               title={this.state.product.name}
               descriptionText={this.state.product.description}
+              brand={this.state.product.brand}
             >
               <Information brand={this.state.product.brand}/>
 
@@ -120,7 +122,7 @@ const DescriptionContainer = props => {
   return (
     <Grid.Column width={10}>
       <Header as="h1" style={headerSX}>{props.title}</Header>
-      <p>Producent</p>
+      <p>{props.brand}</p>
       <Label color="green" ribbon>
         Op vooraad
       </Label>
