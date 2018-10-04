@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Project_Bier.Data;
+using Project_Bier.Repository;
 
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20180925104647_InitialCreateProduct")]
-    partial class InitialCreateProduct
+    [Migration("20181002202256_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,6 +125,20 @@ namespace ProjectBier.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Project_Bier.Models.Category", b =>
+                {
+                    b.Property<Guid>("CategoryGuid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("CategoryGuid");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -137,6 +151,32 @@ namespace ProjectBier.Migrations
                     b.HasIndex("WebshopUserId");
 
                     b.ToTable("FavoriteList");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.Product", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Available");
+
+                    b.Property<string>("Brand");
+
+                    b.Property<Guid?>("CategoryGuid");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryGuid");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.ShippingAddress", b =>
@@ -275,6 +315,13 @@ namespace ProjectBier.Migrations
                     b.HasOne("Project_Bier.Models.WebshopUser")
                         .WithMany("FavoriteLists")
                         .HasForeignKey("WebshopUserId");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.Product", b =>
+                {
+                    b.HasOne("Project_Bier.Models.Category", "category")
+                        .WithMany()
+                        .HasForeignKey("CategoryGuid");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.ShippingAddress", b =>

@@ -52,6 +52,19 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryGuid = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryGuid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -198,6 +211,30 @@ namespace ProjectBier.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: false),
+                    Available = table.Column<bool>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
+                    Brand = table.Column<string>(nullable: true),
+                    CategoryGuid = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryGuid",
+                        column: x => x.CategoryGuid,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryGuid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_WebshopUserId",
                 table: "Addresses",
@@ -244,6 +281,11 @@ namespace ProjectBier.Migrations
                 name: "IX_FavoriteList_WebshopUserId",
                 table: "FavoriteList",
                 column: "WebshopUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryGuid",
+                table: "Products",
+                column: "CategoryGuid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -270,10 +312,16 @@ namespace ProjectBier.Migrations
                 name: "FavoriteList");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }
