@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { updateInput } from "./LocalStorage.js"
+
 import {
   Header,
   Container,
@@ -68,7 +70,7 @@ export class ProductPage extends React.Component {
               <PriceDisplay price={this.state.product.price} />
               <Divider hidden />
               <div>
-                <Button color="green" size="large">
+                <Button color="green" size="large" onClick={e => updateInput(this.state.product.id)}>
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
 

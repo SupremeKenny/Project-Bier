@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import { count } from "./LocalStorage.js";
 import {
   Button,
   Container,
@@ -19,6 +20,10 @@ const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 
 class DesktopContainer extends Component {
   state = {};
+
+
+  ShoppingCartCount = count();
+
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
@@ -72,10 +77,13 @@ class DesktopContainer extends Component {
                 </Link>
                 <Link to="/">
                   <Button icon color="yellow">
-                    <Icon name="shop" />
+                    <i class="icons">
+                      <i class="shop icon"></i>
+                      <i class="corner">{this.ShoppingCartCount}</i>
+                    </i>
                   </Button>
                 </Link>
-              </Menu.Item>
+                </Menu.Item>
             </Container>
           </Menu>
 
