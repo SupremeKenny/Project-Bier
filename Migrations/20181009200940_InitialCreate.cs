@@ -55,13 +55,13 @@ namespace ProjectBier.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryGuid = table.Column<Guid>(nullable: false),
+                    CategoryId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryGuid);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,7 +212,7 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Beer",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -221,17 +221,20 @@ namespace ProjectBier.Migrations
                     Available = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
-                    Brand = table.Column<string>(nullable: true),
-                    CategoryGuid = table.Column<Guid>(nullable: true)
+                    CategoryId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    AlcoholPercentage = table.Column<string>(nullable: true),
+                    BrewerName = table.Column<string>(nullable: true),
+                    CountryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Beer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryGuid",
-                        column: x => x.CategoryGuid,
+                        name: "FK_Beer_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryGuid",
+                        principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -278,14 +281,14 @@ namespace ProjectBier.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Beer_CategoryId",
+                table: "Beer",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FavoriteList_WebshopUserId",
                 table: "FavoriteList",
                 column: "WebshopUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryGuid",
-                table: "Products",
-                column: "CategoryGuid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -309,19 +312,19 @@ namespace ProjectBier.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FavoriteList");
+                name: "Beer");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "FavoriteList");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "AspNetUsers");
         }
     }
 }
