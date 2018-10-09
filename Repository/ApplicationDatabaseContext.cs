@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Project_Bier.Models;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project_Bier.Repository
 {
@@ -11,14 +12,14 @@ namespace Project_Bier.Repository
     {
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options) { }
         public DbSet<ShippingAddress> Addresses { get; set; }
-        public DbSet<Product> Products {get; set;}
+        public DbSet<Beer> Beer {get; set;}
         public DbSet<Category> Categories {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>().HasOne(c => c.category);
+            modelBuilder.Entity<Beer>().HasOne(c => c.Category);
             modelBuilder.Entity<ShippingAddress>().HasKey(c => new { c.PostalCode, c.StreetNumber, c.AssociatedUser });
         }
 
@@ -26,7 +27,5 @@ namespace Project_Bier.Repository
         {
             optionsBuilder.UseSqlite("Data Source=app.db");
         }
-
-
     }
 }

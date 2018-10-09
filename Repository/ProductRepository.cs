@@ -30,7 +30,7 @@ namespace Project_Bier.Repository
 
         public Product GetProductByGuid(String id)
         {
-            return applicationDatabaseContext.Products
+            return applicationDatabaseContext.Beer
                 .FirstOrDefault(p => p.Id == id);
         }
 
