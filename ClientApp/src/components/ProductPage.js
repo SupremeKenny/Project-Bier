@@ -157,7 +157,7 @@ const PriceDisplay = props => {
   return (
     <div>
       <p>
-        <b style={sx}>${props.price}</b>
+        <b style={sx}>${props.price} </b>
         per flesje
       </p>
     </div>
