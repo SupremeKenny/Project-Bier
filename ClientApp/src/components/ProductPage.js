@@ -81,6 +81,7 @@ export class ProductPage extends React.Component {
                 country={this.state.product.countryName}
                 al={this.state.product.alcoholPercentage}
                 category={CategoryDict[this.state.product.categoryId]}
+                link={this.state.product.categoryId}
               />
 
               <PriceDisplay price={this.state.product.price} />
@@ -210,7 +211,8 @@ const Information = props => {
                 <Header.Content>Categorie</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>{props.category}</Table.Cell>
+            <Table.Cell><Link to={"/category/" + props.link}>
+            {props.category}</Link></Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
