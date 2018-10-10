@@ -5,7 +5,7 @@
 
 # Semantic
 
-
+.idea/
 
 /ClientApp/src/semantic/
 !/ClientApp/src/semantic/src/themes/bier

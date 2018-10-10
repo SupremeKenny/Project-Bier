@@ -15,8 +15,8 @@ import {
   Visibility,
   Dropdown,
   List,
-  Grid, 
-  Header, 
+  Grid,
+  Header,
   Divider
 } from "semantic-ui-react";
 
@@ -25,9 +25,7 @@ const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 class DesktopContainer extends Component {
   state = {};
 
-
   ShoppingCartCount = count();
-
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
@@ -65,7 +63,7 @@ class DesktopContainer extends Component {
                     icon: "search",
                     content: "Zoek"
                   }}
-                  actionPosition="right"
+                  
                   placeholder="Zoeken naar producten..."
                 />
               </Menu.Item>
@@ -79,81 +77,132 @@ class DesktopContainer extends Component {
                     <Icon name="heart" />
                   </Button>
                 </Link>
-                <Link to="/">
+                <Link to="/cart">
                   <Button icon color="yellow">
-                    <i class="icons">
-                      <i class="shop icon"></i>
-                      <i class="corner">{this.ShoppingCartCount}</i>
+                    <i className="icons">
+                      <i className="shop icon" />
+                    
                     </i>
                   </Button>
                 </Link>
-                </Menu.Item>
+              </Menu.Item>
             </Container>
           </Menu>
 
           <Menu
             // fixed={fixed ? null : null}
-            inverted
+            
             size="large"
             color="black"
             style={menuStyle}
           >
             <Container>
-              <Dropdown item text="Categorieën">
-                <Dropdown.Menu>
-                  <Dropdown.Item>Alcholvrij</Dropdown.Item>
-                  <Dropdown.Item>Amber</Dropdown.Item>
-                  <Dropdown.Item>Pils</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-              <Menu.Item>
-                Aanbiedingen
-              </Menu.Item>
-              <Menu.Item>
-                Best Sellers
-              </Menu.Item>
+              <Link to="/category/amber">
+                <Menu.Item>Amber</Menu.Item>
+              </Link>
+              <Link to="/category/barley-wine">
+                <Menu.Item>Barley Wine</Menu.Item>
+              </Link>
+              <Link to="/category/belgian-ale">
+                <Menu.Item>Belgian Ale</Menu.Item>
+              </Link>
+              <Link to="/category/blond">
+                <Menu.Item>Blond</Menu.Item>
+              </Link>
+              <Link to="/category/bock">
+                <Menu.Item>Bock</Menu.Item>
+              </Link>
+              <Link to="/category/brown-ale">
+                <Menu.Item>Brown Ale</Menu.Item>
+              </Link>
+              <Link to="/category/dubbel">
+                <Menu.Item>Dubbel</Menu.Item>
+              </Link>
+              <Link to="/category/india-pale-ale">
+                <Menu.Item>India Pale Ale</Menu.Item>
+              </Link>
+              <Link to="/category/lager">
+                <Menu.Item>Lager</Menu.Item>
+              </Link>
+            </Container>
+          </Menu>
+
+          <Menu
+            // fixed={fixed ? null : null}
+            
+            size="large"
+            color="black"
+            style={menuStyle}
+          >
+            <Container>
+              <Link to="/category/pale-ale">
+                <Menu.Item>Pale Ale</Menu.Item>
+              </Link>
+              <Link to="/category/pils">
+                <Menu.Item>Pils</Menu.Item>
+              </Link>
+              <Link to="/category/porter">
+                <Menu.Item>Porter</Menu.Item>
+              </Link>
+              <Link to="/category/quadrupel">
+                <Menu.Item>Quadrupel</Menu.Item>
+              </Link>
+              <Link to="/category/saison">
+                <Menu.Item>Saison</Menu.Item>
+              </Link>
+              <Link to="/category/sour-beer">
+                <Menu.Item>Sour Beer</Menu.Item>
+              </Link>
+              <Link to="/category/stout">
+                <Menu.Item>Stout</Menu.Item>
+              </Link>
+              <Link to="/category/tripel">
+                <Menu.Item>Tripel</Menu.Item>
+              </Link>
+              <Link to="/category/weizen">
+                <Menu.Item>Weizen</Menu.Item>
+              </Link>
+              <Link to="/category/wit">
+                <Menu.Item>Wit</Menu.Item>
+              </Link>
             </Container>
           </Menu>
         </Visibility>
 
         {children}
-        
-        
-        <Segment style={{ padding: '2em 0em' }} vertical/>
-        
-        <Segment inverted vertical style={{ padding: '5em 0em' }}>
+
+        <Segment style={{ padding: "2em 0em" }} vertical />
+
+        <Segment inverted vertical style={{ padding: "5em 0em" }}>
           <Container>
             <Grid divided inverted stackable>
               <Grid.Row>
                 <Grid.Column width={3}>
-                  <Header inverted as='h4' content='About' />
+                  <Header inverted as="h4" content="About" />
                   <List link inverted>
-                    <List.Item as='a'>Sitemap</List.Item>
-                    <List.Item as='a'>Contact Us</List.Item>
-                    <List.Item as='a'>[Invullen]</List.Item>
-                    <List.Item as='a'>[Invullen]</List.Item>
+                    <List.Item as="a">Sitemap</List.Item>
+                    <List.Item as="a">Contact Us</List.Item>
+                    <List.Item as="a">[Invullen]</List.Item>
+                    <List.Item as="a">[Invullen]</List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Services' />
+                  <Header inverted as="h4" content="Services" />
                   <List link inverted>
-                    <List.Item as='a'>FAQ</List.Item>
-                    <List.Item as='a'>[Invullen]</List.Item>
+                    <List.Item as="a">FAQ</List.Item>
+                    <List.Item as="a">[Invullen]</List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                  <Header as='h4' inverted>
+                  <Header as="h4" inverted>
                     Footer Header
                   </Header>
-                  <p>
-                    Informatie moet hier nog worden toegevoegd.
-                  </p>
+                  <p>Informatie moet hier nog worden toegevoegd.</p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Container>
         </Segment>
-        
       </Responsive>
     );
   }

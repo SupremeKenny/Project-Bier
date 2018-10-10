@@ -28,5 +28,15 @@ namespace Project_Bier.Controllers
             }
             return Json(new {product = product});
         }
+
+        [HttpGet]
+        public IActionResult FetchCategoryAll(String category)
+        {
+            IEnumerable<Product> products = productRepository.GetProductsByCategory(category);
+            if(products == null) {
+                return NotFound();
+            }
+            return Json(new {products = products});
+        }
     }
 }

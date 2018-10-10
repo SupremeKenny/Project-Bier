@@ -26,7 +26,7 @@ namespace Project_Bier.Repository
 
         Product GetProductByPrettyUrl(String url);
 
-        IEnumerable<Product> GetProductsByCategory(Category category);
+        IEnumerable<Product> GetProductsByCategory(string category);
 
         IEnumerable<Product>  ListAll();
 

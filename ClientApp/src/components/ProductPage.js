@@ -1,6 +1,7 @@
-import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { updateInput } from "./LocalStorage.js"
+import { updateInput } from "./LocalStorage.js";
+import { CategoryDict } from "./Categories.js";
+import { Link } from "react-router-dom";
 
 import {
   Header,
@@ -26,37 +27,46 @@ export class ProductPage extends React.Component {
     this.state = {
       product: {},
       loaded: false
-    }
+    };
   }
 
   componentWillMount() {
-    console.log(this.props.match.params.id);
-    fetch("https://localhost:5001/product/fetch?id=" + this.props.match.params.id).then(results => {
+    fetch(
+      "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
+    ).then(results => {
       results.json().then(data => {
-        console.log(data.product)
         this.setState({ product: data.product, loaded: true });
-      })
-    })
+        console.log(this.state.product);
+      });
+    });
   }
 
   render() {
-    console.log(this.state.product);
     if (!this.state.loaded) {
-      return (<Segment>
-        <Dimmer active>
-          <Loader />
-        </Dimmer>
-      </Segment>)
-    }
-    else
+      return (
+        <Segment>
+          <Dimmer active>
+            <Loader />
+          </Dimmer>
+        </Segment>
+      );
+    } else
       return (
         <MainContainer>
           <Breadcrumb>
-            <Breadcrumb.Section link>Home</Breadcrumb.Section>
+            <Link to="/">
+              <Breadcrumb.Section link>Hoofdpagina</Breadcrumb.Section>{" "}
+            </Link>
             <Breadcrumb.Divider icon="right angle" />
-            <Breadcrumb.Section link>Beers</Breadcrumb.Section>
+            <Link to={"/category/" + this.state.product.categoryId}>
+              <Breadcrumb.Section link>
+                {CategoryDict[this.state.product.categoryId]}
+              </Breadcrumb.Section>
+            </Link>
             <Breadcrumb.Divider icon="right angle" />
-            <Breadcrumb.Section active>{this.state.product.name}</Breadcrumb.Section>
+            <Breadcrumb.Section active>
+              {this.state.product.name}
+            </Breadcrumb.Section>
           </Breadcrumb>
           <Divider />
           <MiddleContainer>
@@ -65,12 +75,22 @@ export class ProductPage extends React.Component {
               descriptionText={this.state.product.description}
               brand={this.state.product.brand}
             >
-              <Information brand={this.state.product.brand}/>
+              <Information
+                brand={this.state.product.brewerName}
+                content={this.state.product.content}
+                country={this.state.product.countryName}
+                al={this.state.product.alcoholPercentage}
+                category={CategoryDict[this.state.product.categoryId]}
+              />
 
               <PriceDisplay price={this.state.product.price} />
               <Divider hidden />
               <div>
-                <Button color="green" size="large" onClick={e => updateInput(this.state.product.id)}>
+                <Button
+                  color="green"
+                  size="large"
+                  onClick={e => updateInput(this.state.product.id)}
+                >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
 
@@ -86,17 +106,13 @@ export class ProductPage extends React.Component {
               </div>
             </DescriptionContainer>
 
-            <ImageContainer
-              url={
-                this.state.product.url
-              }
-            />
+            <ImageContainer url={this.state.product.url + "?w=150"} />
           </MiddleContainer>
         </MainContainer>
       );
   }
 }
-const headerSX = { fontFamily: "Raleway", fontSize: 38, color: '#2f3542' };
+const headerSX = { fontFamily: "Raleway", fontSize: 38, color: "#2f3542" };
 const MainContainer = ({ children }) => {
   const sx = {
     paddingTop: "2em"
@@ -123,7 +139,9 @@ const DescriptionContainer = props => {
   const priceStyle = {};
   return (
     <Grid.Column width={10}>
-      <Header as="h1" style={headerSX}>{props.title}</Header>
+      <Header as="h1" style={headerSX}>
+        {props.title}
+      </Header>
       <p>{props.brand}</p>
       <Label color="green" ribbon>
         Op vooraad
@@ -176,7 +194,7 @@ const Information = props => {
                 <Header.Content>Flesinhoud</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>33 centiliter</Table.Cell>
+            <Table.Cell>{props.content}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
@@ -184,15 +202,15 @@ const Information = props => {
                 <Header.Content>Alcoholpercentage</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>4.3%</Table.Cell>
+            <Table.Cell>{props.al}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               <Header as="h4" image>
-                <Header.Content>Stijl</Header.Content>
+                <Header.Content>Categorie</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>India Pale Ale</Table.Cell>
+            <Table.Cell>{props.category}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
@@ -201,6 +219,14 @@ const Information = props => {
               </Header>
             </Table.Cell>
             <Table.Cell>{props.brand}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              <Header as="h4" image>
+                <Header.Content>Land van afkomst</Header.Content>
+              </Header>
+            </Table.Cell>
+            <Table.Cell>{props.country}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
