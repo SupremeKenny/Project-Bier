@@ -73,47 +73,76 @@ import {
   const Input1 = () => <Input placeholder='Vul je kortingscode in...' />
 
   const ListProducts = () => (
-    <List celled>
-      <List.Item>
-        <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small" />
-        <List.Content>
-          <List.Header>Vandestreek Bock jij of bock ik?</List.Header>
-          <Divider hidden/>
-          Hoeveelheid:
-          <Space />
-          <DropdownQuantity />
-          <Divider hidden/>
-          Prijs: €2,19
-          <DeleteButton />
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small" />
-        <List.Content>
-          <List.Header>Brussels Beer Project Delta IPA</List.Header>
-          <Divider hidden/>
-          Hoeveelheid: 
-          <Space />
-          <DropdownQuantity />
-          <Divider hidden/>
-          Prijs: €2.95
-          <DeleteButton />
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small" />
-        <List.Content>
-          <List.Header>Paulaner Oktoberfest</List.Header>
-          <Divider hidden/>
-          Hoeveelheid: 
-          <Space />
-          <DropdownQuantity />
-          <Divider hidden/>
-          Prijs: €2.59
-          <DeleteButton />
-        </List.Content>
-      </List.Item>
-    </List>
+    <Grid divided='vertically' columns='equal'>
+      <Grid.Row>
+        <Grid.Column width={3}>
+          <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small"  />
+        </Grid.Column>
+        <Grid.Column width={4}>
+            Vandestreek Bock jij of bock ik?
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Prijs: €2,19
+        </Grid.Column>
+        <Grid.Column width={3}>
+            Hoeveelheid: 
+            <Space />
+            <DropdownQuantity/>
+        </Grid.Column>
+        <Grid.Column width={2}>
+            <DeleteButton />
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Totaal: €2,19
+        </Grid.Column>
+      </Grid.Row>
+      
+      <Grid.Row>
+        <Grid.Column width={3}>
+          <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small"  />
+        </Grid.Column>
+        <Grid.Column width={4}>
+            Vandestreek Bock jij of bock ik?
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Prijs: €2,19
+        </Grid.Column>
+        <Grid.Column width={3}>
+            Hoeveelheid: 
+            <Space />
+            <DropdownQuantity/>
+        </Grid.Column>
+        <Grid.Column width={2}>
+            <DeleteButton />
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Totaal: €2,19
+        </Grid.Column>
+      </Grid.Row>
+      
+      <Grid.Row>
+        <Grid.Column width={3}>
+          <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size="small"  />
+        </Grid.Column>
+        <Grid.Column width={4}>
+            Vandestreek Bock jij of bock ik?
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Prijs: €2,19
+        </Grid.Column>
+        <Grid.Column width={3}>
+            Hoeveelheid: 
+            <Space />
+            <DropdownQuantity/>
+        </Grid.Column>
+        <Grid.Column width={2}>
+            <DeleteButton />
+        </Grid.Column>
+        <Grid.Column width={2}>
+            Totaal: €2,19
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   )
   
 export class ShoppingCart extends Component {
@@ -125,7 +154,9 @@ export class ShoppingCart extends Component {
                   <Divider />
                   <h1>Mijn Winkelwagen</h1>
                   <Divider hidden />
+                  <Divider />
                   <ListProducts />
+                  <Divider />
                   <Container textAlign='left'>
                     <h4>Kortingscode: <Input1 /><ButtonCheck /></h4>
                   </Container>
