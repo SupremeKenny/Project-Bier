@@ -25,9 +25,13 @@ import {
 
   const Breadcrumb1 = () => (
     <Breadcrumb size='large'>
-      <Breadcrumb.Section link>Home</Breadcrumb.Section>
+      <Breadcrumb.Section active>
+        <a href='/'>Home</a>
+      </Breadcrumb.Section>
       <Breadcrumb.Divider icon='right chevron' />
-      <Breadcrumb.Section link>Mijn Winkelwagen</Breadcrumb.Section>
+      <Breadcrumb.Section active>
+        <a href='/cart'>Mijn Winkelwagen</a>
+      </Breadcrumb.Section>
     </Breadcrumb>
   )
   
