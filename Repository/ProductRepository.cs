@@ -12,11 +12,11 @@ namespace Project_Bier.Repository
     /// </summary>
     public class ProductRepository : IProductRepository
     {
-        private ApplicationDatabaseContext applicationDatabaseContext;
+        private ApplicationDatabaseContext context;
 
         public ProductRepository(ApplicationDatabaseContext applicationDatabaseContext) 
         {
-            this.applicationDatabaseContext = applicationDatabaseContext;
+            this.context = applicationDatabaseContext;
         }
         public void AddProduct(Product product)
         {
@@ -30,7 +30,7 @@ namespace Project_Bier.Repository
 
         public Product GetProductByGuid(String id)
         {
-            return applicationDatabaseContext.Beer
+            return context.Beer
                 .FirstOrDefault(p => p.Id == id);
         }
 
@@ -39,9 +39,9 @@ namespace Project_Bier.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> GetProductsByCategory(Category category)
+        public IEnumerable<Product> GetProductsByCategory(string category)
         {
-            throw new NotImplementedException();
+           return context.Beer.Where(p => p.CategoryId == category);
         }
 
         public IEnumerable<Product> ListAll()
