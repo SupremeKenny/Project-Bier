@@ -58,10 +58,14 @@ import {
 
   const ButtonCoC = () => (
     <Button.Group>
-      <Button>Cancel</Button>
-      <Button.Or />
-      <Button positive>Continue</Button>
+      <Button>Annuleren</Button>
+      <Button.Or text='of' />
+      <Button positive>Doorgaan</Button>
     </Button.Group>
+  )
+
+  const Space = () => (
+    " "
   )
 
   const ButtonCheck = () => <Button>Check</Button>
@@ -76,6 +80,7 @@ import {
           <List.Header>Vandestreek Bock jij of bock ik?</List.Header>
           <Divider hidden/>
           Hoeveelheid:
+          <Space />
           <DropdownQuantity />
           <Divider hidden/>
           Prijs: €2,19
@@ -88,6 +93,7 @@ import {
           <List.Header>Brussels Beer Project Delta IPA</List.Header>
           <Divider hidden/>
           Hoeveelheid: 
+          <Space />
           <DropdownQuantity />
           <Divider hidden/>
           Prijs: €2.95
@@ -100,6 +106,7 @@ import {
           <List.Header>Paulaner Oktoberfest</List.Header>
           <Divider hidden/>
           Hoeveelheid: 
+          <Space />
           <DropdownQuantity />
           <Divider hidden/>
           Prijs: €2.59
