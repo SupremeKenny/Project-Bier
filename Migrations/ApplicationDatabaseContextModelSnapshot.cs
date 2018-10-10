@@ -150,8 +150,6 @@ namespace ProjectBier.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Beer");
                 });
 
@@ -312,13 +310,6 @@ namespace ProjectBier.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Project_Bier.Models.Beer", b =>
-                {
-                    b.HasOne("Project_Bier.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>

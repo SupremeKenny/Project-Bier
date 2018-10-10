@@ -9,7 +9,7 @@ using Project_Bier.Repository;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181009200940_InitialCreate")]
+    [Migration("20181009210753_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,8 +151,6 @@ namespace ProjectBier.Migrations
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Beer");
                 });
@@ -314,13 +312,6 @@ namespace ProjectBier.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Project_Bier.Models.Beer", b =>
-                {
-                    b.HasOne("Project_Bier.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>

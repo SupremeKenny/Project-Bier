@@ -18,8 +18,6 @@ namespace Project_Bier.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Beer>().HasOne(c => c.Category);
             modelBuilder.Entity<ShippingAddress>().HasKey(c => new { c.PostalCode, c.StreetNumber, c.AssociatedUser });
         }
 

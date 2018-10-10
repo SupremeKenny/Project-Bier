@@ -24,7 +24,7 @@ namespace Project_Bier.Models
     /// </summary>
     public class Beer : Product
     {
-        public Category Category { get; set; }
+        public string CategoryId { get; set; }
         public string Content { get; set; }
         public string AlcoholPercentage { get; set; }
         public string BrewerName { get; set; }

@@ -52,6 +52,27 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Beer",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: false),
+                    Available = table.Column<bool>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    AlcoholPercentage = table.Column<string>(nullable: true),
+                    BrewerName = table.Column<string>(nullable: true),
+                    CountryName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Beer", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -211,33 +232,6 @@ namespace ProjectBier.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Beer",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false),
-                    Available = table.Column<bool>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    AlcoholPercentage = table.Column<string>(nullable: true),
-                    BrewerName = table.Column<string>(nullable: true),
-                    CountryName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Beer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Beer_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_WebshopUserId",
                 table: "Addresses",
@@ -281,11 +275,6 @@ namespace ProjectBier.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Beer_CategoryId",
-                table: "Beer",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FavoriteList_WebshopUserId",
                 table: "FavoriteList",
                 column: "WebshopUserId");
@@ -315,13 +304,13 @@ namespace ProjectBier.Migrations
                 name: "Beer");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "FavoriteList");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
