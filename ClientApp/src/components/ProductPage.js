@@ -21,7 +21,7 @@ import {
   Dimmer
 } from "semantic-ui-react";
 
-export class ProductPage extends React.Component {
+export class ProductPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -94,6 +94,7 @@ export class ProductPage extends React.Component {
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
+                
 
                 <Popup
                   trigger={
@@ -105,6 +106,7 @@ export class ProductPage extends React.Component {
                   position="bottom left"
                 />
               </div>
+              
             </DescriptionContainer>
 
             <ImageContainer url={this.state.product.url + "?w=150"} />
@@ -137,18 +139,22 @@ const DescriptionContainer = props => {
     fontSize: 20
   };
 
-  const priceStyle = {};
   return (
     <Grid.Column width={10}>
       <Header as="h1" style={headerSX}>
         {props.title}
       </Header>
-      <p>{props.brand}</p>
-      <Label color="green" ribbon>
-        Op vooraad
+      <p>
+        {props.brand}
+      </p>
+      <Label color="green" size="large">
+        Op voorraad
       </Label>
-      <Rating icon="star" defaultRating={3} maxRating={5} disabled />
-      <p style={sxc}>{props.descriptionText}</p>
+      
+     
+      <p style={sxc}>
+        {props.descriptionText}
+      </p>
       {props.children}
     </Grid.Column>
   );
@@ -179,6 +185,7 @@ const PriceDisplay = props => {
         <b style={sx}>${props.price} </b>
         per flesje
       </p>
+      
     </div>
   );
 };
@@ -211,8 +218,9 @@ const Information = props => {
                 <Header.Content>Categorie</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell><Link to={"/category/" + props.link}>
-            {props.category}</Link></Table.Cell>
+            <Table.Cell>
+              <Link to={"/category/" + props.link}>{props.category}</Link>
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
