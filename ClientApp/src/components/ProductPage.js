@@ -3,6 +3,8 @@ import { updateInput } from "./LocalStorage.js";
 import { CategoryDict } from "./Categories.js";
 import { Link } from "react-router-dom";
 
+import { connect } from "react-redux";
+
 import {
   Header,
   Container,
@@ -21,7 +23,9 @@ import {
   Dimmer
 } from "semantic-ui-react";
 
-export class ProductPage extends React.Component {
+import { addItem } from "../actions/shoppingcartActions";
+
+class ProductPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -30,7 +34,9 @@ export class ProductPage extends React.Component {
     };
   }
 
+  
   componentWillMount() {
+    
     fetch(
       "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
     ).then(results => {
@@ -89,7 +95,7 @@ export class ProductPage extends React.Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={e => updateInput(this.state.product.id)}
+                  onClick={dispatch(addItem(this.state.product.id))}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>

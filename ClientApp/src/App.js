@@ -5,12 +5,15 @@ import { ProductPage } from "./components/ProductPage.js";
 import { HomePage } from "./components/HomePage.js";
 import { ShoppingCart } from "./components/ShoppingCartPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
+import { Provider } from "react-redux";
+import store from "./store";
 
 export default class App extends Component {
   displayName = App.name;
 
   render() {
     return (
+      <Provider store={store}>
       <Layout>
         <div>
           <Route exact path="/" component={HomePage} />
@@ -19,6 +22,7 @@ export default class App extends Component {
           <Route path="/category/:id" component={CategoryPage} />
         </div>
       </Layout>
+      </Provider>
     );
   }
 }
