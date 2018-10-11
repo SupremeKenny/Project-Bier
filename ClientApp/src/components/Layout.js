@@ -19,6 +19,9 @@ import {
   Header,
   Divider
 } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { deleteTodo, toggleTodo } from "../actions/actionCreator";
+import { bindActionCreators } from "redux";
 
 const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 
@@ -299,8 +302,26 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export class Layout extends React.Component {
+class Layout extends React.Component {
   render() {
     return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
+
+
+const mapStateToProps = state => {
+  return { todos: state.todos
+ };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      deleteTodo,
+      toggleTodo,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

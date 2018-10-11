@@ -3,7 +3,12 @@ import { updateInput } from "./LocalStorage.js";
 import { CategoryDict } from "./Categories.js";
 import { Link } from "react-router-dom";
 
+import AddProduct from "./AddProduct.js"
+
 import { connect } from "react-redux";
+import { addTodo } from '../actions/actionCreator'
+import {bindActionCreators} from 'redux'
+
 
 import {
   Header,
@@ -23,9 +28,9 @@ import {
   Dimmer
 } from "semantic-ui-react";
 
-import { addItem } from "../actions/shoppingcartActions";
 
-class ProductPage extends React.Component {
+
+class ProductPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -37,14 +42,6 @@ class ProductPage extends React.Component {
   
   componentWillMount() {
     
-    fetch(
-      "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
-    ).then(results => {
-      results.json().then(data => {
-        this.setState({ product: data.product, loaded: true });
-        console.log(this.state.product);
-      });
-    });
   }
 
   render() {
@@ -92,10 +89,11 @@ class ProductPage extends React.Component {
               <PriceDisplay price={this.state.product.price} />
               <Divider hidden />
               <div>
+                <AddProduct PruductId ={this.state.product.id} />
                 <Button
                   color="green"
                   size="large"
-                  onClick={dispatch(addItem(this.state.product.id))}
+                  onClick={this.props.addTodo(this.state.product.id)}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
@@ -240,3 +238,29 @@ const Information = props => {
     </div>
   );
 };
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+      addTodo
+  }, dispatch)
+}
+
+const mapStateToProps = state => {
+  fetch(
+    "https://localhost:5001/product/fetch?id=" + "grutte-pier-tripel-33cl"
+  ).then(results => {
+    results.json().then(data => {
+      console.log(data.product);
+      console.log(' ashw');
+      this.setState({ 
+        loaded: true });
+      console.log(this.state.product);
+    });
+  });
+  return { loaded: true
+ };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductPage)

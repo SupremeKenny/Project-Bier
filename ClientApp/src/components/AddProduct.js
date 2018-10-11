@@ -1,26 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { addItem } from "../actions"
-const AddTodo = ({ dispatch }) => {
-  let input
+import React from "react"
+import { addCartItem } from "../actions/actionCreator.js"
+import { connect } from "react-redux"
 
-  return (
-    <div>
-      <form onSubmit={e => {
-        e.preventDefault()
-        if (!input.value.trim()) {
-          return
-        }
-        dispatch(addTodo(input.value))
-        input.value = ''
-      }}>
-        <input ref={node => input = node} />
-        <button type="submit">
-          Add Todo
-        </button>
-      </form>
-    </div>
-  )
-}
+const AddProduct = ({ ProductId }) => (
+  <button
+    onClick={addCartItem(ProductId)}
+  >
+    
+  </button>
+)
 
-export default connect()(AddTodo)
+
+export default connect(AddProduct)
