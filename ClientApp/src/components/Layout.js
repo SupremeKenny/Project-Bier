@@ -84,7 +84,8 @@ class DesktopContainer extends Component {
                   <Button icon color="yellow">
                     <i className="icons">
                       <i className="shop icon" />
-                    
+                     {this.props.todos.length}
+                     
                     </i>
                   </Button>
                 </Link>
@@ -324,4 +325,4 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(mapStateToProps, mapDispatchToProps)(DesktopContainer);

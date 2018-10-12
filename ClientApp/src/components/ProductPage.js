@@ -3,10 +3,10 @@ import { updateInput } from "./LocalStorage.js";
 import { CategoryDict } from "./Categories.js";
 import { Link } from "react-router-dom";
 
-import AddProduct from "./AddProduct.js"
+// import AddProduct from "./AddProduct.js"
 
 import { connect } from "react-redux";
-import { addTodo } from '../actions/actionCreator'
+import { addTodo, getItem, deleteTodo, toggleTodo } from '../actions/actionCreator'
 import {bindActionCreators} from 'redux'
 
 
@@ -28,8 +28,6 @@ import {
   Dimmer
 } from "semantic-ui-react";
 
-
-
 class ProductPage extends Component {
   constructor() {
     super();
@@ -39,9 +37,15 @@ class ProductPage extends Component {
     };
   }
 
-  
   componentWillMount() {
-    
+    fetch(
+      "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
+    ).then(results => {
+      results.json().then(data => {
+        this.setState({ product: data.product, loaded: true });
+        console.log(this.state.product);
+      });
+    });
   }
 
   render() {
@@ -84,19 +88,20 @@ class ProductPage extends Component {
                 country={this.state.product.countryName}
                 al={this.state.product.alcoholPercentage}
                 category={CategoryDict[this.state.product.categoryId]}
+                link={this.state.product.categoryId}
               />
 
               <PriceDisplay price={this.state.product.price} />
               <Divider hidden />
               <div>
-                <AddProduct PruductId ={this.state.product.id} />
                 <Button
                   color="green"
                   size="large"
-                  onClick={this.props.addTodo(this.state.product.id)}
+                  onClick={() =>{ this.props.addTodo(this.state.todotext);} } style={{marginTop: "25px"}}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
+                
 
                 <Popup
                   trigger={
@@ -108,6 +113,7 @@ class ProductPage extends Component {
                   position="bottom left"
                 />
               </div>
+              
             </DescriptionContainer>
 
             <ImageContainer url={this.state.product.url + "?w=150"} />
@@ -140,18 +146,22 @@ const DescriptionContainer = props => {
     fontSize: 20
   };
 
-  const priceStyle = {};
   return (
     <Grid.Column width={10}>
       <Header as="h1" style={headerSX}>
         {props.title}
       </Header>
-      <p>{props.brand}</p>
-      <Label color="green" ribbon>
-        Op vooraad
+      <p>
+        {props.brand}
+      </p>
+      <Label color="green" size="large">
+        Op voorraad
       </Label>
-      <Rating icon="star" defaultRating={3} maxRating={5} disabled />
-      <p style={sxc}>{props.descriptionText}</p>
+      
+     
+      <p style={sxc}>
+        {props.descriptionText}
+      </p>
       {props.children}
     </Grid.Column>
   );
@@ -182,6 +192,7 @@ const PriceDisplay = props => {
         <b style={sx}>${props.price} </b>
         per flesje
       </p>
+      
     </div>
   );
 };
@@ -214,7 +225,9 @@ const Information = props => {
                 <Header.Content>Categorie</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>{props.category}</Table.Cell>
+            <Table.Cell>
+              <Link to={"/category/" + props.link}>{props.category}</Link>
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
@@ -245,22 +258,9 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch)
 }
 
-const mapStateToProps = state => {
-  fetch(
-    "https://localhost:5001/product/fetch?id=" + "grutte-pier-tripel-33cl"
-  ).then(results => {
-    results.json().then(data => {
-      console.log(data.product);
-      console.log(' ashw');
-      this.setState({ 
-        loaded: true });
-      console.log(this.state.product);
-    });
-  });
-  return { loaded: true
- };
-};
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductPage)
+
+
+export default connect(null, mapDispatchToProps)(ProductPage)
