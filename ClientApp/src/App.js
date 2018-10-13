@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Router } from "react-router-dom";
 import { Layout } from "./components/Layout.js";
-import { ProductPage } from "./components/ProductPage.js";
+import { ProductPage } from "./components/ProductPage/product-page.js";
 import { HomePage } from "./components/HomePage.js";
 import { ShoppingCart } from "./components/ShoppingCartPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
