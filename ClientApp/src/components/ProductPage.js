@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 // import AddProduct from "./AddProduct.js"
 
 import { connect } from "react-redux";
-import { addTodo, getItem, deleteTodo, toggleTodo } from '../actions/actionCreator'
-import {bindActionCreators} from 'redux'
+import { addCartItem } from '../actions/actionCreator'
+import { bindActionCreators } from 'redux'
 
 
 import {
@@ -97,7 +97,7 @@ class ProductPage extends Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={() =>{ this.props.addTodo(this.state.todotext);} } style={{marginTop: "25px"}}
+                  onClick={() =>{ this.props.addCartItem(this.state.product.id);} } style={{marginTop: "25px"}}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
@@ -254,7 +254,7 @@ const Information = props => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-      addTodo
+    addCartItem
   }, dispatch)
 }
 

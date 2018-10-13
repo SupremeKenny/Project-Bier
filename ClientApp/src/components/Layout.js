@@ -84,7 +84,7 @@ class DesktopContainer extends Component {
                   <Button icon color="yellow">
                     <i className="icons">
                       <i className="shop icon" />
-                     {this.props.todos.length}
+                     {this.props.shoppingcart.length}
                      
                     </i>
                   </Button>
@@ -311,18 +311,11 @@ class Layout extends React.Component {
 
 
 const mapStateToProps = state => {
-  return { todos: state.todos
+  console.log(state);
+  return { shoppingcart: state.shoppingcart
  };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      deleteTodo,
-      toggleTodo,
-    },
-    dispatch
-  );
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DesktopContainer);
+
+export default connect(mapStateToProps, null)(DesktopContainer);

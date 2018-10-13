@@ -1,9 +1,10 @@
-import { ADD_TODO, REMOVE_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, GET_ITEM } from './actionsTypes'
+import { ADD_PRODUCT_CART,ADD_TODO, REMOVE_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, GET_ITEM } from './actionsTypes'
 
 let TodoId = 2
 
 export const addCartItem = text => ({
-    type: 'ADD_ITEM',
+    type: ADD_PRODUCT_CART,
+    id: TodoId++,
     text
   });
 
