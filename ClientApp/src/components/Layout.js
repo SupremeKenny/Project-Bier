@@ -85,7 +85,11 @@ class DesktopContainer extends Component {
                     <i className="icons">
                       <i className="shop icon" />
                      {this.props.shoppingcart.length}
-                     
+                     {console.log("layout:")}
+                     {console.log(this.props.shoppingcart)}
+                     { 
+                       this.props.shoppingcart.count
+                       }
                     </i>
                   </Button>
                 </Link>
@@ -311,7 +315,6 @@ class Layout extends React.Component {
 
 
 const mapStateToProps = state => {
-  console.log(state);
   return { shoppingcart: state.shoppingcart
  };
 };
