@@ -23,20 +23,22 @@ namespace Project_Bier.Controllers
         public IActionResult Fetch(String id)
         {
             Product product = productRepository.GetProductByGuid(id);
-            if(product == null) {
+            if(product == null) 
+            {
                 return NotFound();
             }
             return Json(new {product = product});
         }
 
         [HttpGet]
-        public IActionResult FetchCategoryAll(String category)
+        public IActionResult FetchCategory(String category, int index)
         {
-            IEnumerable<Product> products = productRepository.GetProductsByCategory(category);
-            if(products == null) {
+            ItemCollection<Product> itemCollection = productRepository.GetProductCollectionByCategory(category, index);
+            if (itemCollection == null) 
+            {
                 return NotFound();
             }
-            return Json(new {products = products});
+            return Json(itemCollection);
         }
     }
 }

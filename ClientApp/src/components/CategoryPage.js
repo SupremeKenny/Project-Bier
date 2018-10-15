@@ -1,7 +1,8 @@
 import React from "react";
 import { ProductCard } from "./ProductCard.js";
-import { Loader, Dimmer, CardGroup, Container } from "semantic-ui-react";
+import { Loader, CardGroup, Container } from "semantic-ui-react";
 import { CategoryDict } from "./Categories.js";
+import  InfiniteScroll from 'react-infinite-scroller';
 
 const MainContainer = ({ children }) => {
   const sx = {
@@ -15,59 +16,63 @@ export class CategoryPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      products: null,
-      loaded: false
+      products: [],
+      hasMoreItems: true,
+      currentIndex: 0
     };
   }
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
+ 
   componentDidUpdate(prevProps) {
     let oldParam = prevProps.match.params.id;
     let newParam = this.props.match.params.id;
     if (oldParam !== newParam) {
-      this.fetchData();
+      this.pageReset();
     }
   }
 
-  fetchData() {
+  pageReset() {
+    this.setState({products: [], currentIndex: 0, hasMoreItems: true});
+  }
+
+  loadItems() {
     fetch(
-      "https://localhost:5001/product/fetchcategoryall?category=" +
-        this.props.match.params.id
+      "https://localhost:5001/product/fetchcategory?category=" +
+        this.props.match.params.id + "&index=" + this.state.currentIndex 
     ).then(results => {
       results.json().then(data => {
-        this.setState({ products: data.products, loaded: true });
+        var newIndex =  this.state.currentIndex + 1;
+        var hasMore = !(newIndex === data.totalCollections + 1);
+        console.log(hasMore);
+        this.setState({products: this.state.products.concat(data.items), currentIndex: newIndex, hasMoreItems: hasMore})
       });
     });
   }
 
   render() {
-    if (!this.state.loaded) {
       return (
         <MainContainer>
           <h1>{CategoryDict[this.props.match.params.id]} </h1>
-          <Loader />
-        </MainContainer>
-      );
-    } else {
-      return (
-        <MainContainer>
-          <h1>{CategoryDict[this.props.match.params.id]} </h1>
-          <CardGroup itemsPerRow={4}>
-            {this.state.products.map(item => (
-              <ProductCard
-                url={item.url}
-                price={item.price}
-                title={item.name}
-                id={item.id}
-                key={item.id}
-              />
-            ))}
-          </CardGroup>
+           <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadItems.bind(this)}
+              hasMore={this.state.hasMoreItems}
+              loader={<Loader active inline='centered' />}
+              useWindow={true}
+              threshold = {400}
+            >
+            <CardGroup itemsPerRow={4}>
+          {this.state.products.map(item => (
+                <ProductCard
+                  url={item.url}
+                  price={item.price}
+                  title={item.name}
+                  id={item.id}
+                  key={item.id}
+                />
+              ))}</CardGroup>
+            </InfiniteScroll>
         </MainContainer>
       );
     }
-  }
 }
