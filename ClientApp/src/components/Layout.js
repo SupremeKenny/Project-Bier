@@ -21,28 +21,19 @@ import {
 } from "semantic-ui-react";
 
 const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
+const menuStyleUnder = { paddingTop: 65 ,marginBottom: 0, marginTop: 0, borderRadius: 0};
 
 class DesktopContainer extends Component {
-  state = {};
-
-  ShoppingCartCount = count();
-
-  hideFixedMenu = () => this.setState({ fixed: false });
-  showFixedMenu = () => this.setState({ fixed: true });
-
   render() {
     const { children } = this.props;
-    const { fixed } = this.state;
+    
 
     return (
       <Responsive minWidth={Responsive.onlyTablet.minWidth}>
         <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
         >
           <Menu
-            fixed={fixed ? "top" : null}
+            fixed="top"
             inverted
             size="large"
             color="black"
@@ -90,11 +81,9 @@ class DesktopContainer extends Component {
           </Menu>
 
           <Menu
-            // fixed={fixed ? null : null}
-            
             size="large"
             color="black"
-            style={menuStyle}
+            style={ menuStyleUnder}
           >
             <Container>
               <Link to="/category/amber">
