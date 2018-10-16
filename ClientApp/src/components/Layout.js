@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
-import { count } from "./LocalStorage.js";
 import {
   Button,
   Container,
@@ -19,6 +18,7 @@ import {
   Header,
   Divider
 } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 const menuStyleUnder = { paddingTop: 65 ,marginBottom: 0, marginTop: 0, borderRadius: 0};
@@ -54,7 +54,6 @@ class DesktopContainer extends Component {
                     icon: "search",
                     content: "Zoek"
                   }}
-                  
                   placeholder="Zoeken naar producten..."
                 />
               </Menu.Item>
@@ -72,7 +71,7 @@ class DesktopContainer extends Component {
                   <Button icon color="yellow">
                     <i className="icons">
                       <i className="shop icon" />
-                    
+                      {this.props.shoppingcart.count}
                     </i>
                   </Button>
                 </Link>
@@ -118,7 +117,7 @@ class DesktopContainer extends Component {
 
           <Menu
             // fixed={fixed ? null : null}
-            
+
             size="large"
             color="black"
             style={menuStyle}
@@ -288,8 +287,19 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-export class Layout extends React.Component {
+class Layout extends React.Component {
   render() {
     return <ResponsiveContainer>{this.props.children}</ResponsiveContainer>;
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    shoppingcart: state.shoppingcart
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(DesktopContainer);

@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { updateInput } from "../LocalStorage.js";
 import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
 import { ProductInfoTable } from "./productinfo-table.js"
+
+// import AddProduct from "./AddProduct.js"
+
+import { connect } from "react-redux";
+import { addCartItem } from '../../actions/actionCreator'
+import { bindActionCreators } from 'redux'
+
 
 import {
   Header,
@@ -18,7 +24,7 @@ import {
   Loader
 } from "semantic-ui-react";
 
-export class ProductPage extends Component {
+class ProductPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -92,7 +98,7 @@ export class ProductPage extends Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={e => updateInput(this.state.product.id)}
+                  onClick={() =>{ this.props.addCartItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url);} } style={{marginTop: "25px"}}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
@@ -190,3 +196,15 @@ const PriceDisplay = props => {
   );
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    addCartItem
+  }, dispatch)
+}
+
+
+
+
+
+
+export default connect(null, mapDispatchToProps)(ProductPage)
