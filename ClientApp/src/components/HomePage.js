@@ -20,7 +20,9 @@ import {
   Menu,
   CardGroup,
   Tab,
-  Item
+  Item,
+  Dimmer,
+  Loader
 } from "semantic-ui-react";
 
 const MainContainer = ({ children }) => {
@@ -171,78 +173,86 @@ const Content = props => (
   </Tab.Pane>
 );
 
-const ProductsGroup = () => (
+const ProductsGroup = props => (
   <CardGroup itemsPerRow={4}>
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/bellfield---lawless-village-ipa.png"
-      price="2.19"
-      title="Bellfield Lawless Village IPA"
-      id="bellfield-lawless-village-ipa-33cl"
-    />
+    {props.products.map(beer => (
+              <ProductCard
+                id={beer.id}
+                title={beer.name}
+                url={beer.url}
+                price={beer.price}
+              />
+            ))}
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/brassin-de-sutter---brin-de-folie.png"
-      price="2.95"
-      title="Brasserie De Sutter Brin de Folie"
-      id="brasserie-de-sutter-brin-de-folie-33cl"
-    />
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/tripel/grutte-pier---tripel.png"
-      price="2.59"
-      title="Grutte Pier Tripel"
-      id="grutte-pier-tripel-33cl"
-    />
+    {/* <ProductCard 
+      url={props.products[0].url}
+      price={props.products[0].price} 
+      title={props.products[0].name} 
+      id={props.products[0].id}
+    /> */}
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/beers-with-the-brussels-beer-challenge-2017-badge/gold/jopen-johannieter_gold_brusselsbeerchallenge.png"
-      price="2.49"
-      title="Jopen Johannieter"
-      id="jopen-johannieter-33cl"
-    />
+    {/* <ProductCard url={props.products[1].url}
+    price={props.products[1].price} title={props.products[1].name} id={props.products[1].id}/>
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/blond/breugem-zoentje-blond.png"
-      price="2.39"
-      title="Breugem Saens Zoentje"
-      id="breugem-saens-zoentje-33cl"
-    />
+    <ProductCard url={props.products[2].url}
+    price={props.products[2].price} title={props.products[2].name} id={props.products[2].id}/>
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/tripel/le_fort_tripel.png"
-      price="2.75"
-      title="Lefort Tripel"
-      id="lefort-tripel-33cl"
-    />
+    <ProductCard url={props.products[3].url}
+    price={props.products[3].price} title={props.products[3].name} id={props.products[3].id}/>
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/bock/het_uiltje_bon_bon_bock.png"
-      price="1.69"
-      title="Het Uiltje Bon Bon bock"
-      id="het-uiltje-bon-bon-bock-33cl"
-    />
+    <ProductCard url={props.products[4].url}
+    price={props.products[4].price} title={props.products[4].name} id={props.products[4].id}/>
 
-    <ProductCard
-      url="https://www.beerwulf.com/globalassets/catalog/beerwulf/beers/dutchbeerweek/golden-winners/jopen-4-granen-bokbier.png"
-      price="5.59"
-      title="Anders! Tropical Milkshake IPA 2018"
-      id="anders!-tropical-milkshake-ipa-2018-33cl"
-    />
+    <ProductCard url={props.products[5].url}
+    price={props.products[5].price} title={props.products[5].name} id={props.products[5].id}/>
+
+    <ProductCard url={props.products[6].url}
+    price={props.products[6].price} title={props.products[6].name} id={props.products[6].id}/>
+
+    <ProductCard url={props.products[7].url}
+    price={props.products[7].price} title={props.products[7].name} id={props.products[7].id}/> */}
   </CardGroup>
 );
 
 export class HomePage extends React.Component {
-  // state = { activeItem: 'Ontdekkingspack' }
-  // handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  constructor() {
+    super();
+    this.state = {
+      products: {},
+      loaded: false
+    }
+  }
+
+
+  componentWillMount() {
+    fetch("https://localhost:5001/home/FetchAllProducts")
+    .then(results => {
+      results.json().then(data => {
+        console.log(data.products)
+        this.setState({ products: data.products, loaded: true });
+      })
+    })
+  }
+
 
   render() {
     //const { activeItem } = this.state
+
+    if (!this.state.loaded) {
+      return (<Segment>
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      </Segment>)
+    }
+    else
 
     return (
       <MainContainer>
         <TabVerticalTabularRight />
         <Divider />
-        <ProductsGroup />
+        <ProductsGroup products = {this.state.products}/>
       </MainContainer>
     );
   }

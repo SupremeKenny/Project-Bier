@@ -30,5 +30,7 @@ namespace Project_Bier.Repository
 
         IEnumerable<Product>  ListAll();
 
+        IEnumerable<Product> GetHomePageProducts();
+
     }
 }
