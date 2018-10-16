@@ -34,5 +34,8 @@ namespace Project_Bier.Repository
         ItemCollection<Product> GetProductCollectionByCategory(string category, int index);
 
         IEnumerable<Product>  ListAll();
+
+        IEnumerable<Product> GetHomePageProducts();
+
     }
 }

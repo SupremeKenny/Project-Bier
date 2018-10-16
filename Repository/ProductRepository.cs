@@ -59,6 +59,10 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> ListAll()
         {
+            // return context.Beer
+            // .Select (p => p);
+            // return context.Beer
+            // .OrderBy(x => Guid.NewGuid()).Take(8);
             throw new NotImplementedException();
         }
 
@@ -70,6 +74,12 @@ namespace Project_Bier.Repository
         public void UpdateProduct(Guid guid, Product newProduct)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Product> GetHomePageProducts()
+        {
+            return context.Beer
+            .OrderBy(x => Guid.NewGuid()).Take(8);
         }
     }
 }
