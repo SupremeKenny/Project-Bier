@@ -13,11 +13,13 @@ namespace Project_Bier.Repository
     public class ProductRepository : IProductRepository
     {
         private ApplicationDatabaseContext context;
+        public static int LoadSize { get => 8; }
 
-        public ProductRepository(ApplicationDatabaseContext applicationDatabaseContext) 
+        public ProductRepository(ApplicationDatabaseContext applicationDatabaseContext)
         {
             this.context = applicationDatabaseContext;
         }
+
         public void AddProduct(Product product)
         {
             throw new NotImplementedException();
@@ -34,18 +36,33 @@ namespace Project_Bier.Repository
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public Product GetProductByPrettyUrl(string url)
+        public ItemCollection<Product> GetProductCollectionByCategory(string category, int index)
         {
-            throw new NotImplementedException();
+            IEnumerable<Product> allItems = GetProductsByCategory(category);
+            int totalCollections = allItems.Count() / ProductRepository.LoadSize;
+
+            IEnumerable<Product> actualItems = allItems
+                .Skip(index * ProductRepository.LoadSize)
+                .Take(ProductRepository.LoadSize);
+            
+            return new ItemCollection<Product>(){
+                Index = index,
+                Items = actualItems,
+                TotalCollections = totalCollections
+            };
         }
 
         public IEnumerable<Product> GetProductsByCategory(string category)
         {
-           return context.Beer.Where(p => p.CategoryId == category);
+            return context.Beer.Where(p => p.CategoryId == category);
         }
 
         public IEnumerable<Product> ListAll()
         {
+            // return context.Beer
+            // .Select (p => p);
+            // return context.Beer
+            // .OrderBy(x => Guid.NewGuid()).Take(8);
             throw new NotImplementedException();
         }
 
@@ -57,6 +74,12 @@ namespace Project_Bier.Repository
         public void UpdateProduct(Guid guid, Product newProduct)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Product> GetHomePageProducts()
+        {
+            return context.Beer
+            .OrderBy(x => Guid.NewGuid()).Take(8);
         }
     }
 }

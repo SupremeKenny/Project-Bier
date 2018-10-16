@@ -24,11 +24,18 @@ namespace Project_Bier.Repository
 
         Product GetProductByGuid(String id);
 
-        Product GetProductByPrettyUrl(String url);
-
         IEnumerable<Product> GetProductsByCategory(string category);
 
+        /// <summary>
+        /// Selects a collection of Products based on the index
+        /// </summary>
+        /// <param name="category">The category that the user wishes to select</param>
+        /// <returns></returns>
+        ItemCollection<Product> GetProductCollectionByCategory(string category, int index);
+
         IEnumerable<Product>  ListAll();
+
+        IEnumerable<Product> GetHomePageProducts();
 
     }
 }

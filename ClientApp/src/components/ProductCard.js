@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { Image, Button, Popup, Card } from "semantic-ui-react";
+import { Image, Button, Popup, Card , Label} from "semantic-ui-react";
 
 export const ProductCard = props => (
   <Card raised>
@@ -16,8 +16,14 @@ export const ProductCard = props => (
     <Card.Content>
       <Card.Header style={{ minHeight: 50 }}>{props.title}</Card.Header>
 
-      <Card.Description style={{ textAlign: "right" }}>
-        <b style={{ fontSize: 30 }}>€{props.price}</b>
+      <Card.Description>
+      {/* <Card.Description style={{ textAlign: "right" }}>
+        <b style={{ fontSize: 30 }}>€{props.price}</b> */}
+
+        <Label as='a' basic color='grey' style = {{fontSize: '14px'}} >		
+          {/* Price $ {props.price }		 */}
+          <b style={{ fontSize: 18}}>€ {props.price}</b> 
+        </Label>
       </Card.Description>
     </Card.Content>
 

@@ -1,20 +1,19 @@
 import React, { Component } from "react";
-import { CategoryDict } from "./Categories.js";
+import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
+import { ProductInfoTable } from "./productinfo-table.js"
 
 // import AddProduct from "./AddProduct.js"
 
 import { connect } from "react-redux";
-import { addCartItem } from '../actions/actionCreator'
+import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
 
 
 import {
   Header,
   Container,
-  Rating,
   Breadcrumb,
-  Segment,
   Grid,
   Image,
   Label,
@@ -22,9 +21,7 @@ import {
   Icon,
   Popup,
   Divider,
-  Table,
-  Loader,
-  Dimmer
+  Loader
 } from "semantic-ui-react";
 
 class ProductPage extends Component {
@@ -42,22 +39,25 @@ class ProductPage extends Component {
     ).then(results => {
       results.json().then(data => {
         this.setState({ product: data.product, loaded: true });
+        this.setTitle();
       });
     });
   }
 
+  setTitle() {
+    document.title = "Beer Buddy: " + this.state.product.name;
+  }
+
+
   render() {
     if (!this.state.loaded) {
       return (
-        <Segment>
-          <Dimmer active>
-            <Loader />
-          </Dimmer>
-        </Segment>
+        <Loader/>
       );
     } else
       return (
         <MainContainer>
+
           <Breadcrumb>
             <Link to="/">
               <Breadcrumb.Section link>Hoofdpagina</Breadcrumb.Section>{" "}
@@ -73,6 +73,7 @@ class ProductPage extends Component {
               {this.state.product.name}
             </Breadcrumb.Section>
           </Breadcrumb>
+
           <Divider />
           <MiddleContainer>
             <DescriptionContainer
@@ -80,17 +81,19 @@ class ProductPage extends Component {
               descriptionText={this.state.product.description}
               brand={this.state.product.brand}
             >
-              <Information
+              <ProductInfoTable
                 brand={this.state.product.brewerName}
                 content={this.state.product.content}
                 country={this.state.product.countryName}
-                al={this.state.product.alcoholPercentage}
+                percentage={this.state.product.alcoholPercentage}
                 category={CategoryDict[this.state.product.categoryId]}
                 link={this.state.product.categoryId}
               />
 
               <PriceDisplay price={this.state.product.price} />
+
               <Divider hidden />
+
               <div>
                 <Button
                   color="green"
@@ -99,7 +102,6 @@ class ProductPage extends Component {
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
-                
 
                 <Popup
                   trigger={
@@ -111,7 +113,7 @@ class ProductPage extends Component {
                   position="bottom left"
                 />
               </div>
-              
+
             </DescriptionContainer>
 
             <ImageContainer url={this.state.product.url + "?w=150"} />
@@ -155,8 +157,7 @@ const DescriptionContainer = props => {
       <Label color="green" size="large">
         Op voorraad
       </Label>
-      
-     
+
       <p style={sxc}>
         {props.descriptionText}
       </p>
@@ -190,62 +191,7 @@ const PriceDisplay = props => {
         <b style={sx}>${props.price} </b>
         per flesje
       </p>
-      
-    </div>
-  );
-};
 
-const Information = props => {
-  return (
-    <div>
-      <Divider />
-      <Table basic="very" celled collapsing>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>
-              <Header as="h4" image>
-                <Header.Content>Flesinhoud</Header.Content>
-              </Header>
-            </Table.Cell>
-            <Table.Cell>{props.content}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <Header as="h4" image>
-                <Header.Content>Alcoholpercentage</Header.Content>
-              </Header>
-            </Table.Cell>
-            <Table.Cell>{props.al}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <Header as="h4" image>
-                <Header.Content>Categorie</Header.Content>
-              </Header>
-            </Table.Cell>
-            <Table.Cell>
-              <Link to={"/category/" + props.link}>{props.category}</Link>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <Header as="h4" image>
-                <Header.Content>Brouwer</Header.Content>
-              </Header>
-            </Table.Cell>
-            <Table.Cell>{props.brand}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              <Header as="h4" image>
-                <Header.Content>Land van afkomst</Header.Content>
-              </Header>
-            </Table.Cell>
-            <Table.Cell>{props.country}</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-      <Divider />
     </div>
   );
 };
