@@ -226,6 +226,7 @@ export class HomePage extends React.Component {
 
 
   componentWillMount() {
+    this.setTitle();
     fetch("https://localhost:5001/home/FetchAllProducts")
     .then(results => {
       results.json().then(data => {
@@ -235,6 +236,9 @@ export class HomePage extends React.Component {
     })
   }
 
+  setTitle() {
+    document.title = "Beer Buddy";
+  }
 
   render() {
     //const { activeItem } = this.state
