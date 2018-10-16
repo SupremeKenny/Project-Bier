@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { updateInput } from "./LocalStorage.js";
 import { CategoryDict } from "./Categories.js";
 import { Link } from "react-router-dom";
 
@@ -96,7 +95,7 @@ class ProductPage extends Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={() =>{ this.props.addCartItem(this.state.product.id);} } style={{marginTop: "25px"}}
+                  onClick={() =>{ this.props.addCartItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url);} } style={{marginTop: "25px"}}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>

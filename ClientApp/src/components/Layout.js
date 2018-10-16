@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
-import { count } from "./LocalStorage.js";
 import {
   Button,
   Container,
@@ -20,15 +19,11 @@ import {
   Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { deleteTodo, toggleTodo } from "../actions/actionCreator";
-import { bindActionCreators } from "redux";
 
 const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
 
 class DesktopContainer extends Component {
   state = {};
-
-  ShoppingCartCount = count();
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
@@ -66,7 +61,6 @@ class DesktopContainer extends Component {
                     icon: "search",
                     content: "Zoek"
                   }}
-                  
                   placeholder="Zoeken naar producten..."
                 />
               </Menu.Item>
@@ -84,12 +78,7 @@ class DesktopContainer extends Component {
                   <Button icon color="yellow">
                     <i className="icons">
                       <i className="shop icon" />
-                     {this.props.shoppingcart.length}
-                     {console.log("layout:")}
-                     {console.log(this.props.shoppingcart)}
-                     { 
-                       this.props.shoppingcart.count
-                       }
+                      {this.props.shoppingcart.count}
                     </i>
                   </Button>
                 </Link>
@@ -99,7 +88,7 @@ class DesktopContainer extends Component {
 
           <Menu
             // fixed={fixed ? null : null}
-            
+
             size="large"
             color="black"
             style={menuStyle}
@@ -137,7 +126,7 @@ class DesktopContainer extends Component {
 
           <Menu
             // fixed={fixed ? null : null}
-            
+
             size="large"
             color="black"
             style={menuStyle}
@@ -313,12 +302,13 @@ class Layout extends React.Component {
   }
 }
 
-
 const mapStateToProps = state => {
-  return { shoppingcart: state.shoppingcart
- };
+  return {
+    shoppingcart: state.shoppingcart
+  };
 };
 
-
-
-export default connect(mapStateToProps, null)(DesktopContainer);
+export default connect(
+  mapStateToProps,
+  null
+)(DesktopContainer);
