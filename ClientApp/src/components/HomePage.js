@@ -34,23 +34,6 @@ const MainContainer = ({ children }) => {
 };
 
 const panes = [
-  // {
-  //   menuItem: { key: 'Ontdekkingspack', icon: 'users', content: 'Ontdekkingspack' },
-  //   render: () => <Content/>,
-  // },
-  // {
-  //   menuItem: { key: 'Celebration Pack', icon: 'users', content: 'Celebration Pack' },
-  //   render: () => <Content/>,
-  // },
-  // {
-  //   menuItem: { key: 'Alcoholvrij Pack', icon: 'users', content: 'Alcoholvrij Pack' },
-  //   render: () => <Content/>,
-  // },
-  // {
-  //   menuItem: { key: 'Oktoberfest Pack', icon: 'users', content: 'Oktoberfest Pack' },
-  //   render: () => <Content/>,
-  // },
-
   {
     menuItem: (
       <Menu.Item
@@ -61,12 +44,6 @@ const panes = [
     ),
     render: () => (
       <Content
-      // title
-      // sub
-      // description
-      // url
-      // price
-      // discount
       />
     )
   },
@@ -183,35 +160,6 @@ const ProductsGroup = props => (
                 price={beer.price}
               />
             ))}
-
-
-    {/* <ProductCard 
-      url={props.products[0].url}
-      price={props.products[0].price} 
-      title={props.products[0].name} 
-      id={props.products[0].id}
-    /> */}
-
-    {/* <ProductCard url={props.products[1].url}
-    price={props.products[1].price} title={props.products[1].name} id={props.products[1].id}/>
-
-    <ProductCard url={props.products[2].url}
-    price={props.products[2].price} title={props.products[2].name} id={props.products[2].id}/>
-
-    <ProductCard url={props.products[3].url}
-    price={props.products[3].price} title={props.products[3].name} id={props.products[3].id}/>
-
-    <ProductCard url={props.products[4].url}
-    price={props.products[4].price} title={props.products[4].name} id={props.products[4].id}/>
-
-    <ProductCard url={props.products[5].url}
-    price={props.products[5].price} title={props.products[5].name} id={props.products[5].id}/>
-
-    <ProductCard url={props.products[6].url}
-    price={props.products[6].price} title={props.products[6].name} id={props.products[6].id}/>
-
-    <ProductCard url={props.products[7].url}
-    price={props.products[7].price} title={props.products[7].name} id={props.products[7].id}/> */}
   </CardGroup>
 );
 
@@ -241,14 +189,12 @@ export class HomePage extends React.Component {
   }
 
   render() {
-    //const { activeItem } = this.state
 
     if (!this.state.loaded) {
-      return (<Segment>
-        <Dimmer active>
-          <Loader />
-        </Dimmer>
-      </Segment>)
+      return (
+        <Dimmer active inverted>
+          <Loader size='large'>Loading</Loader>
+        </Dimmer>)
     }
     else
 
