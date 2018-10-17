@@ -1,7 +1,8 @@
 //Kijken of er wat opgeslagen is in de html5 Storage
 const INITIAL_DATA = {
   products: localStorage.Cart ? JSON.parse(localStorage.Cart) : [],
-  count: localStorage.CartCount ? parseInt(localStorage.CartCount) : 0
+  count: localStorage.CartCount ? parseInt(localStorage.CartCount) : 0,
+  totalPrice: localStorage.TotalPrice ? parseFloat(localStorage.TotalPrice) : 0
 };
 
 const shoppingcart = (state = INITIAL_DATA, action) => {
@@ -43,11 +44,13 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
       //opslaan in het HTML5 Storage
       localStorage.setItem("Cart", JSON.stringify(state.products));
       localStorage.setItem("CartCount", state.count + 1);
+      localStorage.setItem("TotalPrice", state.totalPrice + parseFloat(action.price));
 
       //state netjes returnen
       return (state = {
         count: state.count + 1,
-        products: state.products
+        products: state.products,
+        totalPrice: state.totalPrice + parseFloat(action.price)
       });
 
     case "DECREMENT_PRODUCT_CART":
@@ -58,7 +61,7 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
 
       //Als het item niet voorkomt, raar maar je hoeft niks te doen dan
       if (!index) {
-        console("product isn't stored so not deleted");
+        console.log("product isn't stored so not deleted");
         return state;
       }
 
@@ -75,11 +78,9 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
 
       //als dat zo is. Filter het volledige product eruit.
       if (laatsteproduct == true) {
-        console.log(state.products);
         state.products = state.products.filter(
           product => product.id !== action.id
         );
-        console.log(state.products);
       } else {
         //als het niet zo is. verander het aantal naar eentje minder.
         state.products = state.products.map(
@@ -91,11 +92,13 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
       //opslaan in het HTML5 Storage
       localStorage.setItem("Cart", JSON.stringify(state.products));
       localStorage.setItem("CartCount", state.count - 1);
+      localStorage.setItem("TotalPrice", state.totalPrice - parseFloat(action.price));
 
       //state netjes returnen
       return (state = {
         count: state.count - 1,
-        products: state.products
+        products: state.products,
+        totalPrice: state.totalPrice - parseFloat(action.price)
       });
 
     case "DELETE_PRODUCT_CART":
@@ -106,12 +109,9 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
 
       //Als het item niet voorkomt, raar maar je hoeft niks te doen dan
       if (!index) {
-        console("product isn't stored so not deleted");
+        console.log("product isn't stored so not deleted");
         return state;
       }
-
-     
-      
 
       //als het item voorkomt. eruit filteren
       if (index){
@@ -120,14 +120,17 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
         );
       }
       
+     
       //opslaan in het HTML5 Storage
       localStorage.setItem("Cart", JSON.stringify(state.products));
       localStorage.setItem("CartCount", state.count - parseInt(action.count));
+      localStorage.setItem("TotalPrice", state.totalPrice - (parseFloat(action.price)*parseInt(action.count)));
 
       //state netjes returnen
       return (state = {
         count: state.count - parseInt(action.count),
-        products: state.products
+        products: state.products,
+        totalPrice: state.totalPrice - parseFloat(action.price)*parseInt(action.count),
       });
 
     default:
