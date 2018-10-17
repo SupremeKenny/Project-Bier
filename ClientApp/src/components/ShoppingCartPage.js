@@ -89,7 +89,6 @@ class ShoppingCart extends Component {
                   <Grid.Column width={4}>{product.name}</Grid.Column>
                   <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                   <Grid.Column width={3}>
-                    Hoeveelheid: {product.count}
                     <Space />
                     <div className="ui right labeled input small">
                       <input type="text" id="txtNum" value={product.count} />
