@@ -10,15 +10,17 @@ export const addCartItem = (id, name, price, url) => ({
     url,
   });
 
-export const deleteCartItem = (id, count) => ({
+export const deleteCartItem = (id, count, price) => ({
     type: DELETE_PRODUCT_CART,
     id, 
-    count
+    count,
+    price
 });
 
-export const decrementCartItem = id => ({
+export const decrementCartItem = (id, price) => ({
     type: DECREMENT_PRODUCT_CART,
-    id
+    id,
+    price
 });
 
   

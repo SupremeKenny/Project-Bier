@@ -178,7 +178,6 @@ export class HomePage extends React.Component {
     fetch("https://localhost:5001/home/FetchAllProducts")
     .then(results => {
       results.json().then(data => {
-        console.log(data.products)
         this.setState({ products: data.products, loaded: true });
       })
     })

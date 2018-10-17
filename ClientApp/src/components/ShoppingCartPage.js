@@ -89,7 +89,6 @@ class ShoppingCart extends Component {
                   <Grid.Column width={4}>{product.name}</Grid.Column>
                   <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                   <Grid.Column width={3}>
-                    Hoeveelheid: {product.count}
                     <Space />
                     <div className="ui right labeled input small">
                       <input type="text" id="txtNum" value={product.count} />
@@ -107,13 +106,13 @@ class ShoppingCart extends Component {
                           }}
                         >
                           {" "}
-                          <i class="up chevron icon" />
+                          <i className="up chevron icon" />
                         </button>
                         <button
                           className="ui icon button"
                           command="Down"
                           onClick={() => {
-                            this.props.decrementCartItem(product.id);
+                            this.props.decrementCartItem(product.id, product.price);
                           }}
                         >
                           {" "}
@@ -126,7 +125,7 @@ class ShoppingCart extends Component {
                     <Button
                       negative
                       onClick={() => {
-                        this.props.deleteCartItem(product.id, product.count);
+                        this.props.deleteCartItem(product.id, product.count, product.price);
                       }}
                     >
                       {" "}
@@ -152,7 +151,7 @@ class ShoppingCart extends Component {
           </h4>
         </Container>
         <Container textAlign="right">
-          <h3>Totaal: {this.state.totalPrice}</h3>
+          <h3>Totaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
           <ButtonCoC />
         </Container>
       </Container>
