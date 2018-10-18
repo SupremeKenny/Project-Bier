@@ -18,7 +18,7 @@ export default class App extends Component {
         <div>
           <Route exact path="/" component={HomePage} />
           <Route path="/product/:id" component={ProductPage} />
-          <Route path="/cart" component={ShoppingCart} />
+          <Route path="/winkelwagen" component={ShoppingCart} />
           <Route path="/category/:id" component={CategoryPage} />
         </div>
       </Layout>

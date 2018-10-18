@@ -1,3 +1,158 @@
-html, body {
-    background-color: #ecf0f1 ;
-}
+ body {
+   background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   margin: 0;
+
+ }
+
+ html {
+   height: 100%;
+ }
+
+ body {
+   height: 100%;
+ }
+
+
+ .sub-menu {
+   background-color: rgba(83, 82, 237,1.0) !important;
+ }
+
+ .product-card {
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+   border-left-color: transparent !important;
+   border-right-color: transparent !important;
+   border-top-color: transparent !important;
+   border-bottom-color: transparent !important;
+   transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
+   border-radius: 1rem !important;
+
+ }
+
+ .product-card:hover {
+   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+   border-radius: 2rem !important;
+
+ }
+
+ /* Bob */
+ @-webkit-keyframes hvr-bob {
+   0% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+
+   50% {
+     -webkit-transform: translateY(-4px);
+     transform: translateY(-4px);
+   }
+
+   100% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+ }
+
+ @keyframes hvr-bob {
+   0% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+
+   50% {
+     -webkit-transform: translateY(-4px);
+     transform: translateY(-4px);
+   }
+
+   100% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+ }
+
+ @-webkit-keyframes hvr-bob-float {
+   100% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+ }
+
+ @keyframes hvr-bob-float {
+   100% {
+     -webkit-transform: translateY(-8px);
+     transform: translateY(-8px);
+   }
+ }
+
+ .hvr-bob {
+   -webkit-animation-name: hvr-bob-float, hvr-bob;
+   animation-name: hvr-bob-float, hvr-bob;
+   -webkit-animation-duration: .3s, 1.5s;
+   animation-duration: .3s, 1.5s;
+   -webkit-animation-delay: 0s, .3s;
+   animation-delay: 0s, .3s;
+   -webkit-animation-timing-function: ease-out, ease-in-out;
+   animation-timing-function: ease-out, ease-in-out;
+   -webkit-animation-iteration-count: 1, infinite;
+   animation-iteration-count: 1, infinite;
+   -webkit-animation-fill-mode: forwards;
+   animation-fill-mode: forwards;
+   -webkit-animation-direction: normal, alternate;
+   animation-direction: normal, alternate;
+ }
+
+
+ /* Pulse Grow */
+ @-webkit-keyframes hvr-pulse-grow {
+   to {
+     -webkit-transform: scale(1.1);
+     transform: scale(1.1);
+   }
+ }
+
+ @keyframes hvr-pulse-grow {
+   to {
+     -webkit-transform: scale(1.1);
+     transform: scale(1.1);
+   }
+ }
+
+ .hvr-pulse-grow {
+   -webkit-animation-name: hvr-pulse-grow;
+   animation-name: hvr-pulse-grow;
+   -webkit-animation-duration: 0.3s;
+   animation-duration: 0.3s;
+   -webkit-animation-timing-function: linear;
+   animation-timing-function: linear;
+   -webkit-animation-iteration-count: infinite;
+   animation-iteration-count: infinite;
+   -webkit-animation-direction: alternate;
+   animation-direction: alternate;
+ }
+
+ /* Pop */
+ @-webkit-keyframes hvr-pop {
+   50% {
+     -webkit-transform: scale(1.2);
+     transform: scale(1.2);
+   }
+ }
+
+ @keyframes hvr-pop {
+   50% {
+     -webkit-transform: scale(1.2);
+     transform: scale(1.2);
+   }
+ }
+
+ .hvr-pop {
+   -webkit-animation-name: hvr-pop;
+   animation-name: hvr-pop;
+   -webkit-animation-duration: 0.3s;
+   animation-duration: 0.3s;
+   -webkit-animation-timing-function: linear;
+   animation-timing-function: linear;
+   -webkit-animation-iteration-count: 1;
+   animation-iteration-count: 1;
+ }

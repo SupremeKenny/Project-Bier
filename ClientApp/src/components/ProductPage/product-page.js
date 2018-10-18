@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
 import { ProductInfoTable } from "./productinfo-table.js"
-
-// import AddProduct from "./AddProduct.js"
-
 import { connect } from "react-redux";
 import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
-
+import { HeartButton} from './heart-button.js';
 
 import {
   Header,
@@ -52,7 +49,7 @@ class ProductPage extends Component {
   render() {
     if (!this.state.loaded) {
       return (
-        <Loader/>
+        <Loader />
       );
     } else
       return (
@@ -98,16 +95,14 @@ class ProductPage extends Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={() =>{ this.props.addCartItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url);} } style={{marginTop: "25px"}}
+                  onClick={() => { this.props.addCartItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }} style={{ marginTop: "25px" }}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
 
                 <Popup
                   trigger={
-                    <Button icon color="red">
-                      <Icon name="heart" />
-                    </Button>
+                   <HeartButton/>
                   }
                   content="Voeg toe aan verlanglijstje"
                   position="bottom left"
@@ -188,7 +183,7 @@ const PriceDisplay = props => {
   return (
     <div>
       <p>
-        <b style={sx}>${props.price} </b>
+        <b style={sx}>€{String(props.price).replace('.', ',')} </b>
         per flesje
       </p>
 
@@ -201,10 +196,5 @@ const mapDispatchToProps = (dispatch) => {
     addCartItem
   }, dispatch)
 }
-
-
-
-
-
 
 export default connect(null, mapDispatchToProps)(ProductPage)

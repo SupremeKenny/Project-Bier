@@ -200,7 +200,7 @@ export class HomePage extends React.Component {
     return (
       <MainContainer>
         <TabVerticalTabularRight />
-        <Divider />
+       
         <ProductsGroup products = {this.state.products}/>
       </MainContainer>
     );
