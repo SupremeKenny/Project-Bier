@@ -30,18 +30,18 @@ When you have updated the bier theme of semantic you should update the generated
 'npm run build-semantic'
 
 ##  Tech Stack
-* React + Ant Design
+* React + Semantic UI
 * ASP .NET Core
 * EF Core
-* MySQL
+* SQLite
 
 ## Documentation and Tutorials
 Here follows a list meant for team members to quickly access
 resources and tutorials
 
 ### Backend
-*[ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1)
-*[Entity Framework Core](https://docs.microsoft.com/nl-nl/ef/core/)
+* [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.1)
+* [Entity Framework Core](https://docs.microsoft.com/nl-nl/ef/core/)
 
 ### Database
 We use SQLite database for now. This is embedded into the backend and does not need a seperate process.
