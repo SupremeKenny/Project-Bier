@@ -40,5 +40,15 @@ namespace Project_Bier.Controllers
             }
             return Json(itemCollection);
         }
+
+        [HttpGet]
+        public IActionResult FetchHome()
+        {
+            IEnumerable<Product> products = productRepository.GetHomePageProducts();
+            if(products == null) {
+                return NotFound();
+            }
+            return Json(new {products = products});
+        }
     }
 }

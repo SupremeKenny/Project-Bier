@@ -175,7 +175,7 @@ export class HomePage extends React.Component {
 
   componentWillMount() {
     this.setTitle();
-    fetch("https://localhost:5001/home/FetchAllProducts")
+    fetch("https://localhost:5001/product/FetchHome")
     .then(results => {
       results.json().then(data => {
         this.setState({ products: data.products, loaded: true });
