@@ -45,12 +45,11 @@ namespace Project_Bier.Controllers
             {
                 WebshopUser newUser = new WebshopUser
                 {
-                    UserGuid =  Guid.NewGuid(),
+                    UserGuid =  Guid.NewGuid().ToString(),
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    BirthDay = model.Birtday,
                     FavoriteLists = new List<FavoriteList>(),
                     DateCreated = DateTime.Now
                 };

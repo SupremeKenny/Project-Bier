@@ -21,6 +21,6 @@ namespace Project_Bier.Models
         [Required]
         public string Country { get; set; }
         [Required]
-        public Guid AssociatedUser { get; set; }
+        public String AssociatedUser { get; set; }
     }
 }
