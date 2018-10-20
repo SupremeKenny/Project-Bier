@@ -19,5 +19,4 @@ namespace Project_Bier.Models
         public IEnumerable<T> Items {get;set;}
         public int TotalCollections {get;set;}
     }
-
 }

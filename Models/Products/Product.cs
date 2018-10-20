@@ -18,16 +18,4 @@ namespace Project_Bier.Models
         public string Description { get; set; }
         public string Url { get; set; }
     }
-
-    /// <summary>
-    /// Beer product class
-    /// </summary>
-    public class Beer : Product
-    {
-        public string CategoryId { get; set; }
-        public string Content { get; set; }
-        public string AlcoholPercentage { get; set; }
-        public string BrewerName { get; set; }
-        public string CountryName { get; set; }
-    }
 }
