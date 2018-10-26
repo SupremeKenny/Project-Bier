@@ -50,7 +50,7 @@ class DesktopContainer extends Component {
             <Container>
               <Menu.Item>
                 <Link to="/">
-                  <Image src="logo1.png" style={{ height: 30 }} />
+                  <Image src="logo.png" style={{ height: 30 }} />
                 </Link>
               </Menu.Item>
 
