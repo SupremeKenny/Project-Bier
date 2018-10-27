@@ -8,7 +8,7 @@ namespace Project_Bier.Models
     public class Order
     {
         [Key]
-        public String Guid { get; set; }
+        public Guid Guid { get; set; }
         public bool Paid { get; set; }
         public bool Shipped { get; set; }
         public DateTime OrderCreated { get; set; }
