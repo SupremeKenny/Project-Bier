@@ -46,7 +46,7 @@ export const ProductCard = props => {
         <Card.Header style={{ minHeight: 50 }}>{props.title}</Card.Header>
         <Card.Description>
           <Statistic size='tiny' >
-            <Statistic.Value>€ {String(props.price).replace('.', ',')},-</Statistic.Value>
+            <Statistic.Value>€ {String(props.price).replace('.', ',')}</Statistic.Value>
           </Statistic>
         </Card.Description>
       </Card.Content>

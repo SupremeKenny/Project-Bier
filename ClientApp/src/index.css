@@ -1,5 +1,6 @@
  body {
-   background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+   background-color: rgba(241, 242, 246,1.0);
+   /* /background-image: linear-gradient(to top, #dfe9f3 0%, white 100%); */
    background-repeat: no-repeat;
    background-attachment: fixed;
    margin: 0;
@@ -16,7 +17,7 @@
 
 
  .sub-menu {
-   background-color: rgba(83, 82, 237,1.0) !important;
+   background-color: rgba(30, 144, 255,1.0) !important;
  }
 
  .product-card {
