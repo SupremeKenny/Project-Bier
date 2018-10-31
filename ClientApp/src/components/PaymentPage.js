@@ -25,7 +25,7 @@ import {
 
 const StepOrder = () => (
     <Step.Group>
-      <Step>
+      <Step link href="/input">
         <Icon name='truck' />
         <Step.Content>
           <Step.Title>Bestellen</Step.Title>
