@@ -59,7 +59,10 @@ const ButtonCoC = () => (
   );
 
 class Payment extends Component {
+    state = {}
+    handleClick = () => this.setState({ active: !this.state.active })
     render() {
+        const { active } = this.state
         return(
             <Container>
                 <Divider hidden/>
@@ -67,7 +70,7 @@ class Payment extends Component {
                 <Divider/>
                 <h3>Kies uw betalingswijze</h3>
                 <br/>
-                <Button style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
+                <Button toggle active={active} onClick={this.handleClick} style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
                 <Divider hidden/>
                 <Divider/>
                 <ButtonCoC/>
