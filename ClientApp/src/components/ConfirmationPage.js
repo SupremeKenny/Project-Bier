@@ -57,7 +57,7 @@ class Confirmation extends Component {
                 <Divider hidden/>
                 <StepOrder/>
                 <Divider/>
-                <h3>Placeholder</h3>
+                <h3>Bedankt voor uw bestelling! Uw order is geregistreerd.</h3>
             </Container>
         );
     }
