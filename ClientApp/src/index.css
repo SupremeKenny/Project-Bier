@@ -27,7 +27,7 @@
    border-top-color: transparent !important;
    border-bottom-color: transparent !important;
    transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
-   border-radius: 1rem !important;
+   border-radius: 0.75rem !important;
 
  }
 
@@ -88,7 +88,7 @@
 
  .hvr-bob {
   -webkit-transform: scale(1.1) rotate(4deg);
-  transform: scale(1.1) rotate(4deg);
+  transform: scale(1) rotate(4deg);
  }
 
 
@@ -145,3 +145,14 @@
    -webkit-animation-iteration-count: 1;
    animation-iteration-count: 1;
  }
+
+.brand {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+
+.brand-hover {
+  -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(0%);
+  transform: scale(1.2);
+}
