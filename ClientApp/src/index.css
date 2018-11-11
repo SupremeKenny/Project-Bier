@@ -1,6 +1,4 @@
  body {
-   background-color: rgba(241, 242, 246,1.0);
-   /* /background-image: linear-gradient(to top, #dfe9f3 0%, white 100%); */
    background-repeat: no-repeat;
    background-attachment: fixed;
    margin: 0;
@@ -16,9 +14,13 @@
  }
 
 
- .sub-menu {
-   background-color: rgba(30, 144, 255,1.0) !important;
+ .menu {
+  background-color: #2f3542 !important;
  }
+
+ .sub-menu {
+  background-color: rgba(30, 144, 255,1.0) !important;
+}
 
  .product-card {
    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
@@ -33,8 +35,6 @@
 
  .product-card:hover {
    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
-   border-radius: 2rem !important;
-
  }
 
  /* Bob */

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ProductCard } from "./ProductCard.js";
-import { BrandImage } from "./brand-image.js"
+import { BrandImage } from "./brand-image.js";
 import {
   Container,
   CardGroup,
@@ -31,8 +31,7 @@ const ProductsGroup = props => (
   </CardGroup>
 );
 
-const headerStyling = { fontFamily: "Raleway", fontSize: 30, color: "#2f3542" };
-const imageStyling = { flex:"none", maxHeight: 125 };
+const headerStyling = { fontFamily: "Raleway", fontSize: 30, color: "#ffa502" };
 const BrandShowcase = () => (
   <div>
     <Header as="h1" style={headerStyling} textAlign="center">
@@ -43,7 +42,7 @@ const BrandShowcase = () => (
     </Header>
 
     <Divider />
-  
+
     <div
       style={{
         display: "flex",
@@ -51,19 +50,13 @@ const BrandShowcase = () => (
         paddingBottom: "2em"
       }}
     >
-      {/* <img src="brands/chouffe.png" style={imageStyling} />
-      <img src="brands/ipa.png" style={imageStyling} />
-      <img src="brands/heiniken.png" style={imageStyling} />
-      <img src="brands/paulaner.png" style={imageStyling} /> */}
-      <BrandImage url="brands/chouffe.png"/>
-      <BrandImage url="brands/ipa.png"/>
-      <BrandImage url="brands/heiniken.png"/>
-      <BrandImage url="brands/paulaner.png"/>
+      <BrandImage url="brands/chouffe.png" />
+      <BrandImage url="brands/ipa.png" />
+      <BrandImage url="brands/heiniken.png" />
+      <BrandImage url="brands/paulaner.png" />
     </div>
   </div>
 );
-
-
 
 export class HomePage extends React.Component {
   constructor() {

@@ -6,7 +6,7 @@ export class BrandImage extends React.Component {
     this.state = { className: "brand" };
   }
 
-  imageStyling = { flex: "none", maxHeight: 125 };
+  imageStyling = { flex: "none", maxHeight: 80 };
 
   onMouseOver(e) {
     this.setState({
