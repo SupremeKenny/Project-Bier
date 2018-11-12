@@ -49,10 +49,12 @@ const StepOrder = () => (
     </Step.Group>
 )
 
+const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
+
 const Space = () => " ";
 
 const ButtonCoC = () => (
-    <Button.Group>
+    <Button.Group size = {'big'}>
       <Button href="/doorgaan">Teruggaan</Button>
       <Button.Or text="of" />
       <Button positive href="/payment">Doorgaan</Button>
@@ -66,9 +68,10 @@ class InputInfo extends Component {
                 <Divider hidden/>
                 <StepOrder/>
                 <Divider />
-                <h3>Vul uw gegevens in</h3>
+                <h2>Vul uw gegevens in</h2>
+                <Divider hidden/>
                 <div>
-                  <Form>
+                  <Form size = {'big'} key = {'large'}>
                     <Form.Group widths='equal'>
                       <Form.Input required fluid label='Voornaam' placeholder='ABC' />
                       <Form.Input fluid label='Tussenvoegsel' placeholder='van' />
@@ -77,7 +80,7 @@ class InputInfo extends Component {
                   </Form>
                 </div>
                 <div>
-                  <Form>
+                  <Form size = {'big'} key = {'large'}>
                     <Form.Group widths='equal'>
                       <Form.Input required fluid label='Straatnaam' placeholder='ABCstraat' />
                       <Form.Input required fluid label='Huisnummer' placeholder='123' />
@@ -86,32 +89,28 @@ class InputInfo extends Component {
                   </Form>
                 </div>
                 <div>
-                  <Form>
+                  <Form size = {'big'} key = {'large'}>
                     <Form.Group>
                       <Form.Input required label='Postcode' placeholder='1234 AB' />
                       <Form.Input required label='Stad' placeholder='Rotterdam' />
                     </Form.Group>
                   </Form>
                 </div>
-                <Form>
+                <Form size = {'big'} key = {'large'}>
                    <Form.Group>
                     <Form.Input label='Land' placeholder='Nederland' readOnly width={6} />
                    </Form.Group>
                 </Form>
-                <Form>
+                <Form size = {'big'} key = {'large'}>
                     <Form.Group>
                       <Form.Input required label='Telefoonnummer' placeholder='0612345678' width={6}/>
                     </Form.Group>
                 </Form>
-                <Form>
+                <Form size = {'big'} key = {'large'}>
                     <Form.Group>
                      <Form.Input required label='E-mailadres' placeholder='123@hotmail.com' width={6} />
                     </Form.Group>
                 </Form>
-                <h3>Kies uw bezorgdatum</h3>
-                <Segment>
-                  Placeholder
-                </Segment>
                 <Divider hidden/>
                 <Divider/>
                 <ButtonCoC/>
