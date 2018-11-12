@@ -21,7 +21,7 @@ import {
 import { connect } from "react-redux";
 import { HeartButton } from './ProductPage/heart-button.js'
 
-const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0 };
+const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0, color:"#2f3542" };
 const menuStyleUnder = { paddingTop: 65, marginBottom: 0, marginTop: 0, borderRadius: 0 };
 const body = { minHeight: window.innerHeight / 3 };
 const menuFontColor = { color: "White" };
@@ -40,9 +40,9 @@ class DesktopContainer extends Component {
         >
           <Menu
             fixed="top"
-            inverted
+           
             size="large"
-            color="black"
+            
             style={menuStyle}
             className="top-menu"
             borderless

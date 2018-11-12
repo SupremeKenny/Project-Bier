@@ -5,8 +5,8 @@ import { Image, Button, Popup, Card, Statistic } from "semantic-ui-react";
 
 class ImageHover extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = { classNameHover: '' }
+    super(props);
+    this.state = { classNameHover: "" };
   }
 
   onMouseOver(e) {
@@ -42,36 +42,30 @@ export const ProductCard = props => {
         <ImageHover url={props.url} />
       </Link>
 
-      <Card.Content>
-        <Card.Header style={{ minHeight: 50 }}>{props.title}</Card.Header>
+      <Card.Content floated fluid="true">
+        <Card.Header style={{ minHeight: 50 }}>
+          <Link to={"/product/" + props.id}>{props.title} </Link>
+        </Card.Header>
         <Card.Description>
-          <Statistic size='tiny' >
-            <Statistic.Value>€ {String(props.price).replace('.', ',')},-</Statistic.Value>
+          <Statistic size="mini">
+            <Statistic.Value>
+              € {String(props.price).replace(".", ",")}
+            </Statistic.Value>
           </Statistic>
         </Card.Description>
       </Card.Content>
 
-      <Card.Content extra floated fluid="true">
+      <Card.Content floated fluid="true">
         <div class="ui center aligned">
-          <Button.Group class="ui center aligned segment">
-            <Link to={"/product/" + props.id}>
-              <Popup
-                trigger={<Button content="Koop" icon="cart" color="green" />}
-                content="Klik om het product toe te voegen aan het winkelmandje."
-                hideOnScroll
-              />
-            </Link>
-            <Button.Or text="of" />
-            <Link to={"/product/" + props.id}>
-              <Popup
-                trigger={<Button content="Info" icon="info" color="blue" />}
-                content="Klik voor meer informatie over het product."
-                hideOnScroll
-              />
-            </Link>
-          </Button.Group>
+          <Link to={"/product/" + props.id}>
+            <Popup
+              trigger={<Button content="Toevoegen" icon="cart" color="green" />}
+              content="Klik om het product toe te voegen aan jouw winkelwagen."
+              hideOnScroll
+            />
+          </Link>
         </div>
       </Card.Content>
     </Card>
-  )
-}
+  );
+};
