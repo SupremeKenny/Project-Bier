@@ -48,10 +48,12 @@ const StepOrder = () => (
     </Step.Group>
 )
 
+const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
+
 const Space = () => " ";
 
 const ButtonCoC = () => (
-    <Button.Group>
+    <Button.Group size = {'big'}>
       <Button href="/input">Teruggaan</Button>
       <Button.Or text="of" />
       <Button positive href="/confirmation">Doorgaan</Button>
@@ -68,7 +70,7 @@ class Payment extends Component {
                 <Divider hidden/>
                 <StepOrder/>
                 <Divider/>
-                <h3>Kies uw betalingswijze</h3>
+                <h2>Kies uw betalingswijze</h2>
                 <br/>
                 <Button toggle active={active} onClick={this.handleClick} style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
                 <Divider hidden/>
