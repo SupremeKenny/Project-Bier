@@ -80,6 +80,7 @@ namespace Project_Bier.Controllers
                     EmailConfirmationSent = false
                 };
 
+                //TODO: make Guestuser repostitory
                 orderRepository.AddOrder(newOrder);
                 return Ok(); 
             }
