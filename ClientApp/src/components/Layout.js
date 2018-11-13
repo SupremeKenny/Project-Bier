@@ -172,7 +172,7 @@ class DesktopContainer extends Component {
         </Visibility>
 
         <Container style={body}>
-          {children}
+          {this.props.children}
         </Container>
 
         <Segment style={{ padding: "2em 0em" }} vertical />
