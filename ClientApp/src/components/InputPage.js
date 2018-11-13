@@ -178,12 +178,12 @@ class InputInfo extends Component {
                 
                     <Form.Group widths='equal'>
                       <Form.Input required fluid className = {shouldMarkError('straatnaam') ? "error" : ""} label='Straatnaam' placeholder='ABCstraat' value={this.state.straatnaam} onChange={this.handleStraatnaamChange} onBlur={this.handleBlur('straatnaam')} />
-                      <Form.Input required fluid className = {shouldMarkError('huisnummer') ? "error" : ""} label='Huisnummer' placeholder='123' value={this.state.huisnummer} onChange={this.handleHuisnummerChange} onBlur={this.handleBlur('huisnummer')} />
-                      <Form.Input fluid label='Toevoeging' placeholder='a' />
+                      <Form.Input required fluid className = {shouldMarkError('huisnummer') ? "error" : ""} label='Huisnummer' placeholder='123' value={this.state.huisnummer} onChange={this.handleHuisnummerChange} onBlur={this.handleBlur('huisnummer')} maxLength={5} />
+                      <Form.Input fluid label='Toevoeging' placeholder='a' maxLength={3} />
                     </Form.Group>
                   
                     <Form.Group>
-                      <Form.Input required className = {shouldMarkError('postcode') ? "error" : ""} label='Postcode' placeholder='1234 AB' value={this.state.postcode} onChange={this.handlePostcodeChange} onBlur={this.handleBlur('postcode')} />
+                      <Form.Input required className = {shouldMarkError('postcode') ? "error" : ""} label='Postcode' placeholder='1234AB' value={this.state.postcode} onChange={this.handlePostcodeChange} onBlur={this.handleBlur('postcode')} maxLength={6} />
                       <Form.Input required className = {shouldMarkError('stad') ? "error" : ""} label='Stad' placeholder='Rotterdam' value={this.state.stad} onChange={this.handleStadChange} onBlur={this.handleBlur('stad')} />
                     </Form.Group>
                  
