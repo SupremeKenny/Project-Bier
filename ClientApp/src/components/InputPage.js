@@ -59,7 +59,7 @@ function validate(voornaam, achternaam, straatnaam, huisnummer, postcode, stad, 
     achternaam: achternaam.length === 0,
     straatnaam: straatnaam.length === 0,
     huisnummer: huisnummer.length === 0,
-    postcode: postcode.length === 0,
+    postcode: postcode.length === 0 || postcode.length < 6,
     stad: stad.length === 0,
     telefoonnummer: telefoonnummer.length === 0,
     email: email.length === 0,
@@ -126,7 +126,7 @@ class InputInfo extends Component {
     handleSubmit = (evt) => {
       if (!this.canBeSubmitted()) {
         evt.preventDefault();
-        return;
+        window.location.href = "/payment";
       }
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
       //alert(`Bestelling klaargezet`);
@@ -204,7 +204,7 @@ class InputInfo extends Component {
                     <Button.Group size = {'big'}>
                       <Button href="/doorgaan">Teruggaan</Button>
                       <Button.Or text="of" />
-                      <Button positive href="/payment" disabled={NotFilledIn}>Doorgaan</Button>
+                      <Button positive>Doorgaan</Button>
                     </Button.Group>
                 </Form>
             </Container>
