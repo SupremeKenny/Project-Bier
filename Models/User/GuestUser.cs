@@ -8,7 +8,10 @@ namespace Project_Bier.Models
 {
     public class GuestUser 
     {
+        [Key]
         public String UserGuid { get; set; }
+        [PersonalData]
+        public string Email { get; set; }
         [PersonalData]
         public string FirstName { get; set; }
         [PersonalData]

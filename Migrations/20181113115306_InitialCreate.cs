@@ -40,10 +40,9 @@ namespace ProjectBier.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    UserGuid = table.Column<Guid>(nullable: false),
+                    UserGuid = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    BirthDay = table.Column<DateTime>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -86,6 +85,27 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Guid = table.Column<string>(nullable: false),
+                    Paid = table.Column<bool>(nullable: false),
+                    Shipped = table.Column<bool>(nullable: false),
+                    OrderCreated = table.Column<DateTime>(nullable: false),
+                    OrderPaid = table.Column<DateTime>(nullable: false),
+                    OrderShipped = table.Column<DateTime>(nullable: false),
+                    TotalPrice = table.Column<decimal>(nullable: false),
+                    CouponApplied = table.Column<bool>(nullable: false),
+                    AssociatedUserGuid = table.Column<string>(nullable: true),
+                    OrderedFromGuestAccount = table.Column<bool>(nullable: false),
+                    EmailConfirmationSent = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Guid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -115,7 +135,7 @@ namespace ProjectBier.Migrations
                     StreetName = table.Column<string>(nullable: false),
                     CityName = table.Column<string>(nullable: false),
                     Country = table.Column<string>(nullable: false),
-                    AssociatedUser = table.Column<Guid>(nullable: false),
+                    AssociatedUser = table.Column<string>(nullable: false),
                     WebshopUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -232,6 +252,49 @@ namespace ProjectBier.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductOrder",
+                columns: table => new
+                {
+                    Guid = table.Column<string>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false),
+                    OrderGuid = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductOrder", x => x.Guid);
+                    table.ForeignKey(
+                        name: "FK_ProductOrder_Order_OrderGuid",
+                        column: x => x.OrderGuid,
+                        principalTable: "Order",
+                        principalColumn: "Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GuestUsers",
+                columns: table => new
+                {
+                    UserGuid = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    ShippingAddressPostalCode = table.Column<string>(nullable: true),
+                    ShippingAddressStreetNumber = table.Column<string>(nullable: true),
+                    ShippingAddressAssociatedUser = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuestUsers", x => x.UserGuid);
+                    table.ForeignKey(
+                        name: "FK_GuestUsers_Addresses_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
+                        columns: x => new { x.ShippingAddressPostalCode, x.ShippingAddressStreetNumber, x.ShippingAddressAssociatedUser },
+                        principalTable: "Addresses",
+                        principalColumns: new[] { "PostalCode", "StreetNumber", "AssociatedUser" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_WebshopUserId",
                 table: "Addresses",
@@ -278,13 +341,20 @@ namespace ProjectBier.Migrations
                 name: "IX_FavoriteList_WebshopUserId",
                 table: "FavoriteList",
                 column: "WebshopUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GuestUsers_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
+                table: "GuestUsers",
+                columns: new[] { "ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOrder_OrderGuid",
+                table: "ProductOrder",
+                column: "OrderGuid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -310,7 +380,19 @@ namespace ProjectBier.Migrations
                 name: "FavoriteList");
 
             migrationBuilder.DropTable(
+                name: "GuestUsers");
+
+            migrationBuilder.DropTable(
+                name: "ProductOrder");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
