@@ -120,10 +120,18 @@ class InputInfo extends Component {
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
       alert(`Bestelling klaargezet`);
     }
+
+    canBeSubmitted() {
+      const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
+      const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
+      return !NotFilledIn;
+    }
   
     render() {
+      const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
+      const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
-      const isEnabled =
+      const FilledIn =
             voornaam.length > 0 &&
             achternaam.length > 0 &&
             straatnaam.length > 0 &&
@@ -132,7 +140,7 @@ class InputInfo extends Component {
             stad.length > 0 &&
             telefoonnummer.length > 0 &&
             email.length > 0;
-        return(
+      return(
             <Container>
                 <Divider hidden/>
                 <StepOrder/>
@@ -141,20 +149,20 @@ class InputInfo extends Component {
                 <Divider hidden/>
                 <Form onSubmit = {this.handleSubmit} size = {'big'} key = {'large'}>
                     <Form.Group widths='equal'>
-                      <Form.Input required fluid label='Voornaam' placeholder='ABC' value={this.state.voornaam} onChange={this.handleVoornaamChange} />
+                      <Form.Input required fluid className = {errors.voornaam ? "error" : ""} label='Voornaam' placeholder='ABC' value={this.state.voornaam} onChange={this.handleVoornaamChange} />
                       <Form.Input fluid label='Tussenvoegsel' placeholder='van' />
-                      <Form.Input required fluid label='Achternaam' placeholder='DEF' value={this.state.achternaam} onChange={this.handleAchternaamChange} />
+                      <Form.Input required fluid className = {errors.achternaam ? "error" : "" } label='Achternaam' placeholder='DEF' value={this.state.achternaam} onChange={this.handleAchternaamChange} />
                     </Form.Group>
                 
                     <Form.Group widths='equal'>
-                      <Form.Input required fluid label='Straatnaam' placeholder='ABCstraat' value={this.state.straatnaam} onChange={this.handleStraatnaamChange} />
-                      <Form.Input required fluid label='Huisnummer' placeholder='123' value={this.state.huisnummer} onChange={this.handleHuisnummerChange} />
+                      <Form.Input required fluid className = {errors.achternaam ? "error" : ""} label='Straatnaam' placeholder='ABCstraat' value={this.state.straatnaam} onChange={this.handleStraatnaamChange} />
+                      <Form.Input required fluid className = {errors.huisnummer ? "error" : ""} label='Huisnummer' placeholder='123' value={this.state.huisnummer} onChange={this.handleHuisnummerChange} />
                       <Form.Input fluid label='Toevoeging' placeholder='a' />
                     </Form.Group>
                   
                     <Form.Group>
-                      <Form.Input required label='Postcode' placeholder='1234 AB' value={this.state.postcode} onChange={this.handlePostcodeChange} />
-                      <Form.Input required label='Stad' placeholder='Rotterdam' value={this.state.stad} onChange={this.handleStadChange} />
+                      <Form.Input required className = {errors.postcode ? "error" : ""} label='Postcode' placeholder='1234 AB' value={this.state.postcode} onChange={this.handlePostcodeChange} />
+                      <Form.Input required className = {errors.stad ? "error" : ""} label='Stad' placeholder='Rotterdam' value={this.state.stad} onChange={this.handleStadChange} />
                     </Form.Group>
                  
                    <Form.Group>
@@ -162,11 +170,11 @@ class InputInfo extends Component {
                    </Form.Group>
       
                     <Form.Group>
-                      <Form.Input required label='Telefoonnummer' placeholder='0612345678' width={6} value={this.state.telefoonnummer} onChange={this.handleTelefoonnummerChange} />
+                      <Form.Input required className = {errors.telefoonnummer ? "error" : ""} label='Telefoonnummer' placeholder='0612345678' width={6} value={this.state.telefoonnummer} onChange={this.handleTelefoonnummerChange} />
                     </Form.Group>
               
                     <Form.Group>
-                     <Form.Input required label='E-mailadres' placeholder='123@hotmail.com' width={6} value={this.state.email} onChange={this.handleEmailChange} />
+                     <Form.Input required className = {errors.email ? "error" : ""} label='E-mailadres' placeholder='123@hotmail.com' width={6} value={this.state.email} onChange={this.handleEmailChange} />
                     </Form.Group>
                     
                     <Divider hidden/>
@@ -174,11 +182,11 @@ class InputInfo extends Component {
                     <Button.Group size = {'big'}>
                       <Button href="/doorgaan">Teruggaan</Button>
                       <Button.Or text="of" />
-                      <Button positive href="/payment" disabled={!isEnabled}>Doorgaan</Button>
+                      <Button positive href="/payment" disabled={NotFilledIn}>Doorgaan</Button>
                     </Button.Group>
                 </Form>
             </Container>
-        );
+      );
     }
 }
 
