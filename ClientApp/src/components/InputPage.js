@@ -118,7 +118,7 @@ class InputInfo extends Component {
         return;
       }
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
-      alert(`Bestelling klaargezet`);
+      //alert(`Bestelling klaargezet`);
     }
 
     canBeSubmitted() {
@@ -155,7 +155,7 @@ class InputInfo extends Component {
                     </Form.Group>
                 
                     <Form.Group widths='equal'>
-                      <Form.Input required fluid className = {errors.achternaam ? "error" : ""} label='Straatnaam' placeholder='ABCstraat' value={this.state.straatnaam} onChange={this.handleStraatnaamChange} />
+                      <Form.Input required fluid className = {errors.straatnaam ? "error" : ""} label='Straatnaam' placeholder='ABCstraat' value={this.state.straatnaam} onChange={this.handleStraatnaamChange} />
                       <Form.Input required fluid className = {errors.huisnummer ? "error" : ""} label='Huisnummer' placeholder='123' value={this.state.huisnummer} onChange={this.handleHuisnummerChange} />
                       <Form.Input fluid label='Toevoeging' placeholder='a' />
                     </Form.Group>
