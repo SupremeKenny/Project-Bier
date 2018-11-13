@@ -11,6 +11,9 @@ import  Confirmation from "./components/ConfirmationPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
 import { Provider } from "react-redux";
 import store from "./store";
+import {AdminPage} from "./components/AdminPage.js";
+import {Counter} from "./components/AdminPage/Counter.js";
+import {Home} from "./components/AdminPage/Home.js";
 
 export default class App extends Component {
   displayName = App.name;
@@ -28,6 +31,10 @@ export default class App extends Component {
           <Route path="/payment" component={Payment} />
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/category/:id" component={CategoryPage} />
+          <Route path="/admin" component={AdminPage} />
+          <Route path="/home" component={Home} />
+          <Route path="/counter" component={Counter} />
+
         </div>
       </Layout>
       </Provider>
