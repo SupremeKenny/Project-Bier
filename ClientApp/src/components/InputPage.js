@@ -126,7 +126,6 @@ class InputInfo extends Component {
     handleSubmit = (evt) => {
       if (!this.canBeSubmitted()) {
         evt.preventDefault();
-        window.location.href = "/payment";
       }
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
       //alert(`Bestelling klaargezet`);
@@ -141,7 +140,8 @@ class InputInfo extends Component {
     canBeSubmitted() {
       const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
       const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
-      return !NotFilledIn;
+      return NotFilledIn ? alert('Veld niet correct ingevuld.') : window.location.href = "/payment" 
+      //return !NotFilledIn;
     }
   
     render() {
