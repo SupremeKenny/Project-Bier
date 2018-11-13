@@ -196,7 +196,7 @@ class InputInfo extends Component {
                     </Form.Group>
               
                     <Form.Group>
-                     <Form.Input required className = {shouldMarkError('email') ? "error" : ""} label='E-mailadres' placeholder='123@hotmail.com' width={6} value={this.state.email} onChange={this.handleEmailChange} onBlur={this.handleBlur('email')}/>21
+                     <Form.Input required className = {shouldMarkError('email') ? "error" : ""} label='E-mailadres' placeholder='123@hotmail.com' width={6} value={this.state.email} onChange={this.handleEmailChange} onBlur={this.handleBlur('email')}/>
                     </Form.Group>
                     
                     <Divider hidden/>
