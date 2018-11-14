@@ -152,18 +152,19 @@ class InputInfo extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        'Products': {ProductId: 'Test', Count: '6'},
-        'Coupon': '',
-        'PostalCode': 'test',
-        'StreetNumber': 'test',
-        'StreetName': 'test',
-        'CityName': 'test',
-        'Country': 'test',
-        'FirstName': 'test',
-        'LastName': 'test',
-        'Email': 'test',
-        //Birthday: 'test',
-      })
+        
+             "Coupon": "",
+             "PostalCode": "test",
+             "StreetNumber": "test",
+             "StreetName": "test",
+             "CityName": "test",
+             "Country": "test",
+             "FirstName": "test",
+             "LastName": "test",
+             "Email": "test",
+             //birhtday ofoz
+             "Products": [{"id": "Test", "count": "6"}],
+     })
     });
       
 

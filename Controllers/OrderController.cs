@@ -32,26 +32,31 @@ namespace Project_Bier.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrder([FromBody] OrderGuestUserViewModel order){
-            System.Diagnostics.Debug.WriteLine(order);
+        public IActionResult testing([FromBody] testing testing){
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult AddOrder([FromBody] OrderGuestUserViewModel OrderGuestUserViewModel){
+            System.Diagnostics.Debug.WriteLine(OrderGuestUserViewModel);
             if (ModelState.IsValid){
 
                 GuestUser guestUser = new GuestUser
                 {
                     UserGuid =  Guid.NewGuid().ToString(),
-                    Email = order.Email,
-                    FirstName = order.FirstName,
-                    LastName = order.LastName
+                    Email = OrderGuestUserViewModel.Email,
+                    FirstName = OrderGuestUserViewModel.FirstName,
+                    LastName = OrderGuestUserViewModel.LastName
                 };
 
 
                 ShippingAddress userAddress = new ShippingAddress
                 {
-                    PostalCode = order.PostalCode,
-                    StreetNumber = order.StreetNumber,
-                    StreetName = order.StreetName,
-                    CityName = order.CityName,
-                    Country = order.Country,
+                    PostalCode = OrderGuestUserViewModel.PostalCode,
+                    StreetNumber = OrderGuestUserViewModel.StreetNumber,
+                    StreetName = OrderGuestUserViewModel.StreetName,
+                    CityName = OrderGuestUserViewModel.CityName,
+                    Country = OrderGuestUserViewModel.Country,
                     AssociatedUser = guestUser.UserGuid
                 };
 
@@ -62,7 +67,7 @@ namespace Project_Bier.Controllers
                 
 
                 bool couponApplied = false;
-                if(order.Coupon != ""){
+                if(OrderGuestUserViewModel.Coupon != ""){
                     couponApplied = true;
                 }
 
@@ -75,7 +80,7 @@ namespace Project_Bier.Controllers
                     OrderCreated = DateTime.Now,
                     TotalPrice = totalPrice,
                     CouponApplied = couponApplied,
-                    OrderedProducts = order.Products,
+                   // OrderedProducts = OrderGuestUserViewModel.Products,
                     AssociatedUserGuid = guestUser.UserGuid,
                     OrderedFromGuestAccount = true,
                     EmailConfirmationSent = false
