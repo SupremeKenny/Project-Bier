@@ -59,11 +59,7 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> ListAll()
         {
-            // return context.Beer
-            // .Select (p => p);
-            // return context.Beer
-            // .OrderBy(x => Guid.NewGuid()).Take(8);
-            throw new NotImplementedException();
+            return context.Beer.ToList();
         }
 
         public void RemoveProduct(Guid guid)

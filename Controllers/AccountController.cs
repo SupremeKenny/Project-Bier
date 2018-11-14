@@ -45,7 +45,7 @@ namespace Project_Bier.Controllers
             {
                 WebshopUser newUser = new WebshopUser
                 {
-                    UserGuid =  Guid.NewGuid().ToString(),
+                    UserGuid =  Guid.NewGuid(),
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,

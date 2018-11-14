@@ -8,7 +8,7 @@ namespace Project_Bier.Models
 {
     public class WebshopUser : IdentityUser
     {
-        public String UserGuid { get; set; }
+        public Guid UserGuid { get; set; }
         [PersonalData]
         public string FirstName { get; set; }
         [PersonalData]

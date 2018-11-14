@@ -23,7 +23,7 @@ namespace Project_Bier.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=app.db");
+            optionsBuilder.UseNpgsql("User ID=maikelveen;Password=;Host=localhost;Port=5432;Database=postgres;Pooling=true;");
         }
     }
 }
