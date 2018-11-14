@@ -143,6 +143,31 @@ class InputInfo extends Component {
       const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
       return !NotFilledIn;
     }
+
+    addOrder() {
+      fetch('order/addorder/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'Products': {ProductId: 'Test', Count: '6'},
+        'Coupon': '',
+        'PostalCode': 'test',
+        'StreetNumber': 'test',
+        'StreetName': 'test',
+        'CityName': 'test',
+        'Country': 'test',
+        'FirstName': 'test',
+        'LastName': 'test',
+        'Email': 'test',
+        //Birthday: 'test',
+      })
+    });
+      
+
+    }
   
     render() {
       const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
@@ -204,7 +229,7 @@ class InputInfo extends Component {
                     <Button.Group size = {'big'}>
                       <Button href="/doorgaan">Teruggaan</Button>
                       <Button.Or text="of" />
-                      <Button positive href="/payment" disabled={NotFilledIn}>Doorgaan</Button>
+                      <Button positive onClick={this.addOrder} disabled={NotFilledIn}>Doorgaan</Button>
                     </Button.Group>
                 </Form>
             </Container>

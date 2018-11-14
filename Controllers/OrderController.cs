@@ -33,6 +33,7 @@ namespace Project_Bier.Controllers
 
         [HttpPost]
         public IActionResult AddOrder([FromBody] OrderGuestUserViewModel order){
+            System.Diagnostics.Debug.WriteLine(order);
             if (ModelState.IsValid){
 
                 GuestUser guestUser = new GuestUser
@@ -61,7 +62,7 @@ namespace Project_Bier.Controllers
                 
 
                 bool couponApplied = false;
-                if(order.coupon != ""){
+                if(order.Coupon != ""){
                     couponApplied = true;
                 }
 

@@ -8,7 +8,7 @@ namespace Project_Bier.Models.ViewModels
     public class OrderGuestUserViewModel 
     {
         public List<ProductOrder> Products { get; set; }
-        public string coupon { get; set; }
+        public string Coupon { get; set; }
         public string PostalCode { get; set; }
         public string StreetNumber { get; set; }
         public string StreetName { get; set; }
@@ -17,6 +17,6 @@ namespace Project_Bier.Models.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public DateTime Birtday { get; set; }
+        //public DateTime Birtday { get; set; }
     }
 }
