@@ -63,7 +63,7 @@ namespace Project_Bier
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
-            ConfigureElasticSearch(app, loggerFactory, applicationLifetime);
+            ConfigureElasticSearch(app, loggerFactory, applicationLifetime, "products");
 
             if (env.IsDevelopment())
             {
@@ -105,7 +105,7 @@ namespace Project_Bier
         /// <param name="app"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="applicationLifetime"></param>
-        public void ConfigureElasticSearch(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
+        public void ConfigureElasticSearch(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, string indexName)
         {
             // If command line argument "--elastic true" is present configure elastic search Engine process
             applicationLifetime.ApplicationStarted.Register(() =>
@@ -116,12 +116,26 @@ namespace Project_Bier
                     {
                         var client = ElasticSearchPopulator.Configure(loggerFactory);
                         IEnumerable<Product> products = serviceScope.ServiceProvider.GetService<IProductRepository>().ListAll();
+
+                        // Clean out index if it exists
+                        if (client.IndexExists(indexName).Exists)
+                        {
+                            client.DeleteIndex(indexName);
+                        }
+
+                        // Add Suggestion strings to product models
                         foreach (Product product in products)
                         {
                             String[] suggestions = ElasticSearchPopulator.SuggestionGenerator(product);
                             product.Suggest = new Nest.CompletionField { Input = suggestions };
                         }
-                        if (products != null) ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, "products", products);
+
+                        // Insert documents 
+                        if (products != null) 
+                        {
+                            ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, indexName, products);
+                        }
+                        
                     }
                 }
             });
