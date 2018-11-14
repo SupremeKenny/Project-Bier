@@ -146,7 +146,7 @@ class Continue extends Component {
                 </Grid>
               </Segment>
               <Divider/>
-              <Button href='/winkelwagen'>Teruggaan</Button>
+              <Button size={'big'} href='/winkelwagen'>Teruggaan</Button>
             </Container>
         );
     }
