@@ -60,9 +60,11 @@ const ButtonCoC = () => (
     </Button.Group>
   );
 
+
 class Payment extends Component {
     state = {}
     handleClick = () => this.setState({ active: !this.state.active })
+    handleClick1 = () => this.state.active ? window.location.href = "/confirmation" : alert('Selecteer een betalingswijze alstublieft.')
     render() {
         const { active } = this.state
         return(
@@ -75,7 +77,11 @@ class Payment extends Component {
                 <Button toggle active={active} onClick={this.handleClick} style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
                 <Divider hidden/>
                 <Divider/>
-                <ButtonCoC/>
+                <Button.Group size = {'big'}>
+                <Button href="/input">Teruggaan</Button>
+                  <Button.Or text="of" />
+                  <Button positive onClick={this.handleClick1}>Doorgaan</Button>
+                </Button.Group>
             </Container>
         );
     }

@@ -59,7 +59,7 @@ function validate(voornaam, achternaam, straatnaam, huisnummer, postcode, stad, 
     achternaam: achternaam.length === 0,
     straatnaam: straatnaam.length === 0,
     huisnummer: huisnummer.length === 0,
-    postcode: postcode.length === 0,
+    postcode: postcode.length === 0 || postcode.length < 6,
     stad: stad.length === 0,
     telefoonnummer: telefoonnummer.length === 0,
     email: email.length === 0,
@@ -126,7 +126,6 @@ class InputInfo extends Component {
     handleSubmit = (evt) => {
       if (!this.canBeSubmitted()) {
         evt.preventDefault();
-        return;
       }
       const { voornaam, achternaam, straatnaam, huisnummer, postcode, stad, telefoonnummer, email } = this.state;
       //alert(`Bestelling klaargezet`);
@@ -141,7 +140,8 @@ class InputInfo extends Component {
     canBeSubmitted() {
       const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
       const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
-      return !NotFilledIn;
+      return NotFilledIn ? alert('Veld niet correct ingevuld.') : window.location.href = "/payment" 
+      //return !NotFilledIn;
     }
 
     addOrder() {
