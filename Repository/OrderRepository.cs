@@ -22,6 +22,7 @@ namespace Project_Bier.Repository
         public void AddOrder(Order order)
         {
             context.Order.Add(order);
+            context.SaveChanges();
         }
 
         public Order GetOrderByGuid(string id)

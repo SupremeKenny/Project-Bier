@@ -140,7 +140,7 @@ class InputInfo extends Component {
     canBeSubmitted() {
       const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
       const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
-      return NotFilledIn ? alert('Veld niet correct ingevuld.') : window.location.href = "/payment" 
+      return NotFilledIn ? alert('Veld niet correct ingevuld.') : this.addOrder()
       //return !NotFilledIn;
     }
 
@@ -154,15 +154,17 @@ class InputInfo extends Component {
       body: JSON.stringify({
         
              "Coupon": "",
-             "PostalCode": "test",
-             "StreetNumber": "test",
-             "StreetName": "test",
-             "CityName": "test",
-             "Country": "test",
-             "FirstName": "test",
-             "LastName": "test",
-             "Email": "test",
+             //TODO:Coupon meegeven
+             "PostalCode": this.state.postcode,
+             "StreetNumber": this.state.huisnummer,
+             "StreetName": this.state.straatnaam,
+             "CityName": this.state.stad,
+             "Country": "Nederland",
+             "FirstName": this.state.voornaam,
+             "LastName": this.state.achternaam,
+             "Email": this.state.email,
              //birhtday ofoz
+             //TODO: Geef producten mee
              "Products": [{"id": "Test", "count": "6"}],
      })
     });

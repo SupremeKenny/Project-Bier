@@ -32,11 +32,6 @@ namespace Project_Bier.Controllers
         }
 
         [HttpPost]
-        public IActionResult testing([FromBody] testing testing){
-            return Ok();
-        }
-
-        [HttpPost]
         public IActionResult AddOrder([FromBody] OrderGuestUserViewModel OrderGuestUserViewModel){
             System.Diagnostics.Debug.WriteLine(OrderGuestUserViewModel);
             if (ModelState.IsValid){
@@ -72,6 +67,13 @@ namespace Project_Bier.Controllers
                 }
 
 
+                List<ProductOrder> hoi = new List<ProductOrder>();
+                foreach(inputproduct test in OrderGuestUserViewModel.Products){
+                    ProductOrder ho = new ProductOrder();
+                    ho.Guid = Guid.NewGuid().ToString();
+                    ho.ProductId = hoi.pr
+                }
+
                 Order newOrder = new Order
                 {
                     Guid = Guid.NewGuid().ToString(),
@@ -80,7 +82,7 @@ namespace Project_Bier.Controllers
                     OrderCreated = DateTime.Now,
                     TotalPrice = totalPrice,
                     CouponApplied = couponApplied,
-                   // OrderedProducts = OrderGuestUserViewModel.Products,
+                   // TODO: OrderedProducts = OrderGuestUserViewModel.Products,
                     AssociatedUserGuid = guestUser.UserGuid,
                     OrderedFromGuestAccount = true,
                     EmailConfirmationSent = false
