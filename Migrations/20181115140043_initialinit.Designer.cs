@@ -9,8 +9,8 @@ using Project_Bier.Repository;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181113115306_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20181115140043_initialinit")]
+    partial class initialinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -246,7 +246,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("OrderGuid");
 
-                    b.Property<int>("ProductId");
+                    b.Property<string>("ProductId");
 
                     b.HasKey("Guid");
 

@@ -14,6 +14,7 @@ namespace Project_Bier.Controllers
     public class OrderController: Controller
     {
         IOrderRepository orderRepository;
+        IProductRepository productRepository;
 
         public OrderController(IOrderRepository orderRepository)
         {
@@ -57,8 +58,6 @@ namespace Project_Bier.Controllers
 
                 guestUser.ShippingAddress = userAddress;
 
-                //TODO: prijs berekenen
-                decimal totalPrice = 9;
                 
 
                 bool couponApplied = false;
@@ -66,13 +65,22 @@ namespace Project_Bier.Controllers
                     couponApplied = true;
                 }
 
-
-                List<ProductOrder> hoi = new List<ProductOrder>();
+                decimal totalPrice = 0;
+                List<ProductOrder> productlist = new List<ProductOrder>();
                 foreach(inputproduct test in OrderGuestUserViewModel.Products){
-                    ProductOrder ho = new ProductOrder();
-                    ho.Guid = Guid.NewGuid().ToString();
-                    ho.ProductId = hoi.pr
+                    ProductOrder productOrder = new ProductOrder();
+                    productOrder.Guid = Guid.NewGuid().ToString();
+                    productOrder.ProductId = test.id;
+                    productOrder.Count = test.count;
+                    productlist.Add(productOrder);
+                    //TODO price van het product halen..
+                    //totalPrice = totalPrice + productRepository.GetProductByGuid(test.id).Price;
+
                 }
+                
+            
+              
+                
 
                 Order newOrder = new Order
                 {
@@ -82,15 +90,19 @@ namespace Project_Bier.Controllers
                     OrderCreated = DateTime.Now,
                     TotalPrice = totalPrice,
                     CouponApplied = couponApplied,
-                   // TODO: OrderedProducts = OrderGuestUserViewModel.Products,
+                    OrderedProducts = productlist,
                     AssociatedUserGuid = guestUser.UserGuid,
                     OrderedFromGuestAccount = true,
                     EmailConfirmationSent = false
                 };
 
-                //TODO: make Guestuser repostitory
+               
+
+
+
+                //TODO: Save guestUser to database..
                 orderRepository.AddOrder(newOrder);
-                return Ok(); 
+                return Ok(newOrder.Guid); 
             }
             return BadRequest();
            

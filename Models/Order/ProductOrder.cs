@@ -6,9 +6,9 @@ namespace Project_Bier.Models
 {
     public class ProductOrder
     {
-        [Key]
+        [Key] //TODO: DELETE string GUID
         public string Guid { get; set; }
-        public int ProductId {get; set;}
+        public string ProductId {get; set;}
         public int Count {get; set;}
 
     }

@@ -144,13 +144,20 @@ class InputInfo extends Component {
       //return !NotFilledIn;
     }
 
+    componentWillMount(){
+      this.setState({products: localStorage.Cart ? JSON.parse(localStorage.Cart) : []})
+    }
+
     addOrder() {
+     
+      console.log(this.state);
       fetch('order/addorder/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      
       body: JSON.stringify({
         
              "Coupon": "",
@@ -162,13 +169,14 @@ class InputInfo extends Component {
              "Country": "Nederland",
              "FirstName": this.state.voornaam,
              "LastName": this.state.achternaam,
-             "Email": this.state.email,
-             //birhtday ofoz
-             //TODO: Geef producten mee
-             "Products": [{"id": "Test", "count": "6"}],
-     })
-    });
+             "Email": this.state.email,   
+             "Products": this.state.products,
+      })
+      }).then(results => {
+        results.json().then(data => window.location.href = "/payment/" + data);
+      });
       
+       
 
     }
   
@@ -232,7 +240,7 @@ class InputInfo extends Component {
                     <Button.Group size = {'big'}>
                       <Button href="/doorgaan">Teruggaan</Button>
                       <Button.Or text="of" />
-                      <Button positive onClick={this.addOrder} disabled={NotFilledIn}>Doorgaan</Button>
+                      <Button positive  disabled={NotFilledIn}>Doorgaan</Button>
                     </Button.Group>
                 </Form>
             </Container>

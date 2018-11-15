@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectBier.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -257,7 +257,7 @@ namespace ProjectBier.Migrations
                 columns: table => new
                 {
                     Guid = table.Column<string>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: true),
                     Count = table.Column<int>(nullable: false),
                     OrderGuid = table.Column<string>(nullable: true)
                 },

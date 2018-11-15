@@ -19,7 +19,7 @@ namespace Project_Bier.Models
         public DateTime OrderShipped { get; set; }
         public decimal TotalPrice { get; set; }
         public bool CouponApplied { get; set; }
-        public List<ProductOrder> OrderedProducts { get; set; }
+        public ICollection<ProductOrder> OrderedProducts { get; set; }
         public string AssociatedUserGuid { get; set; }
         public bool OrderedFromGuestAccount {get; set;}
         public bool EmailConfirmationSent { get; set; }

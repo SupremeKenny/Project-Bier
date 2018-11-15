@@ -244,7 +244,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("OrderGuid");
 
-                    b.Property<int>("ProductId");
+                    b.Property<string>("ProductId");
 
                     b.HasKey("Guid");
 

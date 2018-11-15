@@ -21,8 +21,8 @@ namespace Project_Bier.Repository
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ShippingAddress>().HasKey(c => new { c.PostalCode, c.StreetNumber, c.AssociatedUser });
-
-        }
+            modelBuilder.Entity<Order>().HasMany(i => i.OrderedProducts).WithOne();
+        }   
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
