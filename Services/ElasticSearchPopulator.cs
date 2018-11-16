@@ -50,9 +50,8 @@ namespace Project_Bier.Repository
             .Mappings(ms => ms
                 .Map<Product>(m => m
                     .AutoMap<Beer>()
-                    .Properties(ps => ps
-                    .Completion(d => d.Name(p => p.Suggest)))))
-                );
+                    
+                )));
 
             return client;
         }

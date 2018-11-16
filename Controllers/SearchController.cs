@@ -13,21 +13,21 @@ namespace Project_Bier.Controllers
     [Route("[controller]/[action]")]
     public class SearchController : Controller
     {
-        ElasticSearchService ElasticSearchService { get; }
+        ISearchService<Product> SearchService { get; }
 
-        public SearchController(ElasticSearchService elasticSearchService) => ElasticSearchService = elasticSearchService;
+        public SearchController(ISearchService<Product> searchService) => SearchService = searchService;
 
         [HttpGet]
         public IActionResult Search(String id)
         {
-            IEnumerable<Product> results = ElasticSearchService.Search(id);
+            IEnumerable<Product> results = SearchService.Search(id);
             return Json(results);
         }
 
         [HttpGet]
         public IActionResult Suggest(String id)
         {
-            SuggestResponse results = ElasticSearchService.Suggest(id);
+            SuggestResponse results = SearchService.Suggest(id);
             return Json(results);
         }
     }
