@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Project_Bier.Models.ViewModels
 {
-
+    //TODO: Adhere to C# Naming Conventions
     public class inputproduct
     {
         public string id {get; set;}

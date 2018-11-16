@@ -25,7 +25,19 @@ namespace Project_Bier.Repository
             context.SaveChanges();
         }
 
-        public Order GetOrderByGuid(string id)
+        /// <summary>
+        /// Overloaded method that also saves the guestUser
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="guestUser"></param>
+        public void AddOrder(Order order, GuestUser guestUser)
+        {
+            context.GuestUsers.Add(guestUser);
+            context.Order.Add(order);
+            context.SaveChanges();
+        }
+
+        public Order GetOrderByGuid(Guid id)
         {
             return context.Order
                 .FirstOrDefault(p => p.Guid == id);

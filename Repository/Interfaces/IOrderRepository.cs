@@ -16,11 +16,13 @@ namespace Project_Bier.Repository
     {
         void AddOrder(Order order);
 
+        void AddOrder(Order order, GuestUser guestUser);
+
         void UpdateOrder(Guid guid, Order newOrder);
 
         void RemoveOrder(Guid guid);
 
-        Order GetOrderByGuid(string id);
+        Order GetOrderByGuid(Guid id);
 
         IEnumerable<Order>  ListAll();
 
