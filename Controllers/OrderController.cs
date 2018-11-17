@@ -13,18 +13,19 @@ namespace Project_Bier.Controllers
     [Route("[controller]/[action]")]
     public class OrderController : Controller
     {
-        IOrderRepository orderRepository;
-        IProductRepository productRepository;
+        IOrderRepository OrderRepository { get; }
+        IProductRepository ProductRepository { get; }
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
         {
-            this.orderRepository = orderRepository;
+            OrderRepository = orderRepository;
+            ProductRepository = productRepository;
         }
 
         [HttpGet]
         public IActionResult Fetch(String id)
         {
-            Order order = orderRepository.GetOrderByGuid(new Guid(id));
+            Order order = OrderRepository.GetOrderByGuid(new Guid(id));
             if (order == null)
             {
                 return NotFound();
@@ -35,12 +36,11 @@ namespace Project_Bier.Controllers
         [HttpPost]
         public IActionResult AddOrder([FromBody] OrderGuestUserViewModel OrderGuestUserViewModel)
         {
-            System.Diagnostics.Debug.WriteLine(OrderGuestUserViewModel);
             if (ModelState.IsValid)
             {
                 GuestUser guestUser = new GuestUser
                 {
-                    UserGuid = Guid.NewGuid().ToString(),
+                    Guid = Guid.NewGuid(),
                     Email = OrderGuestUserViewModel.Email,
                     FirstName = OrderGuestUserViewModel.FirstName,
                     LastName = OrderGuestUserViewModel.LastName
@@ -53,29 +53,27 @@ namespace Project_Bier.Controllers
                     StreetName = OrderGuestUserViewModel.StreetName,
                     CityName = OrderGuestUserViewModel.CityName,
                     Country = OrderGuestUserViewModel.Country,
-                    AssociatedUser = guestUser.UserGuid
+                    AssociatedUser = guestUser.Guid
                 };
 
                 guestUser.ShippingAddress = userAddress;
 
-                bool couponApplied = false;
-                if (OrderGuestUserViewModel.Coupon != "")
+                decimal totalPriceOrder = 0;
+                List<ProductOrder> productOrders = new List<ProductOrder>();
+                foreach (SelectedProduct selectedProduct in OrderGuestUserViewModel.Products)
                 {
-                    couponApplied = true;
+                    ProductOrder productOrder = new ProductOrder()
+                    {
+                        Guid = Guid.NewGuid(),
+                        ProductId = selectedProduct.Id,
+                        Count = selectedProduct.Count
+                    };
+                    productOrders.Add(productOrder);
+                    decimal price = ProductRepository.GetProductByGuid(selectedProduct.Id).Price;
+                    totalPriceOrder += (selectedProduct.Count * price);
                 }
 
-                decimal totalPrice = 0;
-                List<ProductOrder> productlist = new List<ProductOrder>();
-                foreach (inputproduct inputOrder in OrderGuestUserViewModel.Products)
-                {
-                    ProductOrder productOrder = new ProductOrder();
-                    productOrder.Guid = Guid.NewGuid();
-                    productOrder.ProductId = inputOrder.id;
-                    productOrder.Count = inputOrder.count;
-                    productlist.Add(productOrder);
-                    //TODO price van het product halen..
-                    //totalPrice = totalPrice + productRepository.GetProductByGuid(test.id).Price;
-                }
+                // TODO Apply coupon code to order on server side;
 
                 Order newOrder = new Order
                 {
@@ -83,15 +81,15 @@ namespace Project_Bier.Controllers
                     Paid = false,
                     Shipped = false,
                     OrderCreated = DateTime.Now,
-                    TotalPrice = totalPrice,
-                    CouponApplied = couponApplied,
-                    OrderedProducts = productlist,
-                    AssociatedUserGuid = guestUser.UserGuid,
+                    TotalPrice = totalPriceOrder,
+                    CouponCode = OrderGuestUserViewModel.Coupon,
+                    OrderedProducts = productOrders,
+                    AssociatedUserGuid = guestUser.Guid,
                     OrderedFromGuestAccount = true,
                     EmailConfirmationSent = false
                 };
 
-                orderRepository.AddOrder(newOrder, guestUser);
+                OrderRepository.AddOrder(newOrder, guestUser);
                 return Ok(newOrder.Guid);
             }
 
