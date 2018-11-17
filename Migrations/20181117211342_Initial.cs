@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectBier.Migrations
 {
-    public partial class initialinit : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,7 @@ namespace ProjectBier.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    UserGuid = table.Column<string>(nullable: true),
+                    Guid = table.Column<Guid>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false)
@@ -88,15 +88,17 @@ namespace ProjectBier.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    Guid = table.Column<string>(nullable: false),
+                    Guid = table.Column<Guid>(nullable: false),
                     Paid = table.Column<bool>(nullable: false),
                     Shipped = table.Column<bool>(nullable: false),
                     OrderCreated = table.Column<DateTime>(nullable: false),
                     OrderPaid = table.Column<DateTime>(nullable: false),
                     OrderShipped = table.Column<DateTime>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
-                    CouponApplied = table.Column<bool>(nullable: false),
-                    AssociatedUserGuid = table.Column<string>(nullable: true),
+                    Discount = table.Column<decimal>(nullable: false),
+                    FinalPrice = table.Column<decimal>(nullable: false),
+                    CouponCode = table.Column<string>(nullable: true),
+                    AssociatedUserGuid = table.Column<Guid>(nullable: false),
                     OrderedFromGuestAccount = table.Column<bool>(nullable: false),
                     EmailConfirmationSent = table.Column<bool>(nullable: false)
                 },
@@ -135,7 +137,7 @@ namespace ProjectBier.Migrations
                     StreetName = table.Column<string>(nullable: false),
                     CityName = table.Column<string>(nullable: false),
                     Country = table.Column<string>(nullable: false),
-                    AssociatedUser = table.Column<string>(nullable: false),
+                    AssociatedUser = table.Column<Guid>(nullable: false),
                     WebshopUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -256,10 +258,10 @@ namespace ProjectBier.Migrations
                 name: "ProductOrder",
                 columns: table => new
                 {
-                    Guid = table.Column<string>(nullable: false),
+                    Guid = table.Column<Guid>(nullable: false),
                     ProductId = table.Column<string>(nullable: true),
                     Count = table.Column<int>(nullable: false),
-                    OrderGuid = table.Column<string>(nullable: true)
+                    OrderGuid = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,17 +278,17 @@ namespace ProjectBier.Migrations
                 name: "GuestUsers",
                 columns: table => new
                 {
-                    UserGuid = table.Column<string>(nullable: false),
+                    Guid = table.Column<Guid>(nullable: false),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     ShippingAddressPostalCode = table.Column<string>(nullable: true),
                     ShippingAddressStreetNumber = table.Column<string>(nullable: true),
-                    ShippingAddressAssociatedUser = table.Column<string>(nullable: true)
+                    ShippingAddressAssociatedUser = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GuestUsers", x => x.UserGuid);
+                    table.PrimaryKey("PK_GuestUsers", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_GuestUsers_Addresses_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
                         columns: x => new { x.ShippingAddressPostalCode, x.ShippingAddressStreetNumber, x.ShippingAddressAssociatedUser },

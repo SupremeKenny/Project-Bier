@@ -9,8 +9,8 @@ using Project_Bier.Repository;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181115140043_initialinit")]
-    partial class initialinit
+    [Migration("20181117211342_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,7 +185,7 @@ namespace ProjectBier.Migrations
 
             modelBuilder.Entity("Project_Bier.Models.GuestUser", b =>
                 {
-                    b.Property<string>("UserGuid")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email");
@@ -194,13 +194,13 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("ShippingAddressAssociatedUser");
+                    b.Property<Guid?>("ShippingAddressAssociatedUser");
 
                     b.Property<string>("ShippingAddressPostalCode");
 
                     b.Property<string>("ShippingAddressStreetNumber");
 
-                    b.HasKey("UserGuid");
+                    b.HasKey("Guid");
 
                     b.HasIndex("ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser");
 
@@ -209,14 +209,18 @@ namespace ProjectBier.Migrations
 
             modelBuilder.Entity("Project_Bier.Models.Order", b =>
                 {
-                    b.Property<string>("Guid")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AssociatedUserGuid");
+                    b.Property<Guid>("AssociatedUserGuid");
 
-                    b.Property<bool>("CouponApplied");
+                    b.Property<string>("CouponCode");
+
+                    b.Property<decimal>("Discount");
 
                     b.Property<bool>("EmailConfirmationSent");
+
+                    b.Property<decimal>("FinalPrice");
 
                     b.Property<DateTime>("OrderCreated");
 
@@ -239,12 +243,12 @@ namespace ProjectBier.Migrations
 
             modelBuilder.Entity("Project_Bier.Models.ProductOrder", b =>
                 {
-                    b.Property<string>("Guid")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Count");
 
-                    b.Property<string>("OrderGuid");
+                    b.Property<Guid?>("OrderGuid");
 
                     b.Property<string>("ProductId");
 
@@ -261,7 +265,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("StreetNumber");
 
-                    b.Property<string>("AssociatedUser");
+                    b.Property<Guid>("AssociatedUser");
 
                     b.Property<string>("CityName")
                         .IsRequired();
@@ -300,6 +304,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<Guid>("Guid");
+
                     b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
@@ -321,8 +327,6 @@ namespace ProjectBier.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserGuid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
