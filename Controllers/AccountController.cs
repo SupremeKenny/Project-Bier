@@ -45,7 +45,7 @@ namespace Project_Bier.Controllers
             {
                 WebshopUser newUser = new WebshopUser
                 {
-                    UserGuid =  Guid.NewGuid().ToString(),
+                    Guid =  Guid.NewGuid(),
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
@@ -61,7 +61,7 @@ namespace Project_Bier.Controllers
                     StreetName = model.StreetName,
                     CityName = model.CityName,
                     Country = model.Country,
-                    AssociatedUser = newUser.UserGuid
+                    AssociatedUser = newUser.Guid
                 };
 
                 newUser.ShippingAddresses  = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
