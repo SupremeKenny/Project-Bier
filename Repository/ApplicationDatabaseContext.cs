@@ -23,7 +23,7 @@ namespace Project_Bier.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Data source=app.db");
+            optionsBuilder.UseSqlite("Data source=app.db");
         }
     }
 }
