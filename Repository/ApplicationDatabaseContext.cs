@@ -12,7 +12,7 @@ namespace Project_Bier.Repository
     {
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options) { }
         public DbSet<ShippingAddress> Addresses { get; set; }
-        public DbSet<Beer> Beer {get; set;}
+        public DbSet<Product> Products {get; set;}
         public DbSet<Category> Categories {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

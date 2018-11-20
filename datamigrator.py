@@ -15,7 +15,7 @@ for data in data_dict:
         data['available'] = 1
         
         cursor.execute(
-            """INSERT INTO "Beer" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (data['id'],
+            """INSERT INTO "Products" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (data['id'],
                 data['title'],
                 data['price'].replace(",", ".").strip(),
                 bool(data['available']),

@@ -32,7 +32,7 @@ namespace Project_Bier.Repository
 
         public Product GetProductByGuid(String id)
         {
-            return context.Beer
+            return context.Products
                 .FirstOrDefault(p => p.Id == id);
         }
 
@@ -54,12 +54,12 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetProductsByCategory(string category)
         {
-            return context.Beer.Where(p => p.CategoryId == category);
+            return context.Products.Where(p => p.CategoryId == category);
         }
 
         public IEnumerable<Product> ListAll()
         {
-            return context.Beer.ToList();
+            return context.Products.ToList();
         }
 
         public void RemoveProduct(Guid guid)
@@ -74,7 +74,7 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetHomePageProducts()
         {
-            return context.Beer
+            return context.Products
             .OrderBy(x => Guid.NewGuid()).Take(8);
         }
     }
