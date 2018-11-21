@@ -183,7 +183,7 @@ namespace ProjectBier.Migrations
 
             modelBuilder.Entity("Project_Bier.Models.GuestUser", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("UserGuid")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email");
@@ -198,7 +198,7 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("ShippingAddressStreetNumber");
 
-                    b.HasKey("Guid");
+                    b.HasKey("UserGuid");
 
                     b.HasIndex("ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser");
 
@@ -302,8 +302,6 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<Guid>("Guid");
-
                     b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
@@ -325,6 +323,8 @@ namespace ProjectBier.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<Guid>("UserGuid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

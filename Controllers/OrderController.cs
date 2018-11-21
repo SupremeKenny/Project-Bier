@@ -40,7 +40,7 @@ namespace Project_Bier.Controllers
             {
                 GuestUser guestUser = new GuestUser
                 {
-                    Guid = Guid.NewGuid(),
+                    UserGuid = Guid.NewGuid(),
                     Email = OrderGuestUserViewModel.Email,
                     FirstName = OrderGuestUserViewModel.FirstName,
                     LastName = OrderGuestUserViewModel.LastName
@@ -53,7 +53,7 @@ namespace Project_Bier.Controllers
                     StreetName = OrderGuestUserViewModel.StreetName,
                     CityName = OrderGuestUserViewModel.CityName,
                     Country = OrderGuestUserViewModel.Country,
-                    AssociatedUser = guestUser.Guid
+                    AssociatedUser = guestUser.UserGuid
                 };
 
                 guestUser.ShippingAddress = userAddress;
@@ -84,7 +84,7 @@ namespace Project_Bier.Controllers
                     TotalPrice = totalPriceOrder,
                     CouponCode = OrderGuestUserViewModel.Coupon,
                     OrderedProducts = productOrders,
-                    AssociatedUserGuid = guestUser.Guid,
+                    AssociatedUserGuid = guestUser.UserGuid,
                     OrderedFromGuestAccount = true,
                     EmailConfirmationSent = false
                 };

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectBier.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,7 @@ namespace ProjectBier.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Guid = table.Column<Guid>(nullable: false),
+                    UserGuid = table.Column<Guid>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false)
@@ -278,7 +278,7 @@ namespace ProjectBier.Migrations
                 name: "GuestUsers",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(nullable: false),
+                    UserGuid = table.Column<Guid>(nullable: false),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
@@ -288,7 +288,7 @@ namespace ProjectBier.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GuestUsers", x => x.Guid);
+                    table.PrimaryKey("PK_GuestUsers", x => x.UserGuid);
                     table.ForeignKey(
                         name: "FK_GuestUsers_Addresses_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
                         columns: x => new { x.ShippingAddressPostalCode, x.ShippingAddressStreetNumber, x.ShippingAddressAssociatedUser },
