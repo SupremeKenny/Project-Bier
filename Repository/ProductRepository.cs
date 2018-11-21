@@ -63,9 +63,6 @@ namespace Project_Bier.Repository
         {
             return context.Beer
             .Select (p => p);
-            // .OrderBy (p => p.Id);
-            // return context.Beer
-            // .OrderBy(x => Guid.NewGuid()).Take(8);
             // throw new NotImplementedException();
         }
 
@@ -87,15 +84,9 @@ namespace Project_Bier.Repository
 
         public Page<Beer> Pagination (int page_index, int page_size)
         {
-            var paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Id);
-            IEnumerable<object> resultToReturn = paginationResult.Items.Select(prod => new 
-            {
-                Name = prod.Name
-            });
+            Page<Beer> paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Id);
 
             return paginationResult;
-
-            //return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
         }
     }
 }

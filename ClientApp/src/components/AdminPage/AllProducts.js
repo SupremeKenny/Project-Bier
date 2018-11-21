@@ -24,17 +24,17 @@ export class AllProducts extends React.Component{
             boundaryRange: 0,
             siblingRange: 1,
             showEllipsis: true,
-            showFirstAndLastNav: false,
+            showFirstAndLastNav: true,
             showPreviousAndNextNav: true,
-            totalPages: 10,
+            totalPages: 1,
         };
       }
 
       handlePaginationChange = (e, { activePage }) =>{
-        fetch("/admin/FetchAllProducts/" + activePage + "/15")
+        fetch("/admin/FetchAllProducts/" + (activePage - 1)+ "/15")
         .then(results => {
           results.json().then(data => {
-            console.log ("PageChange: " + activePage),
+            // console.log ("PageChange: " + activePage),
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true, activePage });
           });
         });
@@ -44,7 +44,8 @@ export class AllProducts extends React.Component{
         fetch("/admin/FetchAllProducts/0/15")
         .then(results => {
           results.json().then(data => {
-            console.log ("OnWillMount: " + this.state.activePage),
+            // console.log ("OnWillMount: " + this.state.activePage),
+            console.log(data),
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true });
           });
         });
@@ -82,7 +83,7 @@ export class AllProducts extends React.Component{
                         onPageChange={this.handlePaginationChange}
                         size='mini'
                         siblingRange={siblingRange}
-                        totalPages={totalPages}
+                        totalPages={totalPages + 1}
                         // Heads up! All items are powered by shorthands, if you want to hide one of them, just pass `null` as value
                         ellipsisItem={showEllipsis ? undefined : null}
                         firstItem={showFirstAndLastNav ? undefined : null}
@@ -100,7 +101,8 @@ const ProductGroup = props => (
     <List divided verticalAlign='middle'>
         {
             props.products.map(p => (
-                <ProductItem name = {p.name}/>
+                <ProductItem name = {p.name} id = {p.id}/>
+                // <ProductItem name = {p.id}/>
             )
         )}
     </List>
@@ -111,11 +113,18 @@ const ProductItem = props =>{
     return (
         <List.Item>
             <List.Content floated='right'>
-                <Button>Edit</Button>
+                <Button content = "Delete"/>
             </List.Content>
-            {/* <Image avatar src='/images/avatar/small/lena.png' /> */}
-            <Icon name = "arrow alternate circle down outline"/>
-            <List.Content>{props.name}</List.Content>
+            <List.Content floated='right'>
+                <Button content = "Edit"/>
+            </List.Content>
+            <Icon name = "beer"/>
+            <List.Content >{props.name}</List.Content>
+
+            {/* <Button fluid>
+                <Icon name = "beer"/>
+                {props.name}
+            </Button> */}
         </List.Item>
     );
 }

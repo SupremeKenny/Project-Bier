@@ -31,7 +31,8 @@ namespace Project_Bier.Controllers
 
             IEnumerable<object> resultToReturn = projects.Items.Select(prod => new 
             {
-                Name = prod.Name
+                Name = prod.Name,
+                Id = prod.Id
             });
 
             if(projects == null) {

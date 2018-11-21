@@ -42,6 +42,7 @@ class DesktopContainer extends Component {
             fixed="top"
            
             size="large"
+            inverted
             
             style={menuStyle}
             className="top-menu"
