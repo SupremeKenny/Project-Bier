@@ -19,38 +19,38 @@ const LoaderContainer = () => {
   </Container>
 }
 
-const options = [
-  { key: 'test1', text: 'test1', value: 'test1' },
-  { key: 'test2', text: 'test2', value: 'test2' },
-  { key: 'test3', text: 'test3', value: 'test3' },
-  { key: 'test4', text: 'test4', value: 'test4' },
-  { key: 'test5', text: 'test5', value: 'test5' },
-]
+// const options = [
+//   { key: 'test1', text: 'test1', value: 'test1' },
+//   { key: 'test2', text: 'test2', value: 'test2' },
+//   { key: 'test3', text: 'test3', value: 'test3' },
+//   { key: 'test4', text: 'test4', value: 'test4' },
+//   { key: 'test5', text: 'test5', value: 'test5' },
+// ]
 
-const filterStyle = { 
-  // marginBottom: '0em', 
-  marginTop: '1em',
-  width: "70%"        
-                    };
+// const filterStyle = { 
+//   // marginBottom: '0em', 
+//   marginTop: '1em',
+//   width: "70%"        
+//                     };
 
 
-const FilterDropdown = props => (
+// const FilterDropdown = props => (
 
-  <Grid columns={4} style = {filterStyle}>
-    <Grid.Column>
-      <Dropdown placeholder= 'Inhoud' fluid selection options={options} />
-    </Grid.Column>
-    <Grid.Column>
-      <Dropdown placeholder= 'Alcohol %' fluid selection options={options}/>
-    </Grid.Column>
-    <Grid.Column>
-      <Dropdown placeholder= 'Brouwer' fluid selection options={options}/>
-    </Grid.Column>
-    <Grid.Column>
-      <Dropdown placeholder= 'Herkomst' fluid selection options={options}/>  
-    </Grid.Column>
-  </Grid>
-  )
+//   <Grid columns={4} style = {filterStyle}>
+//     <Grid.Column>
+//       <Dropdown placeholder= 'Inhoud' fluid selection options={options} />
+//     </Grid.Column>
+//     <Grid.Column>
+//       <Dropdown placeholder= 'Alcohol %' fluid selection options={options}/>
+//     </Grid.Column>
+//     <Grid.Column>
+//       <Dropdown placeholder= 'Brouwer' fluid selection options={options}/>
+//     </Grid.Column>
+//     <Grid.Column>
+//       <Dropdown placeholder= 'Herkomst' fluid selection options={options}/>  
+//     </Grid.Column>
+//   </Grid>
+//   )
 
 // const SortDropdown = () => {
 //   const color = {
@@ -103,8 +103,8 @@ export class CategoryPage extends React.Component {
       hasMoreItems: true,
       currentIndex: 0
     };
-    this.sortByPriceAsc = this.sortByPriceAsc.bind(this);
-    this.sortByPriceDesc = this.sortByPriceDesc.bind(this);
+    // this.sortByPriceAsc = this.sortByPriceAsc.bind(this);
+    // this.sortByPriceDesc = this.sortByPriceDesc.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -133,21 +133,21 @@ export class CategoryPage extends React.Component {
     });
   }
 
-  sortByPriceAsc() {
-    const {products} = this.state;
-    let newProducts = products.reverse()
-    this.setState({
-      products: newProducts.sort((a,b) => a.price > b.price)
-    });
-  }
+  // sortByPriceAsc() {
+  //   const {products} = this.state;
+  //   let newProducts = products.reverse()
+  //   this.setState({
+  //     products: newProducts.sort((a,b) => a.price > b.price)
+  //   });
+  // }
 
-  sortByPriceDesc() {
-    const {products} = this.state;
-    let newProducts = products.reverse()
-    this.setState({
-      products: newProducts.sort((a,b) => a.price < b.price)
-    });
-  }
+  // sortByPriceDesc() {
+  //   const {products} = this.state;
+  //   let newProducts = products.reverse()
+  //   this.setState({
+  //     products: newProducts.sort((a,b) => a.price < b.price)
+  //   });
+  // }
 
   
 
@@ -155,11 +155,11 @@ export class CategoryPage extends React.Component {
     return (
       <MainContainer>
         <h1>{CategoryDict[this.props.match.params.id]} </h1>
-        <FilterDropdown/>
+        {/* <FilterDropdown/> */}
         {/* <SortDropdown/> */}
 
 
-        <Grid>
+        {/* <Grid>
           <Grid.Column floated='left' width={5}>
             <p style = {color}>Aantal Producten: </p>
           </Grid.Column>
@@ -168,15 +168,9 @@ export class CategoryPage extends React.Component {
               Sorteer op: {' '}
               <Button onClick={this.sortByPriceAsc}>asc $</Button>
               <Button onClick={this.sortByPriceDesc}>desc $</Button>
-              
-              {/* <Dropdown 
-              inline 
-              options={sortValues} 
-              defaultValue={sortValues[0].key 
-              } /> */}
             </span>
           </Grid.Column>
-        </Grid>
+        </Grid> */}
 
         {/* <br/><br/> */}
         {/* <Button onClick={this.sortByPriceAsc}>asc</Button>
