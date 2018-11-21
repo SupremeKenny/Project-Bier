@@ -1,5 +1,4 @@
  body {
-   background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
    background-repeat: no-repeat;
    background-attachment: fixed;
    margin: 0;
@@ -15,9 +14,13 @@
  }
 
 
- .sub-menu {
-   background-color: rgba(83, 82, 237,1.0) !important;
+ .menu {
+  background-color: #2f3542 !important;
  }
+
+ .sub-menu {
+  background-color: rgba(30, 144, 255,1.0) !important;
+}
 
  .product-card {
    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
@@ -26,14 +29,12 @@
    border-top-color: transparent !important;
    border-bottom-color: transparent !important;
    transition: all 0.3s cubic-bezier(.25, .8, .25, 1) !important;
-   border-radius: 1rem !important;
+   border-radius: 0.75rem !important;
 
  }
 
  .product-card:hover {
    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
-   border-radius: 2rem !important;
-
  }
 
  /* Bob */
@@ -87,7 +88,7 @@
 
  .hvr-bob {
   -webkit-transform: scale(1.1) rotate(4deg);
-  transform: scale(1.1) rotate(4deg);
+  transform: scale(1) rotate(4deg);
  }
 
 
@@ -144,3 +145,14 @@
    -webkit-animation-iteration-count: 1;
    animation-iteration-count: 1;
  }
+
+.brand {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+
+.brand-hover {
+  -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(0%);
+  transform: scale(1.2);
+}

@@ -38,7 +38,7 @@ const Breadcrumb1 = () => (
     </Breadcrumb.Section>
     <Breadcrumb.Divider icon="right chevron" />
     <Breadcrumb.Section active>
-      <a href="/cart">Mijn Winkelwagen</a>
+      <a href="/winkelwagen">Mijn Winkelwagen</a>
     </Breadcrumb.Section>
   </Breadcrumb>
 );
@@ -47,9 +47,9 @@ const Breadcrumb1 = () => (
 
 const ButtonCoC = () => (
   <Button.Group>
-    <Button>Annuleren</Button>
+    <Button href="/">Annuleren</Button>
     <Button.Or text="of" />
-    <Button positive>Doorgaan</Button>
+    <Button positive href="/doorgaan">Doorgaan</Button>
   </Button.Group>
 );
 
