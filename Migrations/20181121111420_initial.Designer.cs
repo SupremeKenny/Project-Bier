@@ -4,22 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Project_Bier.Repository;
 
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181027204648_InitialCreateDatabase")]
-    partial class InitialCreateDatabase
+    [Migration("20181121111420_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -186,6 +183,82 @@ namespace ProjectBier.Migrations
                     b.ToTable("FavoriteList");
                 });
 
+            modelBuilder.Entity("Project_Bier.Models.GuestUser", b =>
+                {
+                    b.Property<Guid>("UserGuid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<Guid?>("ShippingAddressAssociatedUser");
+
+                    b.Property<string>("ShippingAddressPostalCode");
+
+                    b.Property<string>("ShippingAddressStreetNumber");
+
+                    b.HasKey("UserGuid");
+
+                    b.HasIndex("ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser");
+
+                    b.ToTable("GuestUsers");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.Order", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AssociatedUserGuid");
+
+                    b.Property<string>("CouponCode");
+
+                    b.Property<decimal>("Discount");
+
+                    b.Property<bool>("EmailConfirmationSent");
+
+                    b.Property<decimal>("FinalPrice");
+
+                    b.Property<DateTime>("OrderCreated");
+
+                    b.Property<DateTime>("OrderPaid");
+
+                    b.Property<DateTime>("OrderShipped");
+
+                    b.Property<bool>("OrderedFromGuestAccount");
+
+                    b.Property<bool>("Paid");
+
+                    b.Property<bool>("Shipped");
+
+                    b.Property<decimal>("TotalPrice");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.ProductOrder", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<Guid?>("OrderGuid");
+
+                    b.Property<string>("ProductId");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("OrderGuid");
+
+                    b.ToTable("ProductOrder");
+                });
+
             modelBuilder.Entity("Project_Bier.Models.ShippingAddress", b =>
                 {
                     b.Property<string>("PostalCode");
@@ -320,6 +393,20 @@ namespace ProjectBier.Migrations
                     b.HasOne("Project_Bier.Models.WebshopUser")
                         .WithMany("FavoriteLists")
                         .HasForeignKey("WebshopUserId");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.GuestUser", b =>
+                {
+                    b.HasOne("Project_Bier.Models.ShippingAddress", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.ProductOrder", b =>
+                {
+                    b.HasOne("Project_Bier.Models.Order")
+                        .WithMany("OrderedProducts")
+                        .HasForeignKey("OrderGuid");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.ShippingAddress", b =>

@@ -1,14 +1,14 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
 namespace Project_Bier.Models
 {
-    public struct ProductOrder
+    public class ProductOrder
     {
-        Product product;
-        int count;
-
-        public ProductOrder(Product product, int count)
-        {
-            this.product = product;
-            this.count = count;
-        }
+        [Key] 
+        public Guid Guid { get; set; }
+        public string ProductId {get; set;}
+        public int Count {get; set;}
     }
 }

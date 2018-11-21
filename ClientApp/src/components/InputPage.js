@@ -140,8 +140,44 @@ class InputInfo extends Component {
     canBeSubmitted() {
       const errors = validate(this.state.voornaam, this.state.achternaam, this.state.straatnaam, this.state.huisnummer, this.state.postcode, this.state.stad, this.state.telefoonnummer, this.state.email);
       const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
-      return NotFilledIn ? alert('Veld niet correct ingevuld.') : window.location.href = "/payment" 
+      return NotFilledIn ? alert('Veld niet correct ingevuld.') : this.addOrder()
       //return !NotFilledIn;
+    }
+
+    componentWillMount(){
+      this.setState({products: localStorage.Cart ? JSON.parse(localStorage.Cart) : []})
+    }
+
+    addOrder() {
+     
+      console.log(this.state);
+      fetch('order/addorder/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      
+      body: JSON.stringify({
+        
+             "Coupon": "",
+             //TODO:Coupon meegeven
+             "PostalCode": this.state.postcode,
+             "StreetNumber": this.state.huisnummer,
+             "StreetName": this.state.straatnaam,
+             "CityName": this.state.stad,
+             "Country": "Nederland",
+             "FirstName": this.state.voornaam,
+             "LastName": this.state.achternaam,
+             "Email": this.state.email,   
+             "Products": this.state.products,
+      })
+      }).then(results => {
+        results.json().then(data => window.location.href = "/payment/" + data);
+      });
+      
+       
+
     }
   
     render() {
@@ -204,7 +240,7 @@ class InputInfo extends Component {
                     <Button.Group size = {'big'}>
                       <Button href="/doorgaan">Teruggaan</Button>
                       <Button.Or text="of" />
-                      <Button positive>Doorgaan</Button>
+                      <Button positive  disabled={NotFilledIn}>Doorgaan</Button>
                     </Button.Group>
                 </Form>
             </Container>
