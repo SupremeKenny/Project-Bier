@@ -21,7 +21,7 @@ namespace Project_Bier.Controllers
         public IActionResult Search(String id)
         {
             IEnumerable<Product> results = SearchService.Search(id);
-            return Json(results);
+            return Json(new {product =results});
         }
 
         [HttpGet]
