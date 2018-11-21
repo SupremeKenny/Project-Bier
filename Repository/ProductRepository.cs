@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Project_Bier.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Project_Bier.Pagination;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Project_Bier.Repository
 {
@@ -59,11 +61,12 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> ListAll()
         {
-            // return context.Beer
-            // .Select (p => p);
+            return context.Beer
+            .Select (p => p);
+            // .OrderBy (p => p.Id);
             // return context.Beer
             // .OrderBy(x => Guid.NewGuid()).Take(8);
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public void RemoveProduct(Guid guid)
@@ -80,6 +83,19 @@ namespace Project_Bier.Repository
         {
             return context.Beer
             .OrderBy(x => Guid.NewGuid()).Take(8);
+        }
+
+        public Page<Beer> Pagination (int page_index, int page_size)
+        {
+            var paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Id);
+            IEnumerable<object> resultToReturn = paginationResult.Items.Select(prod => new 
+            {
+                Name = prod.Name
+            });
+
+            return paginationResult;
+
+            //return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
         }
     }
 }

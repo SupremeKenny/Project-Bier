@@ -8,23 +8,21 @@ export const NavMenu = () => {
     return (
 
         <Menu vertical inverted fixed>
-            <Menu.Item
-            name = "Home"
-            >
-            <Link to="/home">Home</Link>
+            <Menu.Item name = "Home">
+                <Link to="/admin">Home</Link>
             </Menu.Item>
 
             <Menu.Item>
                 Producten
                 <Menu.Menu>
                     <Menu.Item name='searchProduct'>
-                        Zoeken
+                        <Link to="/admin-searchProduct">Zoeken</Link>
                     </Menu.Item>
                     <Menu.Item name='addProduct'>
-                        Toevoegen
+                        <Link to="/admin-addProduct">Toevoegen</Link>
                     </Menu.Item>
                     <Menu.Item name='allProducts'>
-                        Alle Producten
+                        <Link to="/admin-allProducts">Alle Producten</Link>
                     </Menu.Item>
 
                 </Menu.Menu>
@@ -33,14 +31,11 @@ export const NavMenu = () => {
             <Menu.Item>
                 Gebruikers
                 <Menu.Menu>
-                    <Menu.Item name='searchUser'>
-                        Zoeken
-                    </Menu.Item>
                     <Menu.Item name='addUser'>
-                        Toevoegen
+                        <Link to="/admin-addUser">Toevoegen</Link>
                     </Menu.Item>
                     <Menu.Item name='allUsers'>
-                        Alle Gebruikers
+                        <Link to="/admin-allUsers">Alle Gebruikers</Link>
                     </Menu.Item>
 
                 </Menu.Menu>
@@ -49,7 +44,7 @@ export const NavMenu = () => {
             <Menu.Item
             name = "accountSettings"
             >
-            Account Settings
+            <Link to="/admin-accountSettings">Account Settings</Link>
             </Menu.Item>
       </Menu>
       )

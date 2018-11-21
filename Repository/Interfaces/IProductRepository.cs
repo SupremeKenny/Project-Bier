@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Models;
+using Project_Bier.Pagination;
 
 namespace Project_Bier.Repository
 {
@@ -36,6 +38,8 @@ namespace Project_Bier.Repository
         IEnumerable<Product>  ListAll();
 
         IEnumerable<Product> GetHomePageProducts();
+
+        Page<Beer> Pagination (int page_index, int page_size);
 
     }
 }

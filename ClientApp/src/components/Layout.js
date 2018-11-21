@@ -66,7 +66,7 @@ class DesktopContainer extends Component {
                 />
               </Menu.Item>
               <Menu.Item>
-                <Link to="/">
+                <Link to="/admin">
                   <Button color="green">Inloggen</Button>
                 </Link>
                 <Link to="/">
