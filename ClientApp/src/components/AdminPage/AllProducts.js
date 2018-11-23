@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import { 
 Button, 
-Image, 
 List , 
 Icon, 
-CardGroup, 
 Dimmer, 
 Loader, 
-Label, 
 Pagination, 
 Grid,
-Segment,
-Form
     } from 'semantic-ui-react';
 
 export class AllProducts extends React.Component{
@@ -28,17 +23,39 @@ export class AllProducts extends React.Component{
             showPreviousAndNextNav: true,
             totalPages: 1,
         };
+
+        // this.handleDelete = this.handleDelete.bind(this);
       }
+
+    handleDelete = (id) => {   
+        fetch('/admin/Delete/' + id, {  
+            method: 'delete'  
+        })
+        .then(data => {  
+            console.log(data),
+            this.setState(  
+                {  
+                    products: this.state.products.filter((rec) => {  
+                        return (rec.id != id);  
+                    })  
+                });  
+        });  
+        console.log("iets");
+        console.log(this.state.products);
+    }
 
       handlePaginationChange = (e, { activePage }) =>{
         fetch("/admin/FetchAllProducts/" + (activePage - 1)+ "/15")
         .then(results => {
           results.json().then(data => {
             // console.log ("PageChange: " + activePage),
+            // console.log(e),
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true, activePage });
           });
         });
       } 
+
+
 
       componentWillMount() {
         fetch("/admin/FetchAllProducts/0/15")
@@ -73,7 +90,24 @@ export class AllProducts extends React.Component{
             // <ProductGroup products={this.state.products} />
             <Grid columns={1}>
                 <Grid.Column>
-                    <ProductGroup products={this.state.products} />
+                    {/* <ProductGroup products={this.state.products} /> */}
+
+                    <List divided verticalAlign='middle'>
+                        {
+                            this.state.products.map(p => (
+                                <List.Item>
+                                    <List.Content floated='right'>
+                                        <Button content = "Delete" onClick = {this.handleDelete.bind(p.id)}/>
+                                    </List.Content>
+                                    <List.Content floated='right'>
+                                        <Button content = "Edit"/>
+                                    </List.Content>
+                                    <Icon name = "beer"/>
+                                    <List.Content >{p.name}</List.Content>
+                                </List.Item>
+                            )
+                        )}
+                    </List>
                 </Grid.Column>
 
                 <Grid.Column>
@@ -97,34 +131,29 @@ export class AllProducts extends React.Component{
     }
 }
 
-const ProductGroup = props => (
-    <List divided verticalAlign='middle'>
-        {
-            props.products.map(p => (
-                <ProductItem name = {p.name} id = {p.id}/>
-                // <ProductItem name = {p.id}/>
-            )
-        )}
-    </List>
-);
+// const ProductGroup = props => (
+//     <List divided verticalAlign='middle'>
+//         {
+//             props.products.map(p => (
+//                 <ProductItem name = {p.name} id = {p.id}/>
+//             )
+//         )}
+//     </List>
+// );
 
 
-const ProductItem = props =>{
-    return (
-        <List.Item>
-            <List.Content floated='right'>
-                <Button content = "Delete"/>
-            </List.Content>
-            <List.Content floated='right'>
-                <Button content = "Edit"/>
-            </List.Content>
-            <Icon name = "beer"/>
-            <List.Content >{props.name}</List.Content>
-
-            {/* <Button fluid>
-                <Icon name = "beer"/>
-                {props.name}
-            </Button> */}
-        </List.Item>
-    );
-}
+// const ProductItem = props =>{
+    
+//     return (
+//         <List.Item>
+//             <List.Content floated='right'>
+//                 <Button content = "Delete"/>
+//             </List.Content>
+//             <List.Content floated='right'>
+//                 <Button content = "Edit"/>
+//             </List.Content>
+//             <Icon name = "beer"/>
+//             <List.Content >{props.name}</List.Content>
+//         </List.Item>
+//     );
+// }

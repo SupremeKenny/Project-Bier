@@ -49,7 +49,7 @@ export default class App extends Component {
             <AppRoute path="/admin-addProduct" layout={AdminPage} component={Home} />
             <AppRoute path="/admin-allProducts" layout={AdminPage} component={AllProducts} />
             <AppRoute path="/admin-addUser" layout={AdminPage} component={Home} />
-            <AppRoute path="/admin-allUsers" layout={AdminPage} component={Counter} />
+            <AppRoute path="/admin-allUsers" layout={AdminPage} component={AllUsers} />
             <AppRoute path="/admin-accountSettings" layout={AdminPage} component={Home} />
           </Switch>
         </div>

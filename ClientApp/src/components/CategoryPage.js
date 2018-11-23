@@ -84,16 +84,16 @@ const LoaderContainer = () => {
   
 // }
 
-const color = {
-  color: "grey",
-  marginBottom: '1em'
-}
+// const color = {
+//   color: "grey",
+//   marginBottom: '1em'
+// }
 
-const sortValues = [
-  {key: 'meest_populair', text: 'Meest populair', value: 'meest_populair'},
-  {key: 'hoogste_prijs', text: 'Hoogste prijs', value: 'hoogste_prijs'},
-  {key: 'laagste_prijs', text: 'Laagste prijs', value: 'laagste_prijs'},
-]
+// const sortValues = [
+//   {key: 'meest_populair', text: 'Meest populair', value: 'meest_populair'},
+//   {key: 'hoogste_prijs', text: 'Hoogste prijs', value: 'hoogste_prijs'},
+//   {key: 'laagste_prijs', text: 'Laagste prijs', value: 'laagste_prijs'},
+// ]
 
 export class CategoryPage extends React.Component {
   constructor() {

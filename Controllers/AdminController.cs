@@ -22,11 +22,6 @@ namespace Project_Bier.Controllers
         [HttpGet("{page_index}/{numberOfProducts}")]
         public IActionResult FetchAllProducts (int page_index, int numberOfProducts) 
         {
-            // IEnumerable <Product> products = productRepository
-            // .ListAll()
-            // .OrderBy(p => p.Id)
-            // .Take(15);
-            
             var projects = productRepository.Pagination(page_index, numberOfProducts);
 
             IEnumerable<object> resultToReturn = projects.Items.Select(prod => new 
@@ -41,8 +36,13 @@ namespace Project_Bier.Controllers
 
 
             return new OkObjectResult(new {TotalPages = projects.TotalPages, Items = resultToReturn});
-            //return Json(new{products = products});
         }
+
+        [HttpDelete("{id}")]
+        public void Delete(String id)  
+        {  
+            productRepository.RemoveProduct(id); 
+        }  
 
     }
 

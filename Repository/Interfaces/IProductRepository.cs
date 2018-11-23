@@ -20,7 +20,7 @@ namespace Project_Bier.Repository
 
         void UpdateProduct(Guid guid, Product newProduct);
 
-        void RemoveProduct(Guid guid);
+        void RemoveProduct(String guid);
 
         void AddProducts(Product[] products);
 

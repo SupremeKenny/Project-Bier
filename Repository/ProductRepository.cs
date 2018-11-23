@@ -63,12 +63,21 @@ namespace Project_Bier.Repository
         {
             return context.Beer
             .Select (p => p);
-            // throw new NotImplementedException();
         }
 
-        public void RemoveProduct(Guid guid)
+        public void RemoveProduct(String guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Beer deleteProduct = context.Beer.Find(guid);
+                context.Beer.Remove(deleteProduct);
+                context.SaveChanges();
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public void UpdateProduct(Guid guid, Product newProduct)
