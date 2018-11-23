@@ -34,7 +34,7 @@ export class SearchPage extends React.Component {
 
     loadItems() {
         fetch(
-            "/search/search?id=" + this.props.match.params.query
+            "/search/search?id=" + this.props.match.params.query.toLowerCase()
         ).then(results => {
             results.json().then(data => {
                 console.log("searched");
@@ -47,7 +47,8 @@ export class SearchPage extends React.Component {
         if (this.state.loaded == true) {
             return (
                 <MainContainer>
-                    <h1>You searched for {this.props.query}</h1>
+                    <h1>Je hebt gezocht naar "{this.props.match.params.query}"</h1>
+                    <p>{this.state.products.length} zoekresultaten.</p>
 
                     <CardGroup itemsPerRow={4}>
                         {this.state.products.map(item => (

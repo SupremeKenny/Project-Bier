@@ -18,6 +18,7 @@ import {
   Header,
   Label
 } from "semantic-ui-react";
+
 import { connect } from "react-redux";
 import { HeartButton } from './ProductPage/heart-button.js'
 
