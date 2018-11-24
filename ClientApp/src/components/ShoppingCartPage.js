@@ -10,25 +10,13 @@ import {
 import { bindActionCreators } from "redux";
 
 import {
-  Header,
   Container,
-  Rating,
   Breadcrumb,
-  Segment,
   Grid,
   Image,
-  Label,
   Button,
-  Icon,
-  Popup,
   Divider,
-  Table,
   Input,
-  Card,
-  Menu,
-  CardGroup,
-  List,
-  Dropdown
 } from "semantic-ui-react";
 
 const Breadcrumb1 = () => (
@@ -62,11 +50,7 @@ const Input1 = () => <Input placeholder="Vul je kortingscode in..." />;
 class ShoppingCart extends Component {
   constructor() {
     super();
-    this.state = {
-      totalPrice: 0,
-    };
   }
-  totalPrice = 0;
   render() {
     return (
       <Container>
@@ -82,7 +66,7 @@ class ShoppingCart extends Component {
             
             <Grid divided="vertically" columns="equal">
               {this.props.shoppingcart.products.map(product => (
-                <Grid.Row>
+                <Grid.Row key={product.id}>
                   <Grid.Column width={2}>
                     <Image src={product.url} size="mini" />
                   </Grid.Column>
@@ -91,7 +75,7 @@ class ShoppingCart extends Component {
                   <Grid.Column width={3}>
                     <Space />
                     <div className="ui right labeled input small">
-                      <input type="text" id="txtNum" value={product.count} />
+                      <input type="text" id="txtNum" value={product.count} readOnly/>
                       <div className="ui mini vertical buttons">
                         <button
                           className="ui icon button"
@@ -116,7 +100,7 @@ class ShoppingCart extends Component {
                           }}
                         >
                           {" "}
-                          <i class="down chevron icon" />
+                          <i className="down chevron icon" />
                         </button>
                       </div>
                     </div>
