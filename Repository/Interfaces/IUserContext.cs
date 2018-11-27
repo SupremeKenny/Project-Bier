@@ -11,11 +11,9 @@ namespace Project_Bier.Repository {
         /// </summary>
         /// <param name="user">The user that should be identified with the token</param>
         /// <returns>Returns a token string</returns>
-        string GenerateToken(WebshopUser user);
+        Task<string> GenerateToken(WebshopUser user);
 
         Task<WebshopUser> GetCurrentUser();
-
-        WebshopUser NewGuestUser();
 
         void RemoveUserGuidCookies();
 

@@ -19,19 +19,42 @@ namespace Project_Bier.Repository
     public class UserContext : IUserContext
     {
         private readonly UserManager<WebshopUser> userManager;
+        private readonly IConfiguration config;
         private WebshopUser currentUser;
         private HttpContext httpContext;
 
-        public UserContext(UserManager<WebshopUser> userManager,  IHttpContextAccessor contextAccessor,  HttpContext httpContext)
+        public UserContext(UserManager<WebshopUser> userManager, IHttpContextAccessor contextAccessor, HttpContext httpContext, IConfiguration config)
         {
             this.userManager = userManager;
             this.httpContext = contextAccessor.HttpContext;
+            this.config = config;
         }
 
-        
-        public string GenerateToken(WebshopUser user)
+        public async Task<string> GenerateToken(WebshopUser user)
         {
-            throw new NotImplementedException();
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Sid, user.Id),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.UserData, user.UserGuid.ToString())
+            };
+
+            IList<Claim> userClaims = await userManager.GetClaimsAsync(user);
+            claims.AddRange(claims);
+
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"]));
+            SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            JwtSecurityToken securityToken = new JwtSecurityToken(
+                config["Token:Issuer"],
+                config["Token:Issuer"],
+                claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: credentials);
+            
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
 
         public Task<WebshopUser> GetCurrentUser()
@@ -45,11 +68,6 @@ namespace Project_Bier.Repository
         }
 
         public Guid? GetUserGuidFromCookies()
-        {
-            throw new NotImplementedException();
-        }
-
-        public WebshopUser NewGuestUser()
         {
             throw new NotImplementedException();
         }
