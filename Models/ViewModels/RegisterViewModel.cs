@@ -16,6 +16,5 @@ namespace Project_Bier.Models.ViewModels
         public string Country { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime Birtday { get; set; }
     }
 }

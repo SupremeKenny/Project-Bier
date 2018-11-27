@@ -16,7 +16,7 @@ namespace ProjectBier.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -126,6 +126,42 @@ namespace ProjectBier.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Project_Bier.Models.Beer", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AlcoholPercentage");
+
+                    b.Property<bool>("Available");
+
+                    b.Property<string>("BeerColourHex");
+
+                    b.Property<string>("BrewerName");
+
+                    b.Property<string>("CategoryId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("CountryName");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("ServingGlass");
+
+                    b.Property<string>("ServingTemperature");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Beers");
+                });
+
             modelBuilder.Entity("Project_Bier.Models.Category", b =>
                 {
                     b.Property<string>("CategoryId")
@@ -152,36 +188,6 @@ namespace ProjectBier.Migrations
                     b.HasIndex("WebshopUserId");
 
                     b.ToTable("FavoriteList");
-                });
-
-            modelBuilder.Entity("Project_Bier.Models.Product", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AlcoholPercentage");
-
-                    b.Property<bool>("Available");
-
-                    b.Property<string>("BrewerName");
-
-                    b.Property<string>("CategoryId");
-
-                    b.Property<string>("Content");
-
-                    b.Property<string>("CountryName");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<string>("Url");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.ShippingAddress", b =>

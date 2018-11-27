@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ProjectBier.Migrations
 {
-    public partial class InitialCreateDatabase : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +52,7 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Beer",
+                name: "Beers",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -65,11 +65,14 @@ namespace ProjectBier.Migrations
                     Content = table.Column<string>(nullable: true),
                     AlcoholPercentage = table.Column<string>(nullable: true),
                     BrewerName = table.Column<string>(nullable: true),
-                    CountryName = table.Column<string>(nullable: true)
+                    CountryName = table.Column<string>(nullable: true),
+                    ServingTemperature = table.Column<string>(nullable: true),
+                    ServingGlass = table.Column<string>(nullable: true),
+                    BeerColourHex = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Beer", x => x.Id);
+                    table.PrimaryKey("PK_Beers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,7 +304,7 @@ namespace ProjectBier.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Beer");
+                name: "Beers");
 
             migrationBuilder.DropTable(
                 name: "Categories");
