@@ -16,6 +16,7 @@ import { Counter } from "./components/AdminPage/Counter.js";
 import { Home } from "./components/AdminPage/Home.js";
 import {AllProducts} from "./components/AdminPage/AllProducts.js"
 import {AllUsers} from "./components/AdminPage/AllUsers.js";
+import {AddProducts} from "./components/AdminPage/AddProduct.js";
 
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -46,7 +47,7 @@ export default class App extends Component {
             {/* Admin Routes */}
             <AppRoute path="/admin" layout={AdminPage} component={Home} />
             <AppRoute path="/admin-searchProduct" layout={AdminPage} component={Counter} />
-            <AppRoute path="/admin-addProduct" layout={AdminPage} component={Home} />
+            <AppRoute path="/admin-addProduct" layout={AdminPage} component={AddProducts} />
             <AppRoute path="/admin-allProducts" layout={AdminPage} component={AllProducts} />
             <AppRoute path="/admin-addUser" layout={AdminPage} component={Home} />
             <AppRoute path="/admin-allUsers" layout={AdminPage} component={AllUsers} />

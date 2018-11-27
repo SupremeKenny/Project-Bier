@@ -69,7 +69,7 @@ namespace Project_Bier.Repository
         {
             try
             {
-                Beer deleteProduct = context.Beer.Find(guid);
+                var deleteProduct = context.Beer.Find(guid);
                 context.Beer.Remove(deleteProduct);
                 context.SaveChanges();
 

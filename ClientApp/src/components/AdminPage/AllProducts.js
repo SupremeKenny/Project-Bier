@@ -24,15 +24,15 @@ export class AllProducts extends React.Component{
             totalPages: 1,
         };
 
-        // this.handleDelete = this.handleDelete.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
       }
 
-    handleDelete = (id) => {   
+    handleDelete (id) {   
         fetch('/admin/Delete/' + id, {  
             method: 'delete'  
         })
         .then(data => {  
-            console.log(data),
+            // console.log(data),
             this.setState(  
                 {  
                     products: this.state.products.filter((rec) => {  
@@ -40,8 +40,8 @@ export class AllProducts extends React.Component{
                     })  
                 });  
         });  
-        console.log("iets");
-        console.log(this.state.products);
+        console.log("Uitgevoerd");
+        // console.log(this.state.products);
     }
 
       handlePaginationChange = (e, { activePage }) =>{
@@ -54,8 +54,6 @@ export class AllProducts extends React.Component{
           });
         });
       } 
-
-
 
       componentWillMount() {
         fetch("/admin/FetchAllProducts/0/15")
