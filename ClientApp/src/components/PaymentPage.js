@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { clearCart } from '../actions/actionCreator'
+import { bindActionCreators } from 'redux'
 import {
     Header,
     Container,
@@ -62,6 +64,11 @@ const ButtonCoC = () => (
 
 
 class Payment extends Component {
+
+  componentWillMount(){
+    this.props.clearCart();
+  }
+
     state = {}
     handleClick = () => this.setState({ active: !this.state.active })
     handleClick1 = () => this.state.active ? window.location.href = "/confirmation" : alert('Selecteer een betalingswijze alstublieft.')
@@ -87,7 +94,12 @@ class Payment extends Component {
     }
 }
 
-export default connect(
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    clearCart
+  }, dispatch)
+}
 
-    )(Payment);
+
+export default connect(null, mapDispatchToProps)(Payment);
     

@@ -58,6 +58,8 @@ namespace Project_Bier
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISearchService<Product>, ElasticSearchService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

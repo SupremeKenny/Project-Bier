@@ -1,6 +1,8 @@
-import { DELETE_PRODUCT_CART, ADD_PRODUCT_CART, DECREMENT_PRODUCT_CART } from './actionsTypes'
+import { DELETE_PRODUCT_CART, ADD_PRODUCT_CART, DECREMENT_PRODUCT_CART, CLEAR_CART } from './actionsTypes'
 
-let TodoId = 2;
+export const clearCart = () => ({
+    type: CLEAR_CART,
+});
 
 export const addCartItem = (id, name, price, url) => ({
     type: ADD_PRODUCT_CART,
