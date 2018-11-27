@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 using Nest;
 
-namespace Project_Bier.Services 
+namespace Project_Bier.Services
 {
     public class ElasticSearchService : ISearchService<Product>
     {
@@ -45,10 +45,34 @@ namespace Project_Bier.Services
             IEnumerable<Product> products = searchResponse.Hits.Select(h => h.Source);
             return products;
         }
-        
+
         public SuggestResponse Suggest(string query)
         {
-            throw new System.NotImplementedException();
+            ISearchResponse<Product> searchResponse = client.Search<Product>(s => s
+                                    .Suggest(su => su
+                                         .Completion("suggestions", c => c
+                                              .Field(f => f.Name)
+                                              .Prefix(query)
+                                              .Fuzzy(f => f
+                                                  .Fuzziness(Fuzziness.Auto)
+                                              )
+                                              .Size(5))
+                                            ));
+
+            var suggests = from suggest in searchResponse.Suggest["suggestions"]
+                           from option in suggest.Options
+                           select new Suggestion
+                           {
+                               Id = option.Source.Id,
+                               Name = option.Source.Name,
+                               SuggestedName = option.Text,
+                               Score = option.Score
+                           };
+
+            return new SuggestResponse
+            {
+                Suggestions = suggests
+            };
         }
     }
 }

@@ -32,12 +32,12 @@ namespace Project_Bier.Repository
             logger.LogInformation("Configuring ElasticSearch");
 
             ConnectionSettings settings = new ConnectionSettings(new Uri("http://localhost:9200"))
-            .DefaultIndex("products");
+            .DefaultIndex("beer");
 
             ElasticClient client;
             try
             {
-                client = new ElasticClient(settings); 
+                client = new ElasticClient(settings);
             }
             catch (System.Exception e)
             {
@@ -46,13 +46,14 @@ namespace Project_Bier.Repository
             }
 
             // Create index and mapping
-            var createIndexResponse = client.CreateIndex("products", c => c
+            var createIndexResponse = client.CreateIndex("beer", i => i
             .Mappings(ms => ms
                 .Map<Product>(m => m
-                    .AutoMap<Beer>()
-                    .Properties(ps => ps
-                    .Completion(d => d.Name(p => p.Suggest)))))
-                );
+                    .AutoMap().Properties(ps => ps
+                                    .Completion(c => c
+                                        .Name(p => p.Suggest))))
+
+                ));
 
             return client;
         }
@@ -67,12 +68,12 @@ namespace Project_Bier.Repository
             String name = product.Name;
             String[] elements = name.Split(null);
             List<String> suggestions = new List<String>();
-            
-            for(int i = 0 ; i < elements.Length; i++)
+
+            for (int i = 0; i < elements.Length; i++)
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 String[] array = elements.Skip(i).ToArray();
-                for(int j = 0; j < array.Length; j++ )
+                for (int j = 0; j < array.Length; j++)
                 {
                     stringBuilder.Append(array[j]);
                     stringBuilder.Append(" ");

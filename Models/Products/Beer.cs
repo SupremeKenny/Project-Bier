@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Project_Bier.Models 
+namespace Project_Bier.Models
 {
     /// <summary>
-    /// Beer product class
+    /// Data model class for Beer
     /// </summary>
     public class Beer : Product
     {
@@ -15,5 +15,8 @@ namespace Project_Bier.Models
         public string AlcoholPercentage { get; set; }
         public string BrewerName { get; set; }
         public string CountryName { get; set; }
+        public string ServingTemperature { get; set; }
+        public string ServingGlass { get; set; }
+        public string BeerColourHex { get; set; }
     }
 }
