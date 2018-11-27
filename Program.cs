@@ -7,6 +7,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Project_Bier.Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Project_Bier
 {
@@ -18,7 +20,7 @@ namespace Project_Bier
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            WebHost.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostingContext, config) => {
+                config.AddCommandLine(args);}).UseStartup<Startup>();
     }
 }

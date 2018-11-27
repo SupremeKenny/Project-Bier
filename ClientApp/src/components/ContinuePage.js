@@ -20,7 +20,8 @@ import {
     CardGroup,
     List,
     Dropdown,
-    Step
+    Step,
+    Form
   } from "semantic-ui-react";
 
 const StepOrder = () => (
@@ -48,16 +49,77 @@ const StepOrder = () => (
     </Step.Group>
 )
 
+const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
+
 const Space = () => " ";
 
+function validate(email, wachtwoord) {
+  return {
+    email: email.length === 0,
+    wachtwoord: wachtwoord.length === 0,
+  };
+}
+
 class Continue extends Component {
+    constructor() {
+      super();
+      this.state = {
+        email: '',
+        wachtwoord: '',
+
+        focused: {
+          email: false,
+          wachtwoord: false,
+        }
+      };
+    }
+
+    handleEmailChange = (evt) => {
+      this.setState({ email: evt.target.value });
+    }
+
+    handleWachtwoordChange = (evt) => {
+      this.setState({ wachtwoord: evt.target.value });
+    }
+
+    handleSubmit = (evt) => {
+      if (!this.canBeSubmitted()) {
+        evt.preventDefault();
+      }
+      const { email, wachtwoord } = this.state;
+      //alert(`Succesvol ingelogd.`);
+    }
+
+    handleBlur = (field) => (evt) => {
+      this.setState({
+        focused: {...this.state.focused, [field]: true},
+      });
+    }
+
+    canBeSubmitted() {
+      const errors = validate(this.state.email, this.state.wachtwoord);
+      const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
+      return NotFilledIn ? alert('Inloggegevens incorrect.') : window.location.href = "/input" 
+      //return !NotFilledIn;
+    }
+
     render() {
+        const errors = validate(this.state.email, this.state.wachtwoord);
+        const NotFilledIn = Object.keys(errors).some(x=>errors[x]);
+        const shouldMarkError = (field) => {
+          const hasError = errors[field];
+          const shouldShow = this.state.focused[field];
+          return hasError ? shouldShow : false;
+        };
+        
+        const { email, wachtwoord } = this.state;
+
         return(
             <Container>
               <Divider hidden/>
               <StepOrder/>
               <Divider/>
-              <Segment placeholder padded='very'>
+              <Segment placeholder padded='very' size={'big'} key={'large'}>
                  <Grid columns={2} stackable textAlign='center'>
                    <Divider vertical>of</Divider>
 
@@ -65,28 +127,26 @@ class Continue extends Component {
                        <Grid.Column>
                            <h2>Inloggen</h2>
                            <p>Door in te loggen, worden uw gegevens automatisch ingevuld.</p>
-                           <div>
-                                <Input placeholder='E-mailadres' style={{ width: "300px" }}/>
+                           <Form onSubmit={this.handleSubmit} size={'big'}>
+                                <Form.Input className={shouldMarkError('email') ? "error" : ""} placeholder='E-mailadres' style={{ width: "300px" }} value={this.state.email} onChange={this.handleEmailChange} onBlur={this.handleBlur('email')} />
+                                <Form.Input className={shouldMarkError('wachtwoord') ? "error": ""} placeholder='Wachtwoord'  style={{ width: "300px"}} value={this.state.wachtwoord} onChange={this.handleWachtwoordChange} onBlur={this.handleBlur('wachtwoord')} />
                                 <br/>
-                                <Input placeholder='Wachtwoord'  style={{ width: "300px" }}/>
-                                <br/>
-                                <br/>
-                                <Button positive>Inloggen</Button>
+                                <Button positive size={'big'}>Inloggen</Button>
                                 <Space/>
                                 <a href="/">Wachtwoord vergeten?</a>
-                            </div>
+                            </Form>
                        </Grid.Column>
 
                        <Grid.Column>
                            <h2>Verder gaan zonder account</h2>
                            <p>Klik op de knop hieronder</p>
-                           <Button positive href="/input">Doorgaan</Button>
+                           <Button positive size={'big'} href="/input">Doorgaan</Button>
                        </Grid.Column>
                    </Grid.Row>
                 </Grid>
               </Segment>
               <Divider/>
-              <Button href='/winkelwagen'>Teruggaan</Button>
+              <Button size={'big'} href='/winkelwagen'>Teruggaan</Button>
             </Container>
         );
     }

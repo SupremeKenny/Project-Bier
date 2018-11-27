@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { clearCart } from '../actions/actionCreator'
+import { bindActionCreators } from 'redux'
 import {
     Header,
     Container,
@@ -48,19 +50,28 @@ const StepOrder = () => (
     </Step.Group>
 )
 
+const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
+
 const Space = () => " ";
 
 const ButtonCoC = () => (
-    <Button.Group>
+    <Button.Group size = {'big'}>
       <Button href="/input">Teruggaan</Button>
       <Button.Or text="of" />
       <Button positive href="/confirmation">Doorgaan</Button>
     </Button.Group>
   );
 
+
 class Payment extends Component {
+
+  componentWillMount(){
+    this.props.clearCart();
+  }
+
     state = {}
     handleClick = () => this.setState({ active: !this.state.active })
+    handleClick1 = () => this.state.active ? window.location.href = "/confirmation" : alert('Selecteer een betalingswijze alstublieft.')
     render() {
         const { active } = this.state
         return(
@@ -68,18 +79,27 @@ class Payment extends Component {
                 <Divider hidden/>
                 <StepOrder/>
                 <Divider/>
-                <h3>Kies uw betalingswijze</h3>
+                <h2>Kies uw betalingswijze</h2>
                 <br/>
                 <Button toggle active={active} onClick={this.handleClick} style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
                 <Divider hidden/>
                 <Divider/>
-                <ButtonCoC/>
+                <Button.Group size = {'big'}>
+                <Button href="/input">Teruggaan</Button>
+                  <Button.Or text="of" />
+                  <Button positive onClick={this.handleClick1}>Doorgaan</Button>
+                </Button.Group>
             </Container>
         );
     }
 }
 
-export default connect(
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    clearCart
+  }, dispatch)
+}
 
-    )(Payment);
+
+export default connect(null, mapDispatchToProps)(Payment);
     

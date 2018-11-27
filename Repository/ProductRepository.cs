@@ -8,7 +8,7 @@ using System.Linq;
 namespace Project_Bier.Repository
 {
     /// <summary>
-    /// Concrete implementation of the product repository
+    /// Concrete implementation of the product repository interface
     /// </summary>
     public class ProductRepository : IProductRepository
     {
@@ -32,7 +32,7 @@ namespace Project_Bier.Repository
 
         public Product GetProductByGuid(String id)
         {
-            return context.Beer
+            return context.Beers
                 .FirstOrDefault(p => p.Id == id);
         }
 
@@ -54,16 +54,12 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetProductsByCategory(string category)
         {
-            return context.Beer.Where(p => p.CategoryId == category);
+            return context.Beers.Where(p => p.CategoryId == category);
         }
 
         public IEnumerable<Product> ListAll()
         {
-            // return context.Beer
-            // .Select (p => p);
-            // return context.Beer
-            // .OrderBy(x => Guid.NewGuid()).Take(8);
-            throw new NotImplementedException();
+            return context.Beers.ToList();
         }
 
         public void RemoveProduct(Guid guid)
@@ -78,7 +74,7 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetHomePageProducts()
         {
-            return context.Beer
+            return context.Beers
             .OrderBy(x => Guid.NewGuid()).Take(8);
         }
     }
