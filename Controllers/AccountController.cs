@@ -24,6 +24,13 @@ using Project_Bier.Repository;
 
 namespace Project_Bier.Controllers
 {
+    class RegisterResponse
+    {
+        public bool Success { get; set; }
+        public List<string> Errors { get; set; }
+        // Token
+    }
+
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
@@ -45,7 +52,7 @@ namespace Project_Bier.Controllers
             {
                 WebshopUser newUser = new WebshopUser
                 {
-                    UserGuid =  Guid.NewGuid(),
+                    UserGuid = Guid.NewGuid(),
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
@@ -64,9 +71,7 @@ namespace Project_Bier.Controllers
                     AssociatedUser = newUser.UserGuid
                 };
 
-                newUser.ShippingAddresses  = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
-
-                // Create user in the Identity Database
+                newUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
                 IdentityResult registerResult = await userManager.CreateAsync(newUser, model.Password);
 
                 if (registerResult.Succeeded)
@@ -84,11 +89,23 @@ namespace Project_Bier.Controllers
                         //userContext.SetUserGuidCookies(newUser.UserGuid);
                         //return Ok(new {token = userContext.GenerateToken(newUser)});
 
-                        return Ok(new {message="okay done"});
+                        return Ok(new { message = "okay done" });
                     }
                 }
-                AddErrors(registerResult);
-                return Ok(new { error = "Registration Failed", error_description = "User could not be created using that user name" });
+
+                List<String> errors = new List<string>();
+                foreach (IdentityError error in registerResult.Errors)
+                {
+                    errors.Add(error.Description);
+                }
+
+                var registerResponse = new RegisterResponse
+                {
+                    Success = false,
+                    Errors = errors
+                };
+
+                return Ok(new{registerResponse});
             }
             return BadRequest();
         }
@@ -117,20 +134,6 @@ namespace Project_Bier.Controllers
         {
             throw new NotImplementedException();
         }
-
-
-        #region Helpers
-
-        private void AddErrors(IdentityResult result) 
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-    
-        #endregion
 
     }
 }
