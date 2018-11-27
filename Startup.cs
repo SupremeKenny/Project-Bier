@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using Nest;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Project_Bier
 {
@@ -42,11 +44,24 @@ namespace Project_Bier
                 .AddEntityFrameworkStores<ApplicationDatabaseContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddAuthentication();
+            services.AddAuthentication()
+                .AddCookie(config => config.SlidingExpiration = true)
+                .AddJwtBearer(config =>
+                {
+                    config.RequireHttpsMetadata = false;
+                    config.SaveToken = true;
+
+                    config.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration["Token:Issuer"],
+                        ValidAudience = Configuration["Token:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"]))
+                    };
+                });
 
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequireDigit = false;
+                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
@@ -134,11 +149,11 @@ namespace Project_Bier
                         }
 
                         // Insert documents 
-                        if (products != null) 
+                        if (products != null)
                         {
                             ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, indexName, products);
                         }
-                        
+
                     }
                 }
             });
