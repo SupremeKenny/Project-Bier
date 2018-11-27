@@ -19,6 +19,7 @@ namespace Project_Bier.Controllers
             this.productRepository = productRepository;
         }
 
+
         [HttpGet("{page_index}/{numberOfProducts}")]
         public IActionResult FetchAllProducts (int page_index, int numberOfProducts) 
         {

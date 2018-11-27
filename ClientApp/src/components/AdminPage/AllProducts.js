@@ -23,16 +23,13 @@ export class AllProducts extends React.Component{
             showPreviousAndNextNav: true,
             totalPages: 1,
         };
-
-        this.handleDelete = this.handleDelete.bind(this);
       }
 
-    handleDelete (id) {   
+    handleDelete = (id) => {   
         fetch('/admin/Delete/' + id, {  
             method: 'delete'  
         })
         .then(data => {  
-            // console.log(data),
             this.setState(  
                 {  
                     products: this.state.products.filter((rec) => {  
@@ -40,16 +37,12 @@ export class AllProducts extends React.Component{
                     })  
                 });  
         });  
-        console.log("Uitgevoerd");
-        // console.log(this.state.products);
     }
 
       handlePaginationChange = (e, { activePage }) =>{
         fetch("/admin/FetchAllProducts/" + (activePage - 1)+ "/15")
         .then(results => {
           results.json().then(data => {
-            // console.log ("PageChange: " + activePage),
-            // console.log(e),
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true, activePage });
           });
         });
@@ -59,11 +52,14 @@ export class AllProducts extends React.Component{
         fetch("/admin/FetchAllProducts/0/15")
         .then(results => {
           results.json().then(data => {
-            // console.log ("OnWillMount: " + this.state.activePage),
             console.log(data),
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true });
           });
         });
+      }
+
+      componentDidUpdate(){
+          
       }
 
     render(){
@@ -95,7 +91,7 @@ export class AllProducts extends React.Component{
                             this.state.products.map(p => (
                                 <List.Item>
                                     <List.Content floated='right'>
-                                        <Button content = "Delete" onClick = {this.handleDelete.bind(p.id)}/>
+                                        <Button content = "Delete" onClick = {this.handleDelete.bind(this, p.id) }/>
                                     </List.Content>
                                     <List.Content floated='right'>
                                         <Button content = "Edit"/>
@@ -103,7 +99,7 @@ export class AllProducts extends React.Component{
                                     <Icon name = "beer"/>
                                     <List.Content >{p.name}</List.Content>
                                 </List.Item>
-                            )
+                             )
                         )}
                     </List>
                 </Grid.Column>

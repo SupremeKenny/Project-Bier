@@ -1,15 +1,29 @@
 import React, { Component } from "react";
-import { Button, Header, Icon, Segment, Form, TextArea, Select, Container, Divider} from 'semantic-ui-react';
+import { Button, 
+    Header, 
+    Icon, 
+    Segment, 
+    Form, 
+    TextArea, 
+    Select, 
+    Container, 
+    Divider} from 'semantic-ui-react';
 
 export class AddProducts extends React.Component{
+
+    addProduct = (event) =>
+    {
+        event.preventDefault();  
+        const data = new FormData(event.target);
+    }
+
 
     render(){
         return (
             <Container>
                 <Header as='h1'>Product toevoegen</Header>
-
                 <Segment>
-                    <Form>
+                    <Form onSubmit={this.addProduct}>
                         <Form.Group unstackable widths={2}>
                             <Form.Input label='Id' placeholder='Id' />
                             <Form.Input label='Naam' placeholder='Name' />
