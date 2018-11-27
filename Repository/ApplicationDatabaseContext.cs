@@ -12,7 +12,7 @@ namespace Project_Bier.Repository
     {
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options) { }
         public DbSet<ShippingAddress> Addresses { get; set; }
-        public DbSet<Product> Products {get; set;}
+        public DbSet<Beer> Beers {get; set;}
         public DbSet<Category> Categories {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +23,8 @@ namespace Project_Bier.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("User ID=maikelveen;Password=;Host=localhost;Port=5432;Database=postgres;Pooling=true;");
+            // TODO, move this to a configuration file of some sort
+            optionsBuilder.UseNpgsql("User ID=postgres;Password=ZMWX4BLb5jEk2u6n;Host=188.166.77.23;Port=5432;Database=postgres;Pooling=true;");
         }
     }
 }
