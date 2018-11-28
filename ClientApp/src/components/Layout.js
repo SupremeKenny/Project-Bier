@@ -90,7 +90,7 @@ class DesktopContainer extends React.Component {
                   <Link to="/">
                     <Button color="green">Inloggen</Button>
                   </Link>
-                  <Link to="/">
+                  <Link to="/favorieten">
                     <HeartButton />
                   </Link>
                   <Link to="/winkelwagen">
