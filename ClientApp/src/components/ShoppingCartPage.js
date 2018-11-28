@@ -43,14 +43,37 @@ const ButtonCoC = () => (
 
 const Space = () => " ";
 
-const ButtonCheck = () => <Button>Check</Button>;
 
-const Input1 = () => <Input placeholder="Vul je kortingscode in..." />;
 
 class ShoppingCart extends Component {
   constructor() {
     super();
   }
+
+  componentWillMount(){
+    this.setState({discount: {procent: false, amount: 0}})
+  }
+  
+  handleDiscount = (evt) => {
+    //console.log(evt.target.value);
+    fetch(
+      "https://localhost:5001/order/SearchDiscount?input=" + evt.target.value
+    ) 
+    .then(results => {
+      if(!results.ok){
+        this.setState({discount: {procent: true, amount: 0}});
+        localStorage.setItem("Discount", null);
+
+      }
+      results.json().then(data => {
+        console.log(data.discount);
+        this.setState({discount: {procent: data.discount.procent, amount: data.discount.amount}}, () => console.log(this.state.discount));
+        localStorage.setItem("Discount", (data.discount.code));
+      });
+      
+    });
+  }
+    
   render() {
     return (
       <Container>
@@ -130,12 +153,33 @@ class ShoppingCart extends Component {
         <Divider />
         <Container textAlign="left">
           <h4>
-            Kortingscode: <Input1 />
-            <ButtonCheck />
+            Kortingscode: <Input placeholder="Vul je kortingscode in..." onChange={this.handleDiscount}/>
           </h4>
         </Container>
         <Container textAlign="right">
-          <h3>Totaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
+          
+          {this.state.discount.amount != 0 ? (
+          <h3>
+          <h3>SubTotaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
+          {this.state.discount.procent == true ?
+           ( 
+             <div>
+            <h3>Korting: {this.state.discount.amount} % </h3> 
+            <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice - this.props.shoppingcart.totalPrice/100*this.state.discount.amount)*100)/100)}</h3>
+            </div>
+           ) : 
+           (
+             <div>
+           <h3>Korting: - € {this.state.discount.amount}</h3>
+           <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice - this.state.discount.amount)*100)/100)}</h3>
+            </div>
+           )}
+          </h3>) : (
+           <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice)*100)/100)}</h3>
+
+          ) }
+
+
           <ButtonCoC />
         </Container>
       </Container>

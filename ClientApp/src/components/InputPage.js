@@ -146,6 +146,7 @@ class InputInfo extends Component {
 
     componentWillMount(){
       this.setState({products: localStorage.Cart ? JSON.parse(localStorage.Cart) : []})
+      this.setState({discount: localStorage.Discount ? localStorage.Discount : null})
     }
 
     addOrder() {
@@ -160,7 +161,7 @@ class InputInfo extends Component {
       
       body: JSON.stringify({
         
-             "Coupon": "",
+             "Coupon": this.state.discount,
              //TODO:Coupon meegeven
              "PostalCode": this.state.postcode,
              "StreetNumber": this.state.huisnummer,

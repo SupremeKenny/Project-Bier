@@ -57,6 +57,7 @@ namespace Project_Bier
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

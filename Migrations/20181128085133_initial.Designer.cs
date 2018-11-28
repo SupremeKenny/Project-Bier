@@ -9,7 +9,7 @@ using Project_Bier.Repository;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181121111420_initial")]
+    [Migration("20181128085133_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,6 +167,22 @@ namespace ProjectBier.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Project_Bier.Models.Discount", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("Code");
+
+                    b.Property<bool>("Procent");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>

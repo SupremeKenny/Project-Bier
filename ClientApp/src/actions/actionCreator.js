@@ -1,5 +1,6 @@
 import { DELETE_PRODUCT_CART, ADD_PRODUCT_CART, DECREMENT_PRODUCT_CART, CLEAR_CART } from './actionsTypes'
 
+
 export const clearCart = () => ({
     type: CLEAR_CART,
 });
