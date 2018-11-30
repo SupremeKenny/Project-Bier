@@ -34,7 +34,7 @@ namespace Project_Bier.Controllers
     class LoginResponse
     {
         public bool Success { get; set; }
-        public List<string> Errors { get; set; }
+        public string Error { get; set; }
         public string Token { get; set; }
     }
 
@@ -58,21 +58,31 @@ namespace Project_Bier.Controllers
         {
             if (ModelState.IsValid)
             {
+                LoginResponse loginResponse = new LoginResponse();
                 WebshopUser user = await userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
+
                     var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
                     if (result.Succeeded)
                     {
                         string token = await tokenGenerator.GenerateTokenLogin(user);
-                        LoginResponse loginResponse = new LoginResponse
-                        {
-                            Success = true,
-                            Errors = null,
-                            Token = token
-                        };
+                        loginResponse.Success = true;
+                        loginResponse.Token = token;
+
                         return Ok(new { loginResponse });
                     }
+                    else
+                    {
+                        loginResponse.Success = false;
+                        return Ok(new { loginResponse });
+                    }
+                }
+                else
+                {
+                    loginResponse.Success = false;
+                    loginResponse.Error = "User could not be found. Or Password does not match login.";
+                    return Ok(new { loginResponse });
                 }
             }
             return BadRequest();
@@ -112,9 +122,8 @@ namespace Project_Bier.Controllers
                 {
                     // TODO 
                     // Log Information about Register Result
-                    // Send confirmation mail
-
-                    await userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "Member"));
+                    // Send Welcome mail
+                    
                     RegisterResponse succesResponse = new RegisterResponse
                     {
                         Success = true,
