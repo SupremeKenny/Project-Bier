@@ -16,7 +16,7 @@ namespace Project_Bier.Repository
     /// </summary>
     public interface IProductRepository
     {
-        void AddProduct(Product product);
+        void AddProduct(Beer product);
 
         void UpdateProduct(Guid guid, Product newProduct);
 

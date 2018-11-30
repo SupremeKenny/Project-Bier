@@ -43,7 +43,13 @@ namespace Project_Bier.Controllers
         public void Delete(String id)  
         {  
             productRepository.RemoveProduct(id); 
-        }  
+        }
+
+        [HttpPost]
+        public void Create ([FromBody] Beer product)
+        {
+            productRepository.AddProduct(product);
+        }
 
     }
 

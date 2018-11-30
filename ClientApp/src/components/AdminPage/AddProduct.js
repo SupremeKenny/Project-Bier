@@ -1,56 +1,202 @@
 import React, { Component } from "react";
-import { Button, 
-    Header, 
-    Icon, 
-    Segment, 
-    Form, 
-    TextArea, 
-    Select, 
-    Container, 
-    Divider} from 'semantic-ui-react';
+import {
+    Button,
+    Header,
+    Icon,
+    Segment,
+    Form,
+    TextArea,
+    Select,
+    Container,
+    Divider
+} from 'semantic-ui-react';
 
-export class AddProducts extends React.Component{
-
-    addProduct = (event) =>
-    {
-        event.preventDefault();  
-        const data = new FormData(event.target);
+export class AddProducts extends React.Component {
+    state = {
+        id: '',
+        name: '',
+        categoryId: '',
+        price: '',
+        brewerName: '',
+        countryName: '',
+        alcoholPercentage: '',
+        content: '',
+        url: '',
+        description: ''
     }
 
+    handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
-    render(){
+    // myForm = document.getElementById('myForm');
+
+    // var formData = new FormData(document.getElementById('myForm'));
+
+
+
+
+    handleSubmit = () => {
+
+        let bodyData = JSON.stringify({
+            "Id": this.state.id,
+            "Name": this.state.name,
+            "CategoryId": this.state.categoryId,
+            "Price": this.state.price,
+            "BrewerName": this.state.brewerName,
+            "CountryName": this.state.countryName,
+            "AlcoholPercentage": this.state.alcoholPercentage,
+            "Content": this.state.content,
+            "Url": this.state.url,
+            "Description": this.state.description,
+            "Available": true
+        })
+
+        // const {id, name} = this.state;
+        // // this.setState ({})
+        // // console.log (this.state.id);
+        // JSON.stringify ({id, name}, null, 2)
+        if (this.state.id = ! "") {
+            console.log("Uitgevoerd"),
+            fetch('admin/Create/', {
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: bodyData
+            })
+        }
+    }
+
+    render() {
+        const {
+            id,
+            name,
+            categoryId,
+            price,
+            brewerName,
+            countryName,
+            alcoholPercentage,
+            content,
+            url,
+            description
+        } = this.state;
+
         return (
             <Container>
                 <Header as='h1'>Product toevoegen</Header>
                 <Segment>
-                    <Form onSubmit={this.addProduct}>
+                    <Form onSubmit={this.handleSubmit} id="myForm">
                         <Form.Group unstackable widths={2}>
-                            <Form.Input label='Id' placeholder='Id' />
-                            <Form.Input label='Naam' placeholder='Name' />
+                            <Form.Input
+                                label='Id'
+                                placeholder='Id'
+                                name='id'
+                                value={id}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Input
+                                label='Naam'
+                                placeholder='Name'
+                                name='name'
+                                value={this.name}
+                                onChange={this.handleChange}
+                            />
                         </Form.Group>
 
                         <Form.Group widths={2}>
-                            <Form.Field control = {Select} label='Categorie' placeholder='CategoryId' options={CategoryId}/>
-                            <Form.Input label='Prijs' placeholder='Price' />
+                            <Form.Field
+                                control={Select}
+                                label='Categorie'
+                                placeholder='CategoryId'
+                                options={CategoryId}
+                                name='categoryId'
+                                value={this.categoryId}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Input
+                                label='Prijs'
+                                placeholder='Price'
+                                name='price'
+                                value={this.price}
+                                onChange={this.handleChange}
+                                type='number'
+                                step="0.05"
+                                min="0.00"
+                            />
                         </Form.Group>
 
                         <Form.Group widths={2}>
-                            <Form.Input label='Brouwer' placeholder='BrewerName'/>
-                            <Form.Input label='Land van herkomst' placeholder='CountryName'/>
+                            <Form.Input
+                                label='Brouwer'
+                                placeholder='BrewerName'
+                                name='brewerName'
+                                value={this.brewerName}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Input
+                                label='Land van herkomst'
+                                placeholder='CountryName'
+                                name='countryName'
+                                value={this.countryName}
+                                onChange={this.handleChange}
+                            />
                         </Form.Group>
 
                         <Form.Group widths={2}>
-                            <Form.Input label='Alcohol %' placeholder='AlcoholPercentage'/>
-                            <Form.Input label='Inhoud' placeholder='Content'/>
+                            <Form.Input
+                                label='Alcohol %'
+                                placeholder='AlcoholPercentage'
+                                name='alcoholPercentage'
+                                value={this.alcoholPercentage}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Input
+                                label='Inhoud'
+                                placeholder='Content'
+                                name='content'
+                                value={this.content}
+                                onChange={this.handleChange}
+                            />
                         </Form.Group>
 
-                        <Form.Input label='Website Link' placeholder='Url'/>
-                        <Form.Field control={TextArea} label='Omschrijving' placeholder='Description' />
+                        <Form.Input
+                            label='Website Link'
+                            placeholder='Url'
+                            name='url'
+                            value={this.url}
+                            onChange={this.handleChange}
+                            type='url'
+                        />
+
+                        <Form.Field
+                            control={TextArea}
+                            label='Omschrijving'
+                            placeholder='Description'
+                            name='description'
+                            value={this.description}
+                            onChange={this.handleChange}
+                        />
 
                         <Form.Checkbox label='Alle gegevens zijn gecontroleerd' />
-                        <Button type='submit'>Submit</Button>
+                        <Form.Button content='Submit' />
                     </Form>
                 </Segment>
+
+                <pre>
+                    {JSON.stringify({
+                        id,
+                        name,
+                        categoryId,
+                        price,
+                        brewerName,
+                        countryName,
+                        alcoholPercentage,
+                        content,
+                        url,
+                        description,
+                    }, null, 2)}
+                </pre>
+
             </Container>
         );
     }
@@ -77,4 +223,4 @@ const CategoryId = [
     { key: '17', text: 'Tripel', value: 'tripel' },
     { key: '18', text: 'Weizen', value: 'weizen' },
     { key: '19', text: 'Wit', value: 'wit' },
-  ]
+]

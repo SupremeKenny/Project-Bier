@@ -22,9 +22,24 @@ namespace Project_Bier.Repository
             this.context = applicationDatabaseContext;
         }
 
-        public void AddProduct(Product product)
+        public void AddProduct(Beer product)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            try
+            {
+                int beerExists = context.Beer.Count(b => b.Id == product.Id);
+
+                if (beerExists <= 0)
+                {
+                    context.Beer.Add(product);
+                    context.SaveChanges();
+                }
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
         public void AddProducts(Product[] products)
