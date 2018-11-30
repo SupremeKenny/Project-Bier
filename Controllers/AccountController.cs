@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 using Project_Bier.Repository;
+using Project_Bier.Services;
 
 
 namespace Project_Bier.Controllers
@@ -28,7 +29,13 @@ namespace Project_Bier.Controllers
     {
         public bool Success { get; set; }
         public List<string> Errors { get; set; }
-        // Token
+    }
+
+    class LoginResponse
+    {
+        public bool Success { get; set; }
+        public List<string> Errors { get; set; }
+        public string Token { get; set; }
     }
 
     [Route("[controller]/[action]")]
@@ -36,12 +43,39 @@ namespace Project_Bier.Controllers
     {
         private readonly UserManager<WebshopUser> userManager;
         private readonly SignInManager<WebshopUser> signInManager;
-        private readonly IUserContext userContext;
+        private readonly ITokenGenerator tokenGenerator;
 
-        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager)
+        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager, ITokenGenerator tokenGenerator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.tokenGenerator = tokenGenerator;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                WebshopUser user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
+                    if (result.Succeeded)
+                    {
+                        string token = await tokenGenerator.GenerateTokenLogin(user);
+                        LoginResponse loginResponse = new LoginResponse
+                        {
+                            Success = true,
+                            Errors = null,
+                            Token = token
+                        };
+                        return Ok(new { loginResponse });
+                    }
+                }
+            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -77,20 +111,16 @@ namespace Project_Bier.Controllers
                 if (registerResult.Succeeded)
                 {
                     // TODO 
-                    // Log Information
-                    // Send email for confirmation to the user
+                    // Log Information about Register Result
+                    // Send confirmation mail
 
-                    // Sign in the user
-                    var signInResult = await signInManager.CheckPasswordSignInAsync(newUser, model.Password, false);
-                    if (signInResult.Succeeded)
+                    await userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "Member"));
+                    RegisterResponse succesResponse = new RegisterResponse
                     {
-                        // TODO: Log Login , create generation of JWT
-                        await userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "Member"));
-                        //userContext.SetUserGuidCookies(newUser.UserGuid);
-                        //return Ok(new {token = userContext.GenerateToken(newUser)});
-
-                        return Ok(new { message = "okay done" });
-                    }
+                        Success = true,
+                        Errors = null
+                    };
+                    return Ok(new { succesResponse });
                 }
 
                 List<String> errors = new List<string>();
@@ -99,13 +129,13 @@ namespace Project_Bier.Controllers
                     errors.Add(error.Description);
                 }
 
-                var registerResponse = new RegisterResponse
+                RegisterResponse registerResponse = new RegisterResponse
                 {
                     Success = false,
                     Errors = errors
                 };
 
-                return Ok(new{registerResponse});
+                return Ok(new { registerResponse });
             }
             return BadRequest();
         }
@@ -116,11 +146,6 @@ namespace Project_Bier.Controllers
         }
 
         public Task<IActionResult> ForgotPassword([FromBody] ViewModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IActionResult> Login([FromBody] ViewModel model)
         {
             throw new NotImplementedException();
         }
