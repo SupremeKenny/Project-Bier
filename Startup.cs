@@ -74,6 +74,7 @@ namespace Project_Bier
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISearchService<Product>, ElasticSearchService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
         }
 
