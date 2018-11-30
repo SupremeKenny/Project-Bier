@@ -108,7 +108,7 @@ namespace Project_Bier.Repository
 
         public Page<Beer> Pagination (int page_index, int page_size)
         {
-            Page<Beer> paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Id);
+            Page<Beer> paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Name);
 
             return paginationResult;
         }

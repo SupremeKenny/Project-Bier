@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-    Button,
     Header,
-    Icon,
     Segment,
     Form,
     TextArea,
     Select,
     Container,
-    Divider
 } from 'semantic-ui-react';
 
 export class AddProducts extends React.Component {
@@ -27,34 +24,24 @@ export class AddProducts extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
-    // myForm = document.getElementById('myForm');
-
-    // var formData = new FormData(document.getElementById('myForm'));
-
-
-
-
     handleSubmit = () => {
-
         let bodyData = JSON.stringify({
-            "Id": this.state.id,
-            "Name": this.state.name,
-            "CategoryId": this.state.categoryId,
-            "Price": this.state.price,
-            "BrewerName": this.state.brewerName,
-            "CountryName": this.state.countryName,
-            "AlcoholPercentage": this.state.alcoholPercentage,
-            "Content": this.state.content,
-            "Url": this.state.url,
-            "Description": this.state.description,
-            "Available": true
+            "Id":                   this.state.id,
+            "Name":                 this.state.name,
+            "CategoryId":           this.state.categoryId,
+            "Price":                this.state.price,
+            "BrewerName":           this.state.brewerName,
+            "CountryName":          this.state.countryName,
+            "AlcoholPercentage":    this.state.alcoholPercentage + "%",
+            "Content":              this.state.content,
+            "Url":                  this.state.url,
+            "Description":          this.state.description,
+            // "Available":            true
         })
 
-        // const {id, name} = this.state;
-        // // this.setState ({})
-        // // console.log (this.state.id);
-        // JSON.stringify ({id, name}, null, 2)
-        if (this.state.id = ! "") {
+        // var validate = this.state.id
+        // console.log(validate)
+        if (this.state.id != "" && this.state.name != "" && this.state.categoryId != "" && this.state.price != "") {
             console.log("Uitgevoerd"),
             fetch('admin/Create/', {
                 headers:{
@@ -65,9 +52,11 @@ export class AddProducts extends React.Component {
                 body: bodyData
             })
         }
+        else console.log("Verplichte velden leeg");
     }
 
     render() {
+        // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
         const {
             id,
             name,
@@ -88,14 +77,14 @@ export class AddProducts extends React.Component {
                     <Form onSubmit={this.handleSubmit} id="myForm">
                         <Form.Group unstackable widths={2}>
                             <Form.Input
-                                label='Id'
+                                label='Id *'
                                 placeholder='Id'
                                 name='id'
-                                value={id}
+                                value={this.id}
                                 onChange={this.handleChange}
                             />
                             <Form.Input
-                                label='Naam'
+                                label='Naam *'
                                 placeholder='Name'
                                 name='name'
                                 value={this.name}
@@ -106,7 +95,7 @@ export class AddProducts extends React.Component {
                         <Form.Group widths={2}>
                             <Form.Field
                                 control={Select}
-                                label='Categorie'
+                                label='Categorie *'
                                 placeholder='CategoryId'
                                 options={CategoryId}
                                 name='categoryId'
@@ -114,7 +103,7 @@ export class AddProducts extends React.Component {
                                 onChange={this.handleChange}
                             />
                             <Form.Input
-                                label='Prijs'
+                                label='Prijs *'
                                 placeholder='Price'
                                 name='price'
                                 value={this.price}
@@ -149,6 +138,9 @@ export class AddProducts extends React.Component {
                                 name='alcoholPercentage'
                                 value={this.alcoholPercentage}
                                 onChange={this.handleChange}
+                                type='number'
+                                step="0.05"
+                                min="0.00"
                             />
                             <Form.Input
                                 label='Inhoud'
@@ -182,6 +174,7 @@ export class AddProducts extends React.Component {
                     </Form>
                 </Segment>
 
+                {/* Todo: Can delete <pre> if I dont have to display states anymore */}
                 <pre>
                     {JSON.stringify({
                         id,

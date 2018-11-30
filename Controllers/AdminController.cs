@@ -36,7 +36,7 @@ namespace Project_Bier.Controllers
             }
 
 
-            return new OkObjectResult(new {TotalPages = projects.TotalPages, Items = resultToReturn});
+            return new OkObjectResult(new {TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count()});
         }
 
         [HttpDelete("{id}")]

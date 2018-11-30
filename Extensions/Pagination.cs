@@ -35,8 +35,11 @@ namespace Project_Bier.Pagination
                             .Take(page_size)
                             .ToArray();
 
-            var tot_items = list.Count();
-            var tot_pages = tot_items / page_size;
+            int tot_items = list.Count();
+            int tot_pages = (int)(Math.Ceiling((double)tot_items / (double) page_size));
+ 
+            // If there are no Items, there will still be 1 page
+            if (tot_items < page_size) tot_pages = 1; 
 
             return new Page<T>
             {

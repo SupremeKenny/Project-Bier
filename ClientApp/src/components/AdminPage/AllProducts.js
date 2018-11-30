@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { 
 Button, 
 List , 
@@ -33,34 +33,38 @@ export class AllProducts extends React.Component{
             this.setState(  
                 {  
                     products: this.state.products.filter((rec) => {  
-                        return (rec.id != id);  
-                    })  
-                });  
-        });  
+                        return (rec.id !== id);  
+                    }),
+                })
+        });
     }
 
       handlePaginationChange = (e, { activePage }) =>{
         fetch("/admin/FetchAllProducts/" + (activePage - 1)+ "/15")
         .then(results => {
           results.json().then(data => {
+            console.log(data)
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true, activePage });
           });
         });
       } 
 
-      componentWillMount() {
+      componentDidMount() {
         fetch("/admin/FetchAllProducts/0/15")
         .then(results => {
           results.json().then(data => {
-            console.log(data),
+            console.log(data)
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true });
           });
         });
       }
 
-      componentDidUpdate(){
-          
-      }
+    //   componentDidUpdate(){
+    //       console.log("componentDidUpdate");
+    //       this.setState({
+              
+    //       });
+    //   }
 
     render(){
         const {
@@ -81,15 +85,12 @@ export class AllProducts extends React.Component{
             );
         } else
         return(
-            // <ProductGroup products={this.state.products} />
             <Grid columns={1}>
                 <Grid.Column>
-                    {/* <ProductGroup products={this.state.products} /> */}
-
                     <List divided verticalAlign='middle'>
                         {
                             this.state.products.map(p => (
-                                <List.Item>
+                                <List.Item key = {p.id}>
                                     <List.Content floated='right'>
                                         <Button content = "Delete" onClick = {this.handleDelete.bind(this, p.id) }/>
                                     </List.Content>
@@ -111,7 +112,7 @@ export class AllProducts extends React.Component{
                         onPageChange={this.handlePaginationChange}
                         size='mini'
                         siblingRange={siblingRange}
-                        totalPages={totalPages + 1}
+                        totalPages={totalPages}
                         // Heads up! All items are powered by shorthands, if you want to hide one of them, just pass `null` as value
                         ellipsisItem={showEllipsis ? undefined : null}
                         firstItem={showFirstAndLastNav ? undefined : null}
@@ -124,30 +125,3 @@ export class AllProducts extends React.Component{
         );
     }
 }
-
-// const ProductGroup = props => (
-//     <List divided verticalAlign='middle'>
-//         {
-//             props.products.map(p => (
-//                 <ProductItem name = {p.name} id = {p.id}/>
-//             )
-//         )}
-//     </List>
-// );
-
-
-// const ProductItem = props =>{
-    
-//     return (
-//         <List.Item>
-//             <List.Content floated='right'>
-//                 <Button content = "Delete"/>
-//             </List.Content>
-//             <List.Content floated='right'>
-//                 <Button content = "Edit"/>
-//             </List.Content>
-//             <Icon name = "beer"/>
-//             <List.Content >{props.name}</List.Content>
-//         </List.Item>
-//     );
-// }

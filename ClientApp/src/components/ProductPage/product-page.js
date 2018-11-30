@@ -37,6 +37,7 @@ class ProductPage extends Component {
       results.json().then(data => {
         this.setState({ product: data.product, loaded: true });
         this.setTitle();
+        console.log(data);
       });
     });
   }
