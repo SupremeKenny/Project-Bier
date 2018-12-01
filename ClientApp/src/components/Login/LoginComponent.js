@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
     Button,
     Divider,
@@ -30,7 +31,7 @@ export class LoginComponent extends Component {
 
     validateForm() {
         let emailValid = !this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        let passwordValid = this.state.password.length === 0 ||this.state.password.length <= 8;
+        let passwordValid = this.state.password.length === 0 || this.state.password.length <= 8;
 
         this.setState({ validationState: { email: emailValid, password: passwordValid } });
     }
@@ -63,7 +64,7 @@ export class LoginComponent extends Component {
             <Form onSubmit={this.handleSubmit} >
 
                 <Form.Input
-                    className={this.shouldMarkError("email")} 
+                    className={this.shouldMarkError("email")}
                     placeholder="Emailadres"
                     name="email"
                     width={12}
@@ -73,7 +74,7 @@ export class LoginComponent extends Component {
                 />
 
                 <Form.Input
-                    className={this.shouldMarkError("password")} 
+                    className={this.shouldMarkError("password")}
                     placeholder='Wachtwoord'
                     name="password"
                     width={12}
@@ -84,7 +85,11 @@ export class LoginComponent extends Component {
                 <Divider hidden />
 
                 <Button positive>Inloggen</Button>
-                <a href="/">Wachtwoord vergeten?</a>
+
+                <Link to="/">
+                    Wachtwoord vergeten?
+                </Link>
+
             </Form>);
     }
 }
