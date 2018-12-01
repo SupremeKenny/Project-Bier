@@ -80,7 +80,7 @@ class DesktopContainer extends Component {
                   <Link to="/account/inloggen">
                     <Button color="green">Inloggen</Button>
                   </Link>
-                  <Link to="/">
+                  <Link to="/favorieten">
                     <HeartButton />
                   </Link>
                   <Link to="/winkelwagen">

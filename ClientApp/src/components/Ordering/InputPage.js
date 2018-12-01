@@ -24,6 +24,7 @@ function validate(voornaam, achternaam, straatnaam, huisnummer, postcode, stad, 
     stad: stad.length === 0,
     telefoonnummer: telefoonnummer.length === 0,
     email: email.length === 0,
+    email: !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
   };
 }
 

@@ -8,6 +8,7 @@ import  Continue from "./components/Ordering/ContinuePage.js";
 import  InputInfo from "./components/Ordering/InputPage.js";
 import  Payment from "./components/Ordering/PaymentPage.js";
 import  Confirmation from "./components/Ordering/ConfirmationPage.js";
+import  Favorites from "./components/FavoritesPage.js"
 import { CategoryPage } from "./components/CategoryPage.js";
 import { SearchPage } from './components/SearchPage'
 import { Provider } from "react-redux";
@@ -32,6 +33,7 @@ export default class App extends Component {
           <Route path="/category/:id" component={CategoryPage} />
           <Route path="/zoeken/:query" component={SearchPage} />
           <Route path="/account/inloggen" component={LoginPage} />
+          <Route path="/favorieten" component={Favorites} />
         </div>
       </Layout>
       </Provider>
