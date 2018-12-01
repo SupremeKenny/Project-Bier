@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
-import { ProductInfoTable } from "./productinfo-table.js"
+import { ProductInfoTable } from "./InformationTable.js"
 import { connect } from "react-redux";
 import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
-import { HeartButton} from './heart-button.js';
+import { HeartButton } from './HeartButton.js';
 
 import {
   Header,
@@ -21,7 +21,7 @@ import {
   Loader
 } from "semantic-ui-react";
 
-class ProductPage extends Component {
+export class ProductPage extends Component {
   constructor() {
     super();
     this.state = {

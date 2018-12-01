@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { clearCart } from '../actions/actionCreator'
+import { clearCart } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
 import {
     Header,
@@ -99,7 +99,6 @@ const mapDispatchToProps = (dispatch) => {
     clearCart
   }, dispatch)
 }
-
 
 export default connect(null, mapDispatchToProps)(Payment);
     

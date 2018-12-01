@@ -50,7 +50,7 @@ const StepOrder = () => (
 
 const Space = () => " ";
 
-class Confirmation extends Component {
+export default class Confirmation extends Component {
     render() {
         return(
             <Container>
@@ -62,8 +62,3 @@ class Confirmation extends Component {
         );
     }
 }
-
-export default connect(
-
-    )(Confirmation);
-    

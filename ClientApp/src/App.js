@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import Layout from "./components/Layout.js";
-import ProductPage from "./components/ProductPage/product-page.js";
-import { HomePage } from "./components/HomePage.js";
+import ProductPage from "./components/ProductPage/ProductPage.js";
+import { HomePage } from "./components/Home/HomePage.js";
 import  ShoppingCart  from "./components/ShoppingCartPage.js";
-import  Continue from "./components/ContinuePage.js";
-import  InputInfo from "./components/InputPage.js";
-import  Payment from "./components/PaymentPage.js";
-import  Confirmation from "./components/ConfirmationPage.js";
+import  Continue from "./components/Ordering/ContinuePage.js";
+import  InputInfo from "./components/Ordering/InputPage.js";
+import  Payment from "./components/Ordering/PaymentPage.js";
+import  Confirmation from "./components/Ordering/ConfirmationPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
-import { SearchPage } from './components/search-page.js'
+import { SearchPage } from './components/SearchPage'
 import { Provider } from "react-redux";
 import { LoginPage } from "./components/Login/LoginPage";
 import store from "./store";

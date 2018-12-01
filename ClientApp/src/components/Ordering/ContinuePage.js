@@ -60,7 +60,7 @@ function validate(email, wachtwoord) {
   };
 }
 
-class Continue extends Component {
+export default class Continue extends Component {
     constructor() {
       super();
       this.state = {
@@ -152,6 +152,3 @@ class Continue extends Component {
     }
 }
 
-export default connect(
-
-)(Continue);

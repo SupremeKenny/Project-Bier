@@ -2,7 +2,7 @@
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { HeartButton } from './ProductPage/heart-button.js';
+import { HeartButton } from './ProductPage/HeartButton.js';
 import { NavigationBar } from './Navigation/NavigationBar.js';
 import { Footer } from './Navigation/Footer.js';
 
@@ -112,7 +112,7 @@ class DesktopContainer extends Component {
   }
 }
 
-class Layout extends React.Component {
+export class Layout extends React.Component {
   render() {
     return <DesktopContainer>{this.props.children}</DesktopContainer>;
   }

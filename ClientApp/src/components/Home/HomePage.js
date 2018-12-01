@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ProductCard, ProductCardPlaceholder } from "./ProductCard.js";
-import { BrandImage } from "./brand-image.js";
+import { ProductCard, ProductCardPlaceholder } from "../ProductCard.js";
+import { BrandImage } from "./BrandImage";
 import {
   Container,
   CardGroup,

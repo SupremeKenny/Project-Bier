@@ -65,7 +65,8 @@ function validate(voornaam, achternaam, straatnaam, huisnummer, postcode, stad, 
     email: email.length === 0,
   };
 }
-class InputInfo extends Component {
+
+export default class InputInfo extends Component {
     constructor() {
       super();
       this.state = {
@@ -247,8 +248,3 @@ class InputInfo extends Component {
       );
     }
 }
-
-export default connect(
-
-    )(InputInfo);
-    
