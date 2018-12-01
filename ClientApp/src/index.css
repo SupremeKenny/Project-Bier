@@ -9,9 +9,13 @@
    height: 100%;
  }
 
- body {
-   height: 100%;
+ .body {
+
+   display: flex;
+  min-height: 100vh;
+  flex-direction: column;
  }
+ .content {flex: 1}
 
 
  .menu {
