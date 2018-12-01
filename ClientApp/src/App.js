@@ -11,6 +11,7 @@ import  Confirmation from "./components/ConfirmationPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
 import { SearchPage } from './components/search-page.js'
 import { Provider } from "react-redux";
+import { LoginPage } from "./components/Login/LoginPage";
 import store from "./store";
 
 export default class App extends Component {
@@ -30,7 +31,7 @@ export default class App extends Component {
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/category/:id" component={CategoryPage} />
           <Route path="/zoeken/:query" component={SearchPage} />
-          
+          <Route path="/account/inloggen" component={LoginPage} />
         </div>
       </Layout>
       </Provider>
