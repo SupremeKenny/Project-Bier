@@ -1,0 +1,30 @@
+import React, { Component } from "react";
+import {
+    Icon,
+    Step,
+} from "semantic-ui-react";
+
+export const StepOrder = props => (
+    <Step.Group>
+        <Step active={props.active[0]}>
+            <Icon name='truck' />
+            <Step.Content>
+                <Step.Title>Bestellen</Step.Title>
+                <Step.Description>Vul uw gegevens in</Step.Description>
+            </Step.Content>
+        </Step>
+        <Step active={props.active[1]}>
+            <Icon name='credit card' />
+            <Step.Content>
+                <Step.Title>Betalen</Step.Title>
+                <Step.Description>Kies uw betalingswijze</Step.Description>
+            </Step.Content>
+        </Step>
+        <Step active={props.active[2]}>
+            <Icon name='info' />
+            <Step.Content>
+                <Step.Title>Bevestiging</Step.Title>
+            </Step.Content>
+        </Step>
+    </Step.Group>
+)
