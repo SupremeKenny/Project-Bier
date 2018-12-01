@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { Image, Button, Popup, Card, Statistic } from "semantic-ui-react";
+import { Image, Button, Popup, Card, Statistic, Placeholder } from "semantic-ui-react";
 
 class ImageHover extends React.Component {
   constructor(props) {
@@ -69,3 +69,33 @@ export const ProductCard = props => {
     </Card>
   );
 };
+
+export const ProductCardPlaceholder = () => {
+  return (
+    <Card className="product-card">
+      <Placeholder style={{ height: 300 }}>
+        <Placeholder.Image />
+      </Placeholder>
+      <Card.Content floated fluid="true">
+        <Card.Header style={{ minHeight: 50 }}>
+          <Placeholder>
+          <Placeholder.Header image>
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Header>
+          </Placeholder>
+        </Card.Header>
+      </Card.Content>
+      <Card.Content floated fluid="true">
+        <div class="ui center aligned">
+          <Popup
+            trigger={<Button content="Toevoegen" icon="cart" color="green" />}
+            content="Klik om het product toe te voegen aan jouw winkelwagen."
+            hideOnScroll
+          />
+        </div>
+      </Card.Content>
+    </Card>
+  );
+};
+

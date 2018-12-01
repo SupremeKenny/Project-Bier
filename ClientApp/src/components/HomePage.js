@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { ProductCard } from "./ProductCard.js";
+import { ProductCard, ProductCardPlaceholder } from "./ProductCard.js";
 import { BrandImage } from "./brand-image.js";
 import {
   Container,
   CardGroup,
-  Dimmer,
-  Loader,
   Header,
   Divider
 } from "semantic-ui-react";
@@ -26,6 +24,15 @@ const ProductsGroup = props => (
         title={beer.name}
         url={beer.url}
         price={beer.price}
+      />
+    ))}
+  </CardGroup>
+);
+
+const ProductsGroupPlaceholder = props => (
+  <CardGroup itemsPerRow={4}>
+    {props.number.map(number => (
+      <ProductCardPlaceholder key={number}
       />
     ))}
   </CardGroup>
@@ -82,23 +89,24 @@ export class HomePage extends React.Component {
   }
 
   render() {
-    if (!this.state.loaded) {
-      return (
-        <Dimmer active inverted>
-          <Loader size="large">Loading</Loader>
-        </Dimmer>
-      );
-    } else
-      return (
-        <MainContainer>
-          <BrandShowcase />
-          <Header as="h1" style={headerStyling} textAlign="center">
-            Deze biertjes raden we aan!
+    let productGroup;
+
+    if (this.state.loaded) {
+      productGroup = <ProductsGroup products={this.state.products} />;
+    } else {
+      productGroup = <ProductsGroupPlaceholder number={[1, 2, 3, 4, 5, 6, 7, 8]} />;
+    }
+
+    return (
+      <MainContainer>
+        <BrandShowcase />
+        <Header as="h1" style={headerStyling} textAlign="center">
+          Deze biertjes raden we aan!
             <Header.Subheader>Lekker, lekker, lekker...</Header.Subheader>
-          </Header>
-          <Divider />
-          <ProductsGroup products={this.state.products} />
-        </MainContainer>
-      );
+        </Header>
+        <Divider />
+        {productGroup}
+      </MainContainer>
+    );
   }
 }
