@@ -16,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using PostcodeAPI;
+using PostcodeAPI.Model;
 
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
@@ -25,31 +27,21 @@ using Project_Bier.Services;
 
 namespace Project_Bier.Controllers
 {
-    class RegisterResponse
-    {
-        public bool Success { get; set; }
-        public List<string> Errors { get; set; }
-    }
-
-    class LoginResponse
-    {
-        public bool Success { get; set; }
-        public string Error { get; set; }
-        public string Token { get; set; }
-    }
-
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<WebshopUser> userManager;
         private readonly SignInManager<WebshopUser> signInManager;
         private readonly ITokenGenerator tokenGenerator;
+        private readonly IConfiguration config;
 
-        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager, ITokenGenerator tokenGenerator)
+        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
+            ITokenGenerator tokenGenerator, IConfiguration config)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.tokenGenerator = tokenGenerator;
+            this.config = config;
         }
 
         [HttpPost]
@@ -123,7 +115,7 @@ namespace Project_Bier.Controllers
                     // TODO 
                     // Log Information about Register Result
                     // Send Welcome mail
-                    
+
                     RegisterResponse succesResponse = new RegisterResponse
                     {
                         Success = true,
@@ -169,5 +161,33 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpPost]
+        public IActionResult FetchAddress([FromBody] PostcodeApiRequestModel model)
+        {
+            PostcodeApiClient client = new PostcodeApiClient(config["PostcodeAPI:Key"]);
+            try
+            {
+                var result = client.GetAddress(model.Zip, Int32.Parse(model.Number));
+                Address address = result.Embedded.Addresses[0];
+                AddressResponse response = new AddressResponse
+                {
+                    City = address.City.ToString(),
+                    Street = address.Street.ToString(),
+                    Province = address.Province.ToString()
+                };
+                return Ok(new { response });
+            }
+            catch (System.ArgumentException)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetLimit(){
+            PostcodeApiClient client = new PostcodeApiClient(config["PostcodeAPI:Key"]);
+            var remaining = client.RequestsRemaining;
+            return Ok(new {remaining});
+        }
     }
 }
