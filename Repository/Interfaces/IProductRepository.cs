@@ -35,7 +35,7 @@ namespace Project_Bier.Repository
 
         IEnumerable<Product>  ListAll();
 
-        IEnumerable<Product> GetHomePageProducts();
+        IEnumerable<Product> GetRandomProducts(int count);
 
     }
 }

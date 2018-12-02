@@ -42,9 +42,9 @@ namespace Project_Bier.Controllers
         }
 
         [HttpGet]
-        public IActionResult FetchHome()
+        public IActionResult FetchProducts(int id)
         {
-            IEnumerable<Product> products = productRepository.GetHomePageProducts();
+            IEnumerable<Product> products = productRepository.GetRandomProducts(id);
             if(products == null) {
                 return NotFound();
             }
