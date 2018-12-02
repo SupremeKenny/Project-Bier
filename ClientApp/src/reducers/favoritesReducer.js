@@ -7,7 +7,7 @@ const favorites = (state = INITIAL_DATA, action) => {
     switch (action.type) {
         case "ADD_PRODUCT_FAVORITES":
             //Check
-            var index = state.products.some(function(item, index2) {
+            var index = state.products.some(function(item, index) {
                 return item.id === action.id;
             });
             //Voeg toe als leeg

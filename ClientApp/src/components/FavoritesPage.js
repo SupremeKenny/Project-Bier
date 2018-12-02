@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  deleteFavoritesItem
+  deleteFavoritesItem,
 } from "../actions/actionCreator";
 import { bindActionCreators } from 'redux';
+import { Link } from "react-router-dom";
 
 import {
     Header,
@@ -68,11 +69,13 @@ import {
                 <Grid.Column width={4}>{product.name}</Grid.Column>
                 <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                 <Grid.Column textAlign='right'>
+                 <Link to={"/product/" + product.id}>
                   <Popup 
-                    trigger={<Button content="Toevoegen" icon="cart" color="green" />}
+                    trigger={<Button content="Toevoegen" icon="cart" color="green"/>}
                     content="Klik om het product toe te voegen aan jouw winkelwagen."
                     hideOnScroll
                    />
+                 </Link>
                   <Button 
                     negative
                     onClick={() => {
@@ -99,7 +102,7 @@ import {
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
       {
-        deleteFavoritesItem
+        deleteFavoritesItem,
       },
       dispatch 
     )
