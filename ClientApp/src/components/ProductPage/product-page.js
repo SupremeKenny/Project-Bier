@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
 import { HeartButton} from './heart-button.js';
+import { addFavoritesItem } from '../../actions/actionCreator'
 
 import {
   Header,
@@ -107,6 +108,14 @@ class ProductPage extends Component {
                   content="Voeg toe aan verlanglijstje"
                   position="bottom left"
                 />
+                
+                <Button
+                  color='red'
+                  icon='heart'
+                  onClick={() => { this.props.addFavoritesItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }}
+                >
+                </Button>
+
               </div>
 
             </DescriptionContainer>
@@ -193,7 +202,8 @@ const PriceDisplay = props => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    addCartItem
+    addCartItem,
+    addFavoritesItem
   }, dispatch)
 }
 
