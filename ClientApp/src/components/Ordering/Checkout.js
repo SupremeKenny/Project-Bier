@@ -12,7 +12,7 @@ import {
   Header
 } from "semantic-ui-react";
 
-export default class Continue extends Component {
+export default class Checkout extends Component {
   render() {
     return (
       <Container>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCard } from "./ProductCard.js";
+import { ProductCard } from "./ProductCards.js";
 import { Loader, CardGroup, Container } from "semantic-ui-react";
 
 const MainContainer = ({ children }) => {
@@ -38,7 +38,7 @@ export class SearchPage extends React.Component {
         ).then(results => {
             results.json().then(data => {
                 console.log("searched");
-                this.setState({ products: data.product, loaded:true  })
+                this.setState({ products: data.product, loaded: true })
             });
         });
     }

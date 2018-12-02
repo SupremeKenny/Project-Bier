@@ -72,7 +72,7 @@ export const ProductCard = props => {
 
 export const ProductCardPlaceholder = () => {
   return (
-    <Card className="product-card">
+    <Card className="product-card" style={{ height: 472 }}>
       <Placeholder style={{ height: 300 }}>
         <Placeholder.Image />
       </Placeholder>

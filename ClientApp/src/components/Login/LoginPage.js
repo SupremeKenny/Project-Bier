@@ -25,27 +25,23 @@ export class LoginPage extends Component {
           content='Om de gegevens in je account goed te kunnen beschermen, vragen wij je om een wachtwoord.' />
         <Header as="h1"> Inloggen</Header>
         <Container>
-          <Segment placeholder padded='very' size={'big'} key={'large'}>
+          <Segment padded='very' size={'big'} key={'large'}>
             <Grid columns={2} stackable >
-
               <Grid.Row >
-
                 <Grid.Column>
                   <Header as="h3"> Bestaande klanten</Header>
                   <LoginComponent />
                 </Grid.Column>
-
                 <Grid.Column>
                   <Header as="h3"> Nieuw bij BeerBuddy?</Header>
                   <p>Maak binnen enkele minuten een nieuw account aan!</p>
-
                   <Form onSubmit={this.handleSubmit} >
                     <Form.Input
                       placeholder="Emailadres"
                       name="email"
                       width={12}
                     />
-                    <Button positive href="/input">Maak een account</Button>
+                    <Button positive href="/input">Maak een account aan</Button>
                   </Form>
                 </Grid.Column>
               </Grid.Row>

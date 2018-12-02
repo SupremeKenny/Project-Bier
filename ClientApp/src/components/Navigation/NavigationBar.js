@@ -24,7 +24,7 @@ export const NavigationBar = props => {
                 </Menu.Item>
                 </Link>
 
-                <Dropdown item text='Categorie' style={menuFontColor} >
+                <Dropdown item text='Categorieën' style={menuFontColor} >
                     <Dropdown.Menu style={{ width: 350, backgroundColor: '#dcdde1' }}>
                         <Dropdown.Header icon='beer' content='Kies uw categorie' />
                         <Grid columns={2} divided children >

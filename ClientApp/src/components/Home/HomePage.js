@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ProductCard, ProductCardPlaceholder } from "../ProductCard.js";
+import { ProductCard, ProductCardPlaceholder } from "../ProductCards.js";
 import { BrandImage } from "./BrandImage";
 import {
   Container,
@@ -38,7 +38,7 @@ const ProductsGroupPlaceholder = props => (
   </CardGroup>
 );
 
-const headerStyling = { fontFamily: "Raleway", fontSize: 30, color: "#ffa502" };
+const headerStyling = { fontFamily: "Raleway", fontSize: 26, color: "#ffa502" };
 const BrandShowcase = () => (
   <div>
     <Header as="h1" style={headerStyling} textAlign="center">
@@ -76,7 +76,7 @@ export class HomePage extends React.Component {
 
   componentWillMount() {
     this.setTitle();
-    fetch("/product/FetchHome").then(results => {
+    fetch("/product/FetchProducts/?id=8").then(results => {
       results.json().then(data => {
         this.setState({ products: data.products, loaded: true });
       });
