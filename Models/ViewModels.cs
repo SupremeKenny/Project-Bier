@@ -57,4 +57,10 @@ namespace Project_Bier.Models.ViewModels
         public string Email { get; set; }
         public string Password { get; set; }
     }
+
+    public class PostcodeApiRequestModel
+    {
+        public string Zip { get; set; }
+        public string Number { get; set; }
+    }
 }

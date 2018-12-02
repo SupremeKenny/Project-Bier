@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StepOrder } from "./StepOrder.js";
+import { validateEmail, validateZipCode } from '../FieldValidators.js';
 import {
   Container,
   Button,
@@ -10,10 +11,8 @@ import {
   Icon
 } from "semantic-ui-react";
 
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
+// TODO
+// Stricter housenumber checking
 
 export default class InputInfo extends Component {
   constructor() {
@@ -28,6 +27,7 @@ export default class InputInfo extends Component {
       city: "",
       phone: "",
       email: "",
+      province: "",
 
       focused: {
         name: false,
@@ -41,12 +41,32 @@ export default class InputInfo extends Component {
       },
 
       validationState: {},
-
-      displayErrorForm: false
+      displayErrorForm: false,
+      displayAdditional: false,
+      addressFetched: false,
+      addressCorrect: false
     };
   }
 
-  handleChange = (e, { name, value }) => this.setState({ ...this.state, [name]: value });
+  //TODO Read this from store instead of directly from localStorage
+  componentWillMount() {
+    this.setState({ products: localStorage.Cart ? JSON.parse(localStorage.Cart) : [] })
+  }
+
+  componentDidUpdate() {
+    this.handleFieldComplete();
+  }
+
+  /**
+  * Change the state if a field changes. Called in OnChange in form
+  */
+  handleChange = (e, { name, value }) => {
+    // If the zip or housenumber change we can no longer assume the fetched address is correct 
+    // Therefore we need to fetch it again
+    if (name == 'zip' || name == 'houseNumber') {
+      this.setState({ ...this.state, [name]: value, addressFetched: false, addressCorrect: false });
+    } else { this.setState({ ...this.state, [name]: value }); }
+  }
 
   onSubmit = (e) => {
     this.validateForm(this.handleSubmit);
@@ -70,9 +90,28 @@ export default class InputInfo extends Component {
     }
   }
 
+  /**
+  * Change focused state if a field is blurred
+  */
   handleBlur = (field) => (e) => {
     this.validateForm();
     this.setState({ focused: { ...this.state.focused, [field]: true } });
+  }
+
+  /**
+  * Fetches additional fields if certain state is true
+  */
+  handleFieldComplete() {
+    // Both fields should have been focused
+    if (this.state.focused['zip'] && this.state.focused['houseNumber']) {
+      // Both fields should be correct
+      if (this.state.validationState['zip'] && this.state.validationState['houseNumber']) {
+        // The address must not have changed and not be correct and fetched already
+        if (this.state.addressCorrect == false && this.state.addressFetched == false) {
+          this.setState({ ...this.state, addressFetched: true }, () => { this.fetchPostcodeApi() });
+        }
+      }
+    }
   }
 
   shouldMarkError(fieldName) {
@@ -86,18 +125,15 @@ export default class InputInfo extends Component {
       name: this.state.name.length > 0,
       surname: this.state.surname.length > 0,
       houseNumber: this.state.houseNumber.length > 0,
-      zip: this.state.zip.length === 6,
+      zip: validateZipCode(this.state.zip),
       phone: this.state.phone.length > 0,
       email: validateEmail(this.state.email)
     };
     this.setState({ ...this.state, validationState: fields }, callback);
   }
 
-  //TODO Read this from store instead of directly from localStorage
-  componentWillMount() {
-    this.setState({ products: localStorage.Cart ? JSON.parse(localStorage.Cart) : [] })
-  }
-  //TODO:Coupon meegeven
+  // TODO:Coupon meegeven
+  // Catch error
   generateOrder() {
     fetch('order/addorder/', {
       method: 'POST',
@@ -122,7 +158,37 @@ export default class InputInfo extends Component {
     });
   }
 
+
+  // TODO Catch error
+  fetchPostcodeApi() {
+    fetch('account/fetchAddress', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "Zip": this.state.zip,
+        "Number": this.state.houseNumber,
+      })
+    }).then(results => {
+      if (results.ok) {
+        results.json().then(data => this.setState({
+          ...this.state,
+          street: data.response.street, city: data.response.city, province: data.response.province, displayAdditional: true, addressCorrect: true
+        }));
+      } else {
+        this.setState({
+          ...this.state, displayAdditional: false, addressCorrect: false, addressFetched: false,
+          validationState: { ...this.validationState, zip: false, houseNumber: false, }
+        });
+      }
+    })
+  }
+
   render() {
+    const { name, surname, street, houseNumber, zip, city, phone, email, tussen, province } = this.state;
+
     let errorForm;
     if (this.state.displayErrorForm) {
       errorForm = <Message
@@ -132,7 +198,20 @@ export default class InputInfo extends Component {
         content='Om de bestelling correct te verwerken moet uw alle informatie in het formulier invullen.' />
     } else errorForm = "";
 
-    const { name, surname, street, houseNumber, zip, city, phone, email, tussen } = this.state;
+    let additionalFields;
+    if (this.state.displayAdditional) {
+      additionalFields = <Form.Group>
+        <Form.Input readOnly width={5}
+          label='Straatnaam'
+          value={street} />
+        <Form.Input readOnly width={5}
+          label='Stad'
+          value={city} />
+        <Form.Input readOnly width={5}
+          label='Provincie'
+          value={province} />
+      </Form.Group>
+    }
 
     return (
       <div>
@@ -173,7 +252,7 @@ export default class InputInfo extends Component {
                 onBlur={this.handleBlur('surname')} />
             </Form.Group>
 
-            <Form.Group >
+            <Form.Group>
               <Form.Input required width={4}
                 className={this.shouldMarkError('zip')}
                 name="zip"
@@ -197,16 +276,7 @@ export default class InputInfo extends Component {
               <Form.Input label='Toevoeging' placeholder='a' maxLength={3} width={2} />
             </Form.Group>
 
-            <Form.Group>
-              <Form.Input readOnly width={5}
-                label='Straatnaam'
-                placeholder='Coolsingel'
-                value={street} />
-              <Form.Input readOnly width={5}
-                label='Stad'
-                placeholder='Rotterdam'
-                value={city} />
-            </Form.Group>
+            {additionalFields}
 
             <Form.Group>
               <Form.Input required width={6}
