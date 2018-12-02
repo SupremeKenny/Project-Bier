@@ -19,6 +19,7 @@ import {
   Input,
   CardGroup,
   Header,
+  Icon
 } from "semantic-ui-react";
 
 const BreadcrumbTop = () => (
@@ -206,7 +207,13 @@ class ShoppingCart extends Component {
         </Container>
         <Container textAlign="right">
           <h3>Totaal: € {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}</h3>
-          <Button positive href="/checkout">Verder met bestellen ></Button>
+
+          <Button floated='right' animated href="/checkout" positive>
+            <Button.Content visible>Verder met bestellen</Button.Content>
+            <Button.Content hidden>
+              <Icon name='arrow right' />
+            </Button.Content>
+          </Button>
         </Container>
       </Container>);
     }

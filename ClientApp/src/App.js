@@ -4,7 +4,7 @@ import Layout from "./components/Layout.js";
 import ProductPage from "./components/ProductPage/ProductPage.js";
 import { HomePage } from "./components/Home/HomePage.js";
 import  ShoppingCart  from "./components/ShoppingCartPage.js";
-import  InputInfo from "./components/Ordering/InputPage.js";
+import  InputInfo from "./components/Ordering/GuestOrderForm.js";
 import  Payment from "./components/Ordering/PaymentPage.js";
 import  Confirmation from "./components/Ordering/ConfirmationPage.js";
 import  Favorites from "./components/FavoritesPage.js"
@@ -27,8 +27,8 @@ export default class App extends Component {
           <Route path="/product/:id" component={ProductPage} />
           <Route path="/winkelwagen" component={ShoppingCart} />
           <Route path="/checkout" component={Checkout} />
-          <Route path="/input" component={InputInfo} />
-          <Route path="/payment" component={Payment} />
+          <Route path="/bestellengast" component={InputInfo} />
+          <Route path="/betalen" component={Payment} />
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/category/:id" component={CategoryPage} />
           <Route path="/zoeken/:query" component={SearchPage} />

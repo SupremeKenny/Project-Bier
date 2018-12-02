@@ -9,7 +9,7 @@ import {
   Button,
   Divider,
   Message,
-  Header
+  Icon
 } from "semantic-ui-react";
 
 export default class Checkout extends Component {
@@ -42,12 +42,24 @@ export default class Checkout extends Component {
               <Grid.Column textAlign='center'>
                 <h2>Verder gaan zonder account</h2>
                 <p>Klik op de knop hieronder om als gast te bestellen.</p>
-                <Button color="yellow" href="/input">Doorgaan</Button>
+
+                <Button animated color="yellow" href="/bestellengast"> <Button.Content visible>Doorgaan</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name='arrow right' />
+                  </Button.Content>
+                </Button>
+
               </Grid.Column>
             </Grid.Row>
           </Grid>
         </Segment>
-        <Button floated='right' href='/winkelwagen'>Terug naar winkelwagen</Button>
+        <Button floated='right' animated href='/winkelwagen'>
+          <Button.Content visible>Terug naar winkelwagen</Button.Content>
+          <Button.Content hidden>
+            <Icon name='arrow left' />
+          </Button.Content>
+        </Button>
+
       </Container>
     );
   }

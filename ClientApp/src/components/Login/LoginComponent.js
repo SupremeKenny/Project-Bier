@@ -31,7 +31,7 @@ export class LoginComponent extends Component {
 
     validateForm() {
         let emailValid = !this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        let passwordValid = this.state.password.length === 0 || this.state.password.length <= 8;
+        let passwordValid = this.state.password.length > 0 || this.state.password.length <= 8;
 
         this.setState({ validationState: { email: emailValid, password: passwordValid } });
     }
