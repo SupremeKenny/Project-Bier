@@ -60,7 +60,7 @@ import {
           <div>
            {this.props.favorites.products.length != 0 ? (
 
-            <Grid divided='vertically' columns="equal">
+            <Grid divided='vertically' columns="equal" padded='vertically' verticalAlign='middle'>
              {this.props.favorites.products.map(product => (
               <Grid.Row>
                 <Grid.Column width={2}>

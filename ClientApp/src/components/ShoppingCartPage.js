@@ -80,7 +80,7 @@ class ShoppingCart extends Component {
         <div>
           {this.props.shoppingcart.products.length != 0 ? (
             
-            <Grid divided="vertically" columns="equal">
+            <Grid divided="vertically" columns="equal" padded='vertically' verticalAlign='middle'>
               {this.props.shoppingcart.products.map(product => (
                 <Grid.Row>
                   <Grid.Column width={2}>
@@ -88,7 +88,7 @@ class ShoppingCart extends Component {
                   </Grid.Column>
                   <Grid.Column width={4}>{product.name}</Grid.Column>
                   <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
-                  <Grid.Column width={3}>
+                  <Grid.Column width={4}>
                     <Space />
                     <div className="ui right labeled input small">
                       <input type="text" id="txtNum" value={product.count} />
