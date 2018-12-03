@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ProjectBier.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +52,7 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Beer",
+                name: "Beers",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -64,11 +65,14 @@ namespace ProjectBier.Migrations
                     Content = table.Column<string>(nullable: true),
                     AlcoholPercentage = table.Column<string>(nullable: true),
                     BrewerName = table.Column<string>(nullable: true),
-                    CountryName = table.Column<string>(nullable: true)
+                    CountryName = table.Column<string>(nullable: true),
+                    ServingTemperature = table.Column<string>(nullable: true),
+                    ServingGlass = table.Column<string>(nullable: true),
+                    BeerColourHex = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Beer", x => x.Id);
+                    table.PrimaryKey("PK_Beers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,7 +116,7 @@ namespace ProjectBier.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -156,7 +160,7 @@ namespace ProjectBier.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -290,7 +294,7 @@ namespace ProjectBier.Migrations
                 {
                     table.PrimaryKey("PK_GuestUsers", x => x.UserGuid);
                     table.ForeignKey(
-                        name: "FK_GuestUsers_Addresses_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
+                        name: "FK_GuestUsers_Addresses_ShippingAddressPostalCode_ShippingAddr~",
                         columns: x => new { x.ShippingAddressPostalCode, x.ShippingAddressStreetNumber, x.ShippingAddressAssociatedUser },
                         principalTable: "Addresses",
                         principalColumns: new[] { "PostalCode", "StreetNumber", "AssociatedUser" },
@@ -345,7 +349,7 @@ namespace ProjectBier.Migrations
                 column: "WebshopUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestUsers_ShippingAddressPostalCode_ShippingAddressStreetNumber_ShippingAddressAssociatedUser",
+                name: "IX_GuestUsers_ShippingAddressPostalCode_ShippingAddressStreetN~",
                 table: "GuestUsers",
                 columns: new[] { "ShippingAddressPostalCode", "ShippingAddressStreetNumber", "ShippingAddressAssociatedUser" });
 
@@ -373,7 +377,7 @@ namespace ProjectBier.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Beer");
+                name: "Beers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

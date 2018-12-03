@@ -4,19 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Project_Bier.Repository;
 
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181121111420_initial")]
-    partial class initial
+    [Migration("20181202230049_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -134,6 +137,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<bool>("Available");
 
+                    b.Property<string>("BeerColourHex");
+
                     b.Property<string>("BrewerName");
 
                     b.Property<string>("CategoryId");
@@ -148,11 +153,15 @@ namespace ProjectBier.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<string>("ServingGlass");
+
+                    b.Property<string>("ServingTemperature");
+
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Beer");
+                    b.ToTable("Beers");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.Category", b =>

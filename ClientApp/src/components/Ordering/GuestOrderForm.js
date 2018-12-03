@@ -77,10 +77,9 @@ export default class InputInfo extends Component {
     for (var key in this.state.validationState) {
       validated = validated && this.state.validationState[key];
     }
-    console.log(validated);
 
     if (validated) {
-      // DO Stuff generate order and such
+      this.generateOrder();
     } else {
       let focusedNew = {}
       for (var key in this.state.focused) {
