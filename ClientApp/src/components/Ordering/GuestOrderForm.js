@@ -153,7 +153,7 @@ export default class InputInfo extends Component {
         "Products": this.state.products,
       })
     }).then(results => {
-      results.json().then(data => window.location.href = "/payment/" + data);
+      results.json().then(data => window.location.href = "/betalen/" + data);
     });
   }
 
@@ -260,7 +260,7 @@ export default class InputInfo extends Component {
                 value={zip}
                 onChange={this.handleChange}
                 onBlur={this.handleBlur('zip')}
-                maxLength={6} />
+                maxLength={7} />
 
               <Form.Input required width={2}
                 className={this.shouldMarkError('houseNumber')}

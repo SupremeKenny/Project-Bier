@@ -12,6 +12,7 @@ import { CategoryPage } from "./components/CategoryPage.js";
 import { SearchPage } from './components/SearchPage'
 import { Provider } from "react-redux";
 import { LoginPage } from "./components/Login/LoginPage";
+import  Registration  from "./components/Registration/Registration.js";
 import store from "./store";
 import Checkout from "./components/Ordering/Checkout.js";
 
@@ -28,11 +29,12 @@ export default class App extends Component {
           <Route path="/winkelwagen" component={ShoppingCart} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/bestellengast" component={InputInfo} />
-          <Route path="/betalen" component={Payment} />
+          <Route path="/betalen/:id" component={Payment} />
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/category/:id" component={CategoryPage} />
           <Route path="/zoeken/:query" component={SearchPage} />
           <Route path="/account/inloggen" component={LoginPage} />
+          <Route path="/account/registreren" component={Registration} />
           <Route path="/favorieten" component={Favorites} />
         </div>
       </Layout>

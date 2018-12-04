@@ -41,7 +41,7 @@ export class LoginPage extends Component {
                       name="email"
                       width={12}
                     />
-                    <Button positive href="/input">Maak een account aan</Button>
+                    <Button positive href="/account/registreren">Maak een account aan</Button>
                   </Form>
                 </Grid.Column>
               </Grid.Row>
