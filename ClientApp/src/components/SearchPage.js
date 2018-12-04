@@ -44,7 +44,7 @@ export class SearchPage extends React.Component {
     }
 
     render() {
-        if (this.state.loaded == true) {
+        if (this.state.loaded === true) {
             return (
                 <MainContainer>
                     <h1>Je hebt gezocht naar "{this.props.match.params.query}"</h1>

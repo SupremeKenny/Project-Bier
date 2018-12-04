@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { ProductCard, ProductCardPlaceholder } from "../ProductCards.js";
 import { BrandImage } from "./BrandImage";
 import {
@@ -24,6 +24,7 @@ const ProductsGroup = props => (
         title={beer.name}
         url={beer.url}
         price={beer.price}
+        key={beer.id}
       />
     ))}
   </CardGroup>

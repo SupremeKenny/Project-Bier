@@ -1,7 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-import { Image, Button, Popup, Card, Statistic, Placeholder } from "semantic-ui-react";
+import {
+  Image,
+  Button,
+  Popup,
+  Card,
+  Statistic,
+  Placeholder
+} from "semantic-ui-react";
 
 class ImageHover extends React.Component {
   constructor(props) {
@@ -42,7 +49,7 @@ export const ProductCard = props => {
         <ImageHover url={props.url} />
       </Link>
 
-      <Card.Content floated fluid="true">
+      <Card.Content fluid="true">
         <Card.Header style={{ minHeight: 50 }}>
           <Link to={"/product/" + props.id}>{props.title} </Link>
         </Card.Header>
@@ -55,8 +62,8 @@ export const ProductCard = props => {
         </Card.Description>
       </Card.Content>
 
-      <Card.Content floated fluid="true">
-        <div class="ui center aligned">
+      <Card.Content fluid="true">
+        <div className="ui center aligned">
           <Link to={"/product/" + props.id}>
             <Popup
               trigger={<Button content="Toevoegen" icon="cart" color="green" />}
@@ -76,18 +83,18 @@ export const ProductCardPlaceholder = () => {
       <Placeholder style={{ height: 300 }}>
         <Placeholder.Image />
       </Placeholder>
-      <Card.Content floated fluid="true">
+      <Card.Content fluid="true">
         <Card.Header style={{ minHeight: 50 }}>
           <Placeholder>
-          <Placeholder.Header image>
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Header>
+            <Placeholder.Header image>
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </Placeholder.Header>
           </Placeholder>
         </Card.Header>
       </Card.Content>
-      <Card.Content floated fluid="true">
-        <div class="ui center aligned">
+      <Card.Content fluid="true">
+        <div className="ui center aligned">
           <Popup
             trigger={<Button content="Toevoegen" icon="cart" color="green" />}
             content="Klik om het product toe te voegen aan jouw winkelwagen."
@@ -98,4 +105,3 @@ export const ProductCardPlaceholder = () => {
     </Card>
   );
 };
-

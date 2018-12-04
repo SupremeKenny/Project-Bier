@@ -12,10 +12,6 @@ import {
 } from "semantic-ui-react";
 
 export class LoginPage extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <div>

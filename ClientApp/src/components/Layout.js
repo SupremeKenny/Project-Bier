@@ -1,10 +1,9 @@
-
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { HeartButton } from './ProductPage/HeartButton.js';
-import { NavigationBar } from './Navigation/NavigationBar.js';
-import { Footer } from './Navigation/Footer.js';
+import { HeartButton } from "./ProductPage/HeartButton.js";
+import { NavigationBar } from "./Navigation/NavigationBar.js";
+import { Footer } from "./Navigation/Footer.js";
 
 import {
   Button,
@@ -15,15 +14,6 @@ import {
   Label
 } from "semantic-ui-react";
 
-const menuStyle = { marginBottom: 0, marginTop: 0, borderRadius: 0, color: "#2f3542" };
-const menuStyleUnder = { paddingTop: 65, marginBottom: 0, marginTop: 0, borderRadius: 0 };
-const body = { minHeight: window.innerHeight / 3 };
-const menuFontColor = { color: "White" };
-
-const MenuItemList = props => (
-  <Menu.Item link style={{ color: 'Black' }} name={props.brand} />
-);
-
 class DesktopContainer extends Component {
   constructor() {
     super();
@@ -33,26 +23,29 @@ class DesktopContainer extends Component {
     };
   }
 
-  onSearchClick = e => { this.setState({ ...this.state, shouldSearch: true }) }
+  onSearchClick = e => {
+    this.setState({ ...this.state, shouldSearch: true });
+  };
 
   render() {
-    const { children } = this.props;
-    console.log(this.props);
-
-    if (this.state.shouldSearch == true) {
+    if (this.state.shouldSearch === true) {
       this.setState({ ...this.state, shouldSearch: false });
-      return <Redirect push to={"/zoeken/" + this.state.query} />
-    }
-    else {
+      return <Redirect push to={"/zoeken/" + this.state.query} />;
+    } else {
       return (
         <div className="body">
-          <div >
+          <div>
             <Menu
               fixed="top"
               inverted
               size="large"
               color="black"
-              style={menuStyle}
+              style={{
+                marginBottom: 0,
+                marginTop: 0,
+                borderRadius: 0,
+                color: "#2f3542"
+              }}
               className="top-menu"
               borderless
             >
@@ -72,7 +65,12 @@ class DesktopContainer extends Component {
                       content: "Zoek",
                       onClick: this.onSearchClick
                     }}
-                    onChange={e => this.setState({ ...this.state, query: e.currentTarget.value })}
+                    onChange={e =>
+                      this.setState({
+                        ...this.state,
+                        query: e.currentTarget.value
+                      })
+                    }
                     placeholder="Zoek naar producten..."
                   />
                 </Menu.Item>
@@ -87,10 +85,15 @@ class DesktopContainer extends Component {
                     <Button icon color="yellow">
                       <i className="icons">
                         <i className="shop icon" />
-
                       </i>
                     </Button>
-                    <Label color='red' floating circular size="tiny" style={{ position: "relative", left: "0%" }}>
+                    <Label
+                      color="red"
+                      floating
+                      circular
+                      size="tiny"
+                      style={{ position: "relative", left: "0%" }}
+                    >
                       {this.props.shoppingcart.count}
                     </Label>
                   </Link>
@@ -99,12 +102,8 @@ class DesktopContainer extends Component {
             </Menu>
 
             <NavigationBar />
-
-
           </div>
-          <Container className="content">
-            {children}
-          </Container>
+          <Container className="content">{this.props.children}</Container>
           <Footer />
         </div>
       );

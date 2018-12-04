@@ -45,11 +45,11 @@ export class LoginComponent extends Component {
     shouldMarkError(field) {
         switch (field) {
             case "email":
-                if (this.state.userHasFocused.email == true) {
+                if (this.state.userHasFocused.email === true) {
                     return (this.state.validationState.email) ? "error" : "";
                 } else return "";
             case "password":
-                if (this.state.userHasFocused.password == true) {
+                if (this.state.userHasFocused.password === true) {
                     return (this.state.validationState.password) ? "error" : "";
                 } else return "";
             default:

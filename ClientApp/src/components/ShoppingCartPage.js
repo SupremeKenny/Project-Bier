@@ -125,7 +125,7 @@ class ShoppingCart extends Component {
   }
 
   checkEmpty() {
-    if (this.props.shoppingcart.products.length != 0) {
+    if (this.props.shoppingcart.products.length !== 0) {
       this.setState({ ...this.state, productsInCart: true })
     } else this.setState({ ...this.state, productsInCart: false });
   }
@@ -135,7 +135,7 @@ class ShoppingCart extends Component {
   }
 
   render() {
-    if (this.state.productsInCart == true) {
+    if (this.state.productsInCart === true) {
       return (<Container>
         <CartTop />
         <Grid divided="vertically" columns="equal">
