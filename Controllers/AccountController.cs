@@ -104,24 +104,20 @@ namespace Project_Bier.Controllers
                     StreetName = model.StreetName,
                     CityName = model.CityName,
                     Country = model.Country,
+                    Province = model.Province,
                     AssociatedUser = newUser.UserGuid
                 };
 
                 newUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
                 IdentityResult registerResult = await userManager.CreateAsync(newUser, model.Password);
-
+                RegisterResponse registerResponse = new RegisterResponse();
                 if (registerResult.Succeeded)
                 {
                     // TODO 
                     // Log Information about Register Result
                     // Send Welcome mail
-
-                    RegisterResponse succesResponse = new RegisterResponse
-                    {
-                        Success = true,
-                        Errors = null
-                    };
-                    return Ok(new { succesResponse });
+                    registerResponse.Success = true;
+                    return Ok(new { registerResponse });
                 }
 
                 List<String> errors = new List<string>();
@@ -130,13 +126,10 @@ namespace Project_Bier.Controllers
                     errors.Add(error.Description);
                 }
 
-                RegisterResponse registerResponse = new RegisterResponse
-                {
-                    Success = false,
-                    Errors = errors
-                };
-
+                registerResponse.Success = false;
+                registerResponse.Errors = errors;
                 return Ok(new { registerResponse });
+                
             }
             return BadRequest();
         }
@@ -184,10 +177,11 @@ namespace Project_Bier.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetLimit(){
+        public IActionResult GetLimit()
+        {
             PostcodeApiClient client = new PostcodeApiClient(config["PostcodeAPI:Key"]);
             var remaining = client.RequestsRemaining;
-            return Ok(new {remaining});
+            return Ok(new { remaining });
         }
     }
 }

@@ -29,6 +29,8 @@ namespace Project_Bier.Models.ViewModels
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        [Required]
+        public string Province { get; set; }
     }
 
     public class SelectedProduct
