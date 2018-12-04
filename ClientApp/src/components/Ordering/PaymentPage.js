@@ -11,7 +11,7 @@ import {
   Step
 } from "semantic-ui-react";
 
-
+//TODO Refactoring
 const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
 
 const Space = () => " ";

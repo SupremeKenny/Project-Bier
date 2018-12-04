@@ -113,9 +113,7 @@ namespace Project_Bier.Controllers
                 RegisterResponse registerResponse = new RegisterResponse();
                 if (registerResult.Succeeded)
                 {
-                    // TODO 
-                    // Log Information about Register Result
-                    // Send Welcome mail
+                    // TODO: Log Information about Register Result and Send Welcome mail
                     registerResponse.Success = true;
                     return Ok(new { registerResponse });
                 }

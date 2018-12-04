@@ -1,3 +1,8 @@
+// TODO Convert Documentation to English
+// TODO Remove all localstorage calls
+// Reducer functions should be pure functions which means they should not have side effects, so no I/O or data calls
+// We'll make a function subscribe to changes and store the full state encoded in the localStorage
+
 //Kijken of er wat opgeslagen is in de html5 Storage
 const INITIAL_DATA = {
   products: localStorage.Cart ? JSON.parse(localStorage.Cart) : [],

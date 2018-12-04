@@ -11,9 +11,8 @@ import {
   Image,
 } from "semantic-ui-react";
 
-// TODO
-// Stricter housenumber checking
-
+// TODO Stricter validation of house number and phone number
+// TODO: The fields of this and guestorder are pretty much the same, so find a way to not use duplicate
 export default class Registration extends Component {
   constructor() {
     super();
@@ -201,7 +200,7 @@ export default class Registration extends Component {
     });
   }
 
-  // TODO Catch error
+  // TODO: Implement catch
   fetchPostcodeApi() {
     fetch("account/fetchAddress", {
       method: "POST",

@@ -21,6 +21,7 @@ import {
   Loader
 } from "semantic-ui-react";
 
+// TODO: Correct the display of category
 export class ProductPage extends Component {
   constructor() {
     super();

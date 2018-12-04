@@ -11,9 +11,7 @@ import {
   Icon
 } from "semantic-ui-react";
 
-// TODO
-// Stricter housenumber checking
-
+// TODO Stricter housenumber checking
 export default class InputInfo extends Component {
   constructor() {
     super();
@@ -131,8 +129,9 @@ export default class InputInfo extends Component {
     this.setState({ ...this.state, validationState: fields }, callback);
   }
 
-  // TODO:Coupon meegeven
-  // Catch error
+  // TODO: Add Coupon
+  // TODO: Add Phone Number
+  // FIXME: last name is undefined
   generateOrder() {
     fetch('order/addorder/', {
       method: 'POST',

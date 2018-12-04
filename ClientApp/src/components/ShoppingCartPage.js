@@ -37,8 +37,7 @@ const BreadcrumbTop = () => (
   </div>
 );
 
-// TODO
-// Move this to a seperate file, as it is duplicate from HomePage.js
+// TODO Move this to a seperate file, as it is duplicate from HomePage.js
 const ProductsGroup = props => (
   <CardGroup itemsPerRow={4}>
     {props.products.map(beer => (
@@ -52,8 +51,7 @@ const ProductsGroup = props => (
   </CardGroup>
 );
 
-// TODO
-// Move this to a seperate file, as it is duplicate from HomePage.js
+// TODO Move this to a seperate file, as it is duplicate from HomePage.js
 const ProductsGroupPlaceholder = props => (
   <CardGroup itemsPerRow={4}>
     {props.number.map(number => (
