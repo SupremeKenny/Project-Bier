@@ -19,15 +19,18 @@ import {
   Icon,
   Popup,
   Divider,
-  Loader
+  Loader,
+  Item
 } from "semantic-ui-react";
+import favorites from "../../reducers/favoritesReducer.js";
 
 class ProductPage extends Component {
   constructor() {
     super();
     this.state = {
       product: {},
-      loaded: false
+      loaded: false,
+      favorited: {}
     };
   }
 
@@ -36,7 +39,7 @@ class ProductPage extends Component {
       "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
     ).then(results => {
       results.json().then(data => {
-        this.setState({ product: data.product, loaded: true });
+        this.setState({ product: data.product, loaded: true, favorited: localStorage.getItem('Favorites', this.state.product.id) !== JSON.stringify(this.state.product.id) ? false : true });
         this.setTitle();
       });
     });
@@ -46,6 +49,13 @@ class ProductPage extends Component {
     document.title = "Beer Buddy: " + this.state.product.name;
   }
 
+  handleFavorited = () => {
+    this.setState({ favorited: true })
+  }
+
+  handleUnfavorited = () => {
+    this.setState({ favorited: false })
+  }
 
   render() {
     if (!this.state.loaded) {
@@ -109,12 +119,30 @@ class ProductPage extends Component {
                   position="bottom left"
                 />
                 
-                <Button
-                  color='red'
-                  icon='heart'
-                  onClick={() => { this.props.addFavoritesItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }}
-                >
-                </Button>
+                <div>
+                  <Grid>
+                    <Grid.Column width={8}>
+                      <Popup
+                        trigger={<Button
+                          color='red'
+                          icon='heart'
+                          onClick={() => { this.props.addFavoritesItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }}
+                        ></Button>}
+                        content='Voeg toe aan favorietenlijst'
+                        on='click'
+                        open={this.state.favorited}
+                        onClose={this.handleUnfavorited}
+                        onOpen={this.handleFavorited}
+                        position="bottom right"
+                      />
+                    </Grid.Column>
+      
+                    <Grid.Column width={8}>
+                      <Header>Favorited</Header>
+                      <pre>{JSON.stringify(this.state.favorited, null, 2)}</pre>
+                    </Grid.Column>
+                  </Grid>
+                </div>
 
               </div>
 
