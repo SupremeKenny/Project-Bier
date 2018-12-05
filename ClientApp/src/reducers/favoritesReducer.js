@@ -23,15 +23,10 @@ const favorites = (state = INITIAL_DATA, action) => {
                 ];
             //Verwijder als item al aanwezig is --> bug: lege grid-velden als je items weer weghaalt na toevoegen
             } else {
-              state.products = state.products.map(
-                  item => 
-                    item.id === action.id
-                      ? state.products = state.products.filter(
-                          product => product.id !== action.id
-                      )
-                      : item
-              );
+              state.products = state.products.filter(
+               product => product.id !== action.id)
             }
+            
             //Opslaan
             localStorage.setItem('Favorites', JSON.stringify(state.products));
             
