@@ -18,7 +18,7 @@ namespace Project_Bier.Repository
     {
         void AddProduct(Beer product);
 
-        void UpdateProduct(Guid guid, Product newProduct);
+        void UpdateProduct(Beer newProduct, string oldId);
 
         void RemoveProduct(String guid);
 

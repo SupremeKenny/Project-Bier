@@ -3,16 +3,16 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import {
     Container,
-    Divider,
-    Dropdown,
-    Grid,
-    Header,
     Image,
-    List,
     Menu,
-    Segment,
     Button,
-    Icon
+    Icon,
+    // Divider,
+    // Dropdown,
+    // Grid,
+    // Header,
+    // List,
+    // Segment,
   } from 'semantic-ui-react';
 
   export const AdminLayout = ({ children }) => {

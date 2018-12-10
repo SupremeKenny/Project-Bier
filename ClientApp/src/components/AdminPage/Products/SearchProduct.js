@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Divider, Grid, Header, Icon, Search, Segment } from 'semantic-ui-react';
 
-export const FindSearch = () => {
+export const SearchProduct = () => {
     return(
         <Segment placeholder>
           <Grid columns={2} stackable textAlign='center'>

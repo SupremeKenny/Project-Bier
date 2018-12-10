@@ -95,9 +95,40 @@ namespace Project_Bier.Repository
             }
         }
 
-        public void UpdateProduct(Guid guid, Product newProduct)
+        public void UpdateProduct(Beer newProduct, string oldId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oldId == newProduct.Id)
+                {
+                    Beer productToUpdate = context.Beer.FirstOrDefault(p => p.Id == newProduct.Id);
+                    if (productToUpdate != null)
+                    {
+                        productToUpdate.Name = newProduct.Name;
+                        productToUpdate.CategoryId = newProduct.CategoryId;
+                        productToUpdate.Price = newProduct.Price;
+                        productToUpdate.BrewerName = newProduct.BrewerName;
+                        productToUpdate.CountryName = newProduct.CountryName;
+                        productToUpdate.AlcoholPercentage = newProduct.AlcoholPercentage;
+                        productToUpdate.Content = newProduct.Content;
+                        productToUpdate.Url = newProduct.Url;
+                        productToUpdate.Description = newProduct.Description;
+                        
+                        context.SaveChanges();
+                    }
+                }
+                else {
+                    RemoveProduct(oldId);
+                    AddProduct(newProduct);
+                }
+
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            // throw new NotImplementedException();
         }
 
         public IEnumerable<Product> GetHomePageProducts()

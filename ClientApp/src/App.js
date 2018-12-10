@@ -11,12 +11,18 @@ import Confirmation from "./components/ConfirmationPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
 import { Provider } from "react-redux";
 import store from "./store";
+
 import { AdminPage } from "./components/AdminPage.js";
 import { Counter } from "./components/AdminPage/Counter.js";
 import { Home } from "./components/AdminPage/Home.js";
-import {AllProducts} from "./components/AdminPage/AllProducts.js"
-import {AllUsers} from "./components/AdminPage/AllUsers.js";
-import {AddProducts} from "./components/AdminPage/AddProduct.js";
+
+import {AllProducts} from "./components/AdminPage/Products/AllProducts.js"
+import {AddProducts} from "./components/AdminPage/Products/AddProduct.js";
+import {EditProducts} from "./components/AdminPage/Products/EditProduct.js";
+import {SearchProduct} from "./components/AdminPage/Products/SearchProduct.js";
+
+import {AllUsers} from "./components/AdminPage/Users/AllUsers.js";
+import {AddUser} from "./components/AdminPage/Users/AddUser.js";
 
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -46,12 +52,14 @@ export default class App extends Component {
 
             {/* Admin Routes */}
             <AppRoute path="/admin" layout={AdminPage} component={Home} />
-            <AppRoute path="/admin-searchProduct" layout={AdminPage} component={Counter} />
+            <AppRoute path="/admin-searchProduct" layout={AdminPage} component={SearchProduct} />
             <AppRoute path="/admin-addProduct" layout={AdminPage} component={AddProducts} />
             <AppRoute path="/admin-allProducts" layout={AdminPage} component={AllProducts} />
-            <AppRoute path="/admin-addUser" layout={AdminPage} component={Home} />
+            <AppRoute path="/admin-addUser" layout={AdminPage} component={AddUser} />
             <AppRoute path="/admin-allUsers" layout={AdminPage} component={AllUsers} />
             <AppRoute path="/admin-accountSettings" layout={AdminPage} component={Home} />
+            <AppRoute path="/admin-editProduct/:id" layout={AdminPage} component={EditProducts} />
+
           </Switch>
         </div>
       </Provider>

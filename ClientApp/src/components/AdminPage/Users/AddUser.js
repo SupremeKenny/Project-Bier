@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
     Header,
     Segment,
@@ -8,7 +8,7 @@ import {
     Container,
 } from 'semantic-ui-react';
 
-export class AddProducts extends React.Component {
+export class AddUser extends React.Component {
     state = {
         id: '',
         name: '',
@@ -57,22 +57,22 @@ export class AddProducts extends React.Component {
 
     render() {
         // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        const {
-            id,
-            name,
-            categoryId,
-            price,
-            brewerName,
-            countryName,
-            alcoholPercentage,
-            content,
-            url,
-            description
-        } = this.state;
+        // const {
+        //     id,
+        //     name,
+        //     categoryId,
+        //     price,
+        //     brewerName,
+        //     countryName,
+        //     alcoholPercentage,
+        //     content,
+        //     url,
+        //     description
+        // } = this.state;
 
         return (
             <Container>
-                <Header as='h1'>Product toevoegen</Header>
+                <Header as='h1'>Gebruiker toevoegen</Header>
                 <Segment>
                     <Form onSubmit={this.handleSubmit} id="myForm">
                         <Form.Group unstackable widths={2}>
@@ -109,7 +109,7 @@ export class AddProducts extends React.Component {
                                 value={this.price}
                                 onChange={this.handleChange}
                                 type='number'
-                                step="0.05"
+                                step="0.01"
                                 min="0.00"
                             />
                         </Form.Group>
@@ -175,7 +175,7 @@ export class AddProducts extends React.Component {
                 </Segment>
 
                 {/* Todo: Can delete <pre> if I dont have to display states anymore */}
-                <pre>
+                {/* <pre>
                     {JSON.stringify({
                         id,
                         name,
@@ -188,12 +188,11 @@ export class AddProducts extends React.Component {
                         url,
                         description,
                     }, null, 2)}
-                </pre>
+                </pre> */}
 
             </Container>
         );
     }
-
 }
 
 const CategoryId = [

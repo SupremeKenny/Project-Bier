@@ -39,6 +39,17 @@ namespace Project_Bier.Controllers
             return new OkObjectResult(new {TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count()});
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Fetch(String id)
+        {
+            Product product = productRepository.GetProductByGuid(id);
+            if(product == null) 
+            {
+                return NotFound();
+            }
+            return Json(new {product = product});
+        }
+
         [HttpDelete("{id}")]
         public void Delete(String id)  
         {  
@@ -49,6 +60,16 @@ namespace Project_Bier.Controllers
         public void Create ([FromBody] Beer product)
         {
             productRepository.AddProduct(product);
+        }
+
+        [HttpPut("{id}")]
+        public void Update ([FromBody] Beer product, String id)
+        {
+
+            /// Save Changes
+            productRepository.UpdateProduct(product, id);
+
+            
         }
 
     }
