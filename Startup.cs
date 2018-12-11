@@ -12,6 +12,7 @@ using Project_Bier.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Nest;
 
 namespace Project_Bier
 {
@@ -56,6 +57,7 @@ namespace Project_Bier
             });
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISearchService<Product>, ElasticSearchService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
         }
@@ -64,7 +66,7 @@ namespace Project_Bier
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
-            ConfigureElasticSearch(app, loggerFactory, applicationLifetime, "products");
+            ConfigureElasticSearch(app, loggerFactory, applicationLifetime, "beer");
 
             if (env.IsDevelopment())
             {
@@ -128,7 +130,7 @@ namespace Project_Bier
                         foreach (Product product in products)
                         {
                             String[] suggestions = ElasticSearchPopulator.SuggestionGenerator(product);
-                            product.Suggest = new Nest.CompletionField { Input = suggestions };
+                            product.Suggest = new CompletionField { Input = suggestions };
                         }
 
                         // Insert documents 

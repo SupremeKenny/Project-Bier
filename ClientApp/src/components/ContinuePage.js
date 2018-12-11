@@ -56,7 +56,8 @@ const Space = () => " ";
 function validate(email, wachtwoord) {
   return {
     email: email.length === 0,
-    wachtwoord: wachtwoord.length === 0,
+    email: !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
+    wachtwoord: wachtwoord.length === 0 || wachtwoord.length <= 5
   };
 }
 

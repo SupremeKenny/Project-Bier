@@ -12,7 +12,7 @@ namespace Project_Bier.Repository
     {
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options) { }
         public DbSet<ShippingAddress> Addresses { get; set; }
-        public DbSet<Beer> Beer {get; set;}
+        public DbSet<Beer> Beers {get; set;}
         public DbSet<Category> Categories {get; set;}
         public DbSet<Order> Order {get; set;}
         public DbSet<ProductOrder> ProductOrder { get; set; }
@@ -27,7 +27,8 @@ namespace Project_Bier.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data source=app.db");
+            // TODO, move this to a configuration file of some sort
+            optionsBuilder.UseNpgsql("User ID=postgres;Password=ZMWX4BLb5jEk2u6n;Host=188.166.77.23;Port=5432;Database=postgres;Pooling=true;");
         }
         
     }
