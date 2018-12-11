@@ -17,6 +17,7 @@ namespace Project_Bier.Repository
         public DbSet<Order> Order {get; set;}
         public DbSet<ProductOrder> ProductOrder { get; set; }
         public DbSet<GuestUser> GuestUsers {get; set;}
+        public DbSet<Discount> Discount { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

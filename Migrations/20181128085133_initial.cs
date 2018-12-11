@@ -85,6 +85,20 @@ namespace ProjectBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Discount",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(nullable: false),
+                    Code = table.Column<string>(nullable: true),
+                    Procent = table.Column<bool>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Discount", x => x.Guid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Order",
                 columns: table => new
                 {
@@ -377,6 +391,9 @@ namespace ProjectBier.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Discount");
 
             migrationBuilder.DropTable(
                 name: "FavoriteList");

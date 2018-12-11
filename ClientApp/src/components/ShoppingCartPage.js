@@ -10,25 +10,13 @@ import {
 import { bindActionCreators } from "redux";
 
 import {
-  Header,
   Container,
-  Rating,
   Breadcrumb,
-  Segment,
   Grid,
   Image,
-  Label,
   Button,
-  Icon,
-  Popup,
   Divider,
-  Table,
   Input,
-  Card,
-  Menu,
-  CardGroup,
-  List,
-  Dropdown
 } from "semantic-ui-react";
 
 const Breadcrumb1 = () => (
@@ -55,19 +43,47 @@ const ButtonCoC = () => (
 
 const Space = () => " ";
 
-const ButtonCheck = () => <Button>Check</Button>;
 
-const Input1 = () => <Input placeholder="Vul je kortingscode in..." />;
 
 class ShoppingCart extends Component {
   constructor() {
     super();
-    this.state = {
-      totalPrice: 0,
-    };
   }
-  totalPrice = 0;
+
+  componentWillMount(){
+    this.setState({discount: {procent: false, amount: 0}})
+  }
+  
+  handleDiscount = (evt) => {
+    //console.log(evt.target.value);
+    fetch(
+      "https://localhost:5001/order/SearchDiscount?input=" + evt.target.value
+    ) 
+    .then(results => {
+      if(!results.ok){
+        this.setState({discount: {procent: true, amount: 0}});
+        localStorage.setItem("Discount", null);
+
+      }
+      results.json().then(data => {
+        console.log(data.discount);
+        this.setState({discount: {procent: data.discount.procent, amount: data.discount.amount}}, () => console.log(this.state.discount));
+        localStorage.setItem("Discount", (data.discount.code));
+      });
+      
+    });
+  }
+
+  handleTotal = (total) => {
+    if(total > 0){
+      return total;
+    } else {
+      return 0;
+    }
+  }
+    
   render() {
+    var totaal;
     return (
       <Container>
         <Divider hidden />
@@ -82,7 +98,7 @@ class ShoppingCart extends Component {
             
             <Grid divided="vertically" columns="equal" padded='vertically' verticalAlign='middle'>
               {this.props.shoppingcart.products.map(product => (
-                <Grid.Row>
+                <Grid.Row key={product.id}>
                   <Grid.Column width={2}>
                     <Image src={product.url} size="mini" />
                   </Grid.Column>
@@ -91,7 +107,7 @@ class ShoppingCart extends Component {
                   <Grid.Column width={4}>
                     <Space />
                     <div className="ui right labeled input small">
-                      <input type="text" id="txtNum" value={product.count} />
+                      <input type="text" id="txtNum" value={product.count} readOnly/>
                       <div className="ui mini vertical buttons">
                         <button
                           className="ui icon button"
@@ -116,7 +132,7 @@ class ShoppingCart extends Component {
                           }}
                         >
                           {" "}
-                          <i class="down chevron icon" />
+                          <i className="down chevron icon" />
                         </button>
                       </div>
                     </div>
@@ -146,12 +162,35 @@ class ShoppingCart extends Component {
         <Divider />
         <Container textAlign="left">
           <h4>
-            Kortingscode: <Input1 />
-            <ButtonCheck />
+            Kortingscode: <Input placeholder="Vul je kortingscode in..." onChange={this.handleDiscount}/>
           </h4>
         </Container>
         <Container textAlign="right">
-          <h3>Totaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
+          
+          {this.state.discount.amount != 0 ? (
+          <h3>
+          <h3>SubTotaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
+          {this.state.discount.procent == true ?
+           ( 
+             <div>
+            <h3>Korting: {this.state.discount.amount} % </h3> 
+            <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice - this.props.shoppingcart.totalPrice/100*this.state.discount.amount)*100)/100)}</h3>
+            </div>
+           ) : 
+           (
+             <div>
+           <h3>Korting: - € {this.state.discount.amount}</h3>
+           { }
+          
+           <h3>Totaal: € {this.handleTotal((Math.round((this.props.shoppingcart.totalPrice - this.state.discount.amount)*100)/100))}</h3>
+            </div>
+           )}
+          </h3>) : (
+           <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice)*100)/100)}</h3>
+
+          ) }
+
+
           <ButtonCoC />
         </Container>
       </Container>
