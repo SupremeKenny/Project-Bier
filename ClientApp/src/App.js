@@ -13,8 +13,22 @@ import { SearchPage } from "./components/SearchPage";
 import { Provider } from "react-redux";
 import { LoginPage } from "./components/Login/LoginPage";
 import Registration from "./components/Registration/Registration.js";
-import store from "./store";
 import Checkout from "./components/Ordering/Checkout.js";
+
+import { loadState, saveState } from "./localStorage.js";
+import { createStore } from "redux";
+import reducer from "./reducers";
+import throttle from "lodash/throttle";
+
+const persistedState = loadState();
+const store = createStore(reducer, persistedState);
+
+store.subscribe(
+  throttle(() => {
+    saveState(store.getState());
+  }),
+  1000
+);
 
 export default class App extends Component {
   displayName = App.name;
