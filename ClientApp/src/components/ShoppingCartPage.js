@@ -73,8 +73,17 @@ class ShoppingCart extends Component {
       
     });
   }
+
+  handleTotal = (total) => {
+    if(total > 0){
+      return total;
+    } else {
+      return 0;
+    }
+  }
     
   render() {
+    var totaal;
     return (
       <Container>
         <Divider hidden />
@@ -171,7 +180,9 @@ class ShoppingCart extends Component {
            (
              <div>
            <h3>Korting: - € {this.state.discount.amount}</h3>
-           <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice - this.state.discount.amount)*100)/100)}</h3>
+           { }
+          
+           <h3>Totaal: € {this.handleTotal((Math.round((this.props.shoppingcart.totalPrice - this.state.discount.amount)*100)/100))}</h3>
             </div>
            )}
           </h3>) : (

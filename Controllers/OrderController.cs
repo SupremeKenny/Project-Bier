@@ -106,6 +106,10 @@ namespace Project_Bier.Controllers
                 }
                 totalPricewithDiscount = Math.Round((totalPriceOrder - totaldiscount)*100)/100;         
 
+                if(totalPricewithDiscount < 0){
+                    totalPricewithDiscount = 0;
+                }
+
                 
                 
 
