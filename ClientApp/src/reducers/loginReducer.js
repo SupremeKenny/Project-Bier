@@ -13,13 +13,14 @@ const login = (state = loadState(), action) => {
             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
           ],
         expiry: userInfo["exp"],
-        loggedIn: true
+        loggedIn: true,
+        email: userInfo["sub"]
       });
     case "LOGOUT":
-      return (state = { ...state, token: "", userInfo: {}, loggedIn: false });
+      return (state = { ...state, token: "", email: "", loggedIn: false });
     default:
       if (typeof state === "undefined") {
-        return (state = { ...state, token: "", userInfo: {}, loggedIn: false });
+        return (state = { ...state, token: "",  email: "",loggedIn: false });
       } else return state;
   }
 };
