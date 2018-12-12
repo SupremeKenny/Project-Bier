@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
     Header,
     Segment,
@@ -41,8 +41,8 @@ export class AddUser extends React.Component {
 
         // var validate = this.state.id
         // console.log(validate)
-        if (this.state.id != "" && this.state.name != "" && this.state.categoryId != "" && this.state.price != "") {
-            console.log("Uitgevoerd"),
+        if (this.state.id !== "" && this.state.name !== "" && this.state.categoryId !== "" && this.state.price !== "") {
+            // console.log("Uitgevoerd"),
             fetch('admin/Create/', {
                 headers:{
                     'Accept': 'application/json',

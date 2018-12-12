@@ -11,7 +11,7 @@ Grid,
 Header,
 Container,
 Segment,
-Divider
+Confirm,
     } from 'semantic-ui-react';
     
 export class AllProducts extends React.Component{
@@ -27,21 +27,51 @@ export class AllProducts extends React.Component{
             showFirstAndLastNav: true,
             showPreviousAndNextNav: true,
             totalPages: 1,
+            open: false,
+            deleteProduct: '',
         };
       }
 
-    handleDelete = (id) => {   
+    show = (id) => this.setState({ open: true , deleteProduct: id})
+    handleCancel = () => this.setState({ open: false })
+
+    handleDelete = (id) => { 
+        console.log(id),  
         fetch('/admin/Delete/' + id, {  
             method: 'delete'  
-        })
-        .then(data => {  
-            this.setState(  
-                {  
-                    products: this.state.products.filter((rec) => {  
-                        return (rec.id !== id);  
-                    }),
-                })
+        }),
+        // .then(data => {  
+        //     this.setState(  
+        //         {  
+        //             products: this.state.products.filter((rec) => {  
+        //                 return (rec.id !== id);  
+        //             }),
+        //         })
+        // });
+
+        // console.log (this.state.activePage);
+
+        // console.log ("Product Verwijderd");
+
+        fetch("/admin/FetchAllProducts/" + (this.state.activePage - 1)+ "/15")
+        .then(results => {
+          results.json().then(data => {
+            // console.log(data)
+            if (data.totalPages !== this.state.totalPages){
+                console.log ('Pagina heeft geen items meer!');
+                fetch("/admin/FetchAllProducts/" + (this.state.activePage - 2)+ "/15")
+                .then(results => {
+                    results.json().then(data => {
+                        // console.log(data)
+                        this.setState({totalPages: data.totalPages, products: data.items, open: false, activePage: data.totalPages});
+                    });
+                });
+            }
+            else this.setState({totalPages: data.totalPages, products: data.items, open: false});
+
+          });
         });
+
     }
 
       handlePaginationChange = (e, { activePage }) =>{
@@ -63,6 +93,27 @@ export class AllProducts extends React.Component{
           });
         });
       }
+
+      showMessage = (item) => {
+        const style = {
+            paddingLeft: '1.5em',
+            paddingRight: '1.5em',
+            paddingTop: '1em',
+            paddingBottom: '1em'
+        }
+          return (
+              <Container style = {style}>
+                <List >
+                    <List.Item>
+                    <b>Het product met de volgende ID wordt verwijderd: </b> 
+                    <Segment>{item}</Segment>
+                    </List.Item>
+                </List>
+            </Container>
+
+          )
+          
+      } 
 
     render(){
         const {
@@ -94,7 +145,15 @@ export class AllProducts extends React.Component{
                                     this.state.products.map(p => (
                                         <List.Item key = {p.id}>
                                             <List.Content floated='right'>
-                                                <Button content = "Delete" onClick = {this.handleDelete.bind(this, p.id) }/>
+                                                <Button content = "Delete" onClick = {this.show.bind(this, p.id, p)}/>
+                                                <Confirm
+                                                    open={this.state.open}
+                                                    header= 'Product Verwijderen'
+                                                    // content= {'Product Id: ' + deleteProduct}
+                                                    content= {this.showMessage.bind(this, this.state.deleteProduct)}
+                                                    onCancel={this.handleCancel}
+                                                    onConfirm={this.handleDelete.bind(this, this.state.deleteProduct)}
+                                                />
                                             </List.Content>
                                             <List.Content floated='right'>
                                                 <Link to={"/admin-editProduct/" + p.id}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { Button, Divider, Grid, Header, Icon, Search, Segment } from 'semantic-ui-react';
 
 export const SearchProduct = () => {
@@ -23,7 +24,9 @@ export const SearchProduct = () => {
                   Nieuw Biertje toevoegen
                 </Header>
                 <p>
-                <Button primary>Toevoegen</Button>
+                  <Link to="/admin-addProduct">
+                    <Button primary>Toevoegen</Button>
+                  </Link>
                 </p>
               </Grid.Column>
             </Grid.Row>
