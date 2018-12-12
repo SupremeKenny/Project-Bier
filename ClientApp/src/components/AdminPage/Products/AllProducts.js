@@ -36,10 +36,14 @@ export class AllProducts extends React.Component{
     handleCancel = () => this.setState({ open: false })
 
     handleDelete = (id) => { 
-        console.log(id),  
+        console.log('Current Id: ' + id),
+        console.log('Active Page: ' + this.state.activePage)  
         fetch('/admin/Delete/' + id, {  
             method: 'delete'  
-        }),
+        })
+        .then (data => {
+            this.setState ({open: false})
+        })
         // .then(data => {  
         //     this.setState(  
         //         {  
@@ -53,21 +57,23 @@ export class AllProducts extends React.Component{
 
         // console.log ("Product Verwijderd");
 
-        fetch("/admin/FetchAllProducts/" + (this.state.activePage - 1)+ "/15")
+        /// Als ik op pagina 0 iets delete --> activepage  = 1
+
+        fetch("/admin/FetchAllProducts/" + (this.state.activePage - 1) + "/15")
         .then(results => {
           results.json().then(data => {
-            // console.log(data)
+            console.log(data.items)
             if (data.totalPages !== this.state.totalPages){
                 console.log ('Pagina heeft geen items meer!');
-                fetch("/admin/FetchAllProducts/" + (this.state.activePage - 2)+ "/15")
+                fetch("/admin/FetchAllProducts/" + (this.state.activePage - 2) + "/15")
                 .then(results => {
                     results.json().then(data => {
                         // console.log(data)
-                        this.setState({totalPages: data.totalPages, products: data.items, open: false, activePage: data.totalPages});
+                        this.setState({totalPages: data.totalPages, products: data.items, activePage: 1});
                     });
                 });
             }
-            else this.setState({totalPages: data.totalPages, products: data.items, open: false});
+            else this.setState({totalPages: data.totalPages, products: data.items});
 
           });
         });

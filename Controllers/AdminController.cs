@@ -72,6 +72,31 @@ namespace Project_Bier.Controllers
             
         }
 
+        [HttpPost]
+        public void CreateTest (){
+
+            /// Use Post in Postman 
+
+            for (int i = 0; i < 16; i++)
+            {
+                Beer product = new Beer {
+                Id = "Id-" + i,
+                Name = "0" + i + " - test",
+                CategoryId = "Amber",
+                Price = 2
+                };
+                productRepository.AddProduct(product);
+            }
+
+            // Beer product = new Beer {
+            //     Id = "Id-",
+            //     Name = "0" + " - test",
+            //     CategoryId = "Amber",
+            //     Price = 2
+            //     };
+            //     productRepository.AddProduct(product);
+        }
+
     }
 
 }
