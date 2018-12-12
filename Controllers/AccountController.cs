@@ -34,14 +34,16 @@ namespace Project_Bier.Controllers
         private readonly SignInManager<WebshopUser> signInManager;
         private readonly ITokenGenerator tokenGenerator;
         private readonly IConfiguration config;
+        private readonly IAddressRepository addressRepository;
 
         public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
-            ITokenGenerator tokenGenerator, IConfiguration config)
+            ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.tokenGenerator = tokenGenerator;
             this.config = config;
+            this.addressRepository = addressRepository;
         }
 
         [HttpPost]
@@ -127,7 +129,7 @@ namespace Project_Bier.Controllers
                 registerResponse.Success = false;
                 registerResponse.Errors = errors;
                 return Ok(new { registerResponse });
-                
+
             }
             return BadRequest();
         }
@@ -142,9 +144,20 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> Logout()
+        //TODO Secure this with token
+        [HttpGet]
+        public async Task<IActionResult> GetAccountInfo(string id)
         {
-            throw new NotImplementedException();
+            WebshopUser user = await userManager.FindByEmailAsync(id);
+            if (user != null)
+            {
+                ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
+                return Ok(new { address });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         public Task<IActionResult> ResetPassword([FromBody] ViewModel model)
