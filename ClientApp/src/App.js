@@ -19,6 +19,7 @@ import { loadState, saveState } from "./localStorage.js";
 import { createStore } from "redux";
 import reducer from "./reducers";
 import throttle from "lodash/throttle";
+import Overview from "./components/Ordering/Overview.js";
 
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
@@ -45,6 +46,7 @@ export default class App extends Component {
             <Route path="/bestellengast" component={InputInfo} />
             <Route path="/betalen/:id" component={Payment} />
             <Route path="/confirmation" component={Confirmation} />
+            <Route path="/overzicht" component={Overview} />
             <Route path="/category/:id" component={CategoryPage} />
             <Route path="/zoeken/:query" component={SearchPage} />
             <Route path="/account/inloggen" component={LoginPage} />

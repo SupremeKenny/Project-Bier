@@ -14,7 +14,7 @@ export default class Confirmation extends Component {
         return(
             <Container>
                 <Divider hidden/>
-                <StepOrder active={[false,false,true]}/>
+                <StepOrder active={[false,false, false,true]}/>
                 <Divider/>
                 <h2>Bedankt voor uw bestelling! Uw order is geregistreerd.</h2>
             </Container>

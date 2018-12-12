@@ -25,8 +25,10 @@ const ButtonCoC = () => (
 );
 
 
+// TODO after payment, delete guest user info
 class Payment extends Component {
 
+  // DO this after payment is confirmed, not before
   componentWillMount() {
     this.props.clearCart();
   }
