@@ -1,6 +1,6 @@
 import { loadState } from "../localStorage.js";
 
-export const shoppingcart = (state = loadState(), action) => {
+const shoppingcart = (state = loadState(), action) => {
   switch (action.type) {
     case "ADD_PRODUCT_CART":
       // Check if index exists

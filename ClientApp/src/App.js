@@ -11,7 +11,7 @@ import Favorites from "./components/FavoritesPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
 import { SearchPage } from "./components/SearchPage";
 import { Provider } from "react-redux";
-import { LoginPage } from "./components/Login/LoginPage";
+import  LoginPage  from "./components/Login/LoginPage";
 import Registration from "./components/Registration/Registration.js";
 import Checkout from "./components/Ordering/Checkout.js";
 

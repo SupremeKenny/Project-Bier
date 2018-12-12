@@ -30,9 +30,7 @@ const BreadcrumbTop = () => (
         <Breadcrumb.Section link>Hoofdpagina</Breadcrumb.Section>{" "}
       </Link>
       <Breadcrumb.Divider icon="right angle" />
-      <Breadcrumb.Section active>
-        Winkelwagentje
-            </Breadcrumb.Section>
+      <Breadcrumb.Section active>Winkelwagentje</Breadcrumb.Section>
     </Breadcrumb>
   </div>
 );
@@ -55,23 +53,26 @@ const ProductsGroup = props => (
 const ProductsGroupPlaceholder = props => (
   <CardGroup itemsPerRow={4}>
     {props.number.map(number => (
-      <ProductCardPlaceholder key={number}
-      />
+      <ProductCardPlaceholder key={number} />
     ))}
   </CardGroup>
 );
 
 const headerStyling = { fontFamily: "Raleway", fontSize: 25, color: "#ffa502" };
 
-const CartTop = () => (<div><BreadcrumbTop />
-  <Divider />
-  <h1>Winkelwagentje</h1>
-  <Divider /></div>);
+const CartTop = () => (
+  <div>
+    <BreadcrumbTop />
+    <Divider />
+    <h1>Winkelwagentje</h1>
+    <Divider />
+  </div>
+);
 
 class EmptyShoppingCart extends Component {
   constructor() {
-    super()
-    this.state = { products: [], loaded: false }
+    super();
+    this.state = { products: [], loaded: false };
   }
 
   componentWillMount() {
@@ -94,18 +95,19 @@ class EmptyShoppingCart extends Component {
       <div>
         <CartTop />
         <p> Je hebt geen producten in je winkelwagentje!</p>
-        <Button positive href="/">Verder met winkelen</Button>
+        <Button positive href="/">
+          Verder met winkelen
+        </Button>
         <Divider />
 
         <Header as="h3" style={headerStyling} textAlign="center">
           Deze biertjes zijn bijvoorbeeld heel lekker!
-            <Header.Subheader>Erg lekker, lekker, lekker...</Header.Subheader>
+          <Header.Subheader>Erg lekker, lekker, lekker...</Header.Subheader>
         </Header>
         {productGroup}
-
-      </div>)
+      </div>
+    );
   }
-
 }
 
 class ShoppingCart extends Component {
@@ -124,7 +126,7 @@ class ShoppingCart extends Component {
 
   checkEmpty() {
     if (this.props.shoppingcart.products.length !== 0) {
-      this.setState({ ...this.state, productsInCart: true })
+      this.setState({ ...this.state, productsInCart: true });
     } else this.setState({ ...this.state, productsInCart: false });
   }
 
@@ -134,88 +136,100 @@ class ShoppingCart extends Component {
 
   render() {
     if (this.state.productsInCart === true) {
-      return (<Container>
-        <CartTop />
-        <Grid divided="vertically" columns="equal">
-          {this.props.shoppingcart.products.map(product => (
-            <Grid.Row>
-              <Grid.Column width={2}>
-                <Image src={product.url} size="mini" />
-              </Grid.Column>
-              <Grid.Column width={4}>{product.name}</Grid.Column>
-              <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
-              <Grid.Column width={3}>
-
-                <div className="ui right labeled input small">
-                  <input type="text" id="txtNum" value={product.count} />
-                  <div className="ui mini vertical buttons">
-                    <button
-                      className="ui icon button"
-                      command="Up"
-                      onClick={() => {
-                        this.props.addCartItem(
-                          product.id,
-                          product.name,
-                          product.price,
-                          product.url
-                        );
-                      }}>
-                      <i className="up chevron icon" />
-                    </button>
-                    <button
-                      className="ui icon button"
-                      command="Down"
-                      onClick={() => {
-                        this.props.decrementCartItem(product.id, product.price);
-                        this.checkEmpty();
-                      }}
-                    >
-                      <i class="down chevron icon" />
-                    </button>
+      return (
+        <Container>
+          <CartTop />
+          <Grid divided="vertically" columns="equal">
+            {this.props.shoppingcart.products.map(product => (
+              <Grid.Row>
+                <Grid.Column width={2}>
+                  <Image src={product.url} size="mini" />
+                </Grid.Column>
+                <Grid.Column width={4}>{product.name}</Grid.Column>
+                <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
+                <Grid.Column width={3}>
+                  <div className="ui right labeled input small">
+                    <input type="text" id="txtNum" value={product.count} />
+                    <div className="ui mini vertical buttons">
+                      <button
+                        className="ui icon button"
+                        command="Up"
+                        onClick={() => {
+                          this.props.addCartItem(
+                            product.id,
+                            product.name,
+                            product.price,
+                            product.url
+                          );
+                        }}
+                      >
+                        <i className="up chevron icon" />
+                      </button>
+                      <button
+                        className="ui icon button"
+                        command="Down"
+                        onClick={() => {
+                          this.props.decrementCartItem(
+                            product.id,
+                            product.price
+                          );
+                          this.checkEmpty();
+                        }}
+                      >
+                        <i class="down chevron icon" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Grid.Column>
-              <Grid.Column width={2}>
-                <Button
-                  negative
-                  onClick={() => {
-                    this.props.deleteCartItem(product.id, product.count, product.price);
-                    this.checkEmpty();
-                  }}
-                >
-
-                  Verwijder
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={2}>
-                Totaal: €
+                </Grid.Column>
+                <Grid.Column width={2}>
+                  <Button
+                    negative
+                    onClick={() => {
+                      this.props.deleteCartItem(
+                        product.id,
+                        product.count,
+                        product.price
+                      );
+                      this.checkEmpty();
+                    }}
+                  >
+                    Verwijder
+                  </Button>
+                </Grid.Column>
+                <Grid.Column width={2}>
+                  Totaal: €
                   {Math.round(product.count * product.price * 100) / 100}
-              </Grid.Column>
-            </Grid.Row>
-          ))}
-        </Grid>
-        )
+                </Grid.Column>
+              </Grid.Row>
+            ))}
+          </Grid>
+          )
+          <Divider />
+          <Container textAlign="left">
+            <h4>
+              Kortingscode:
+              <Input placeholder="Vul je kortingscode in..." />
+              <Button>Check</Button>
+            </h4>
+          </Container>
+          <Container textAlign="right">
+            <h3>
+              Totaal: €{" "}
+              {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
+            </h3>
 
-      <Divider />
-        <Container textAlign="left">
-          <h4>
-            Kortingscode:<Input placeholder="Vul je kortingscode in..." />
-            <Button>Check</Button>
-          </h4>
+            <Button floated="right" animated href="/checkout" positive>
+              <Button.Content visible>Verder met bestellen</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
+            </Button>
+          </Container>
         </Container>
-        <Container textAlign="right">
-          <h3>Totaal: € {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}</h3>
-
-          <Button floated='right' animated href="/checkout" positive>
-            <Button.Content visible>Verder met bestellen</Button.Content>
-            <Button.Content hidden>
-              <Icon name='arrow right' />
-            </Button.Content>
-          </Button>
-        </Container>
-      </Container>);
+      );
+    } else {
+      return <EmptyShoppingCart />;
     }
-    else { return (<EmptyShoppingCart />) }
   }
 }
 

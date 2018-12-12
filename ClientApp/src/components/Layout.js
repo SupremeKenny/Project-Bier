@@ -11,12 +11,13 @@ import {
   Input,
   Image,
   Menu,
-  Label
+  Label,
+  Dropdown
 } from "semantic-ui-react";
 
 class DesktopContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       query: "",
       shouldSearch: false
@@ -27,7 +28,26 @@ class DesktopContainer extends Component {
     this.setState({ ...this.state, shouldSearch: true });
   };
 
+  // TODO
   render() {
+    let loginComponent;
+    if (this.props.reduxState.login.loggedIn) {
+      loginComponent = (
+        <Dropdown text={"Welkom " + this.props.reduxState.login.userName} floating button className='icon' color="green">
+          <Dropdown.Menu >
+            <Dropdown.Item text="Account Overzicht" />
+            <Dropdown.Item text="Uitloggen" />
+          </Dropdown.Menu>
+        </Dropdown>
+      );
+    } else {
+      loginComponent = (
+        <Link to="/account/inloggen">
+          <Button color="green">Inloggen</Button>
+        </Link>
+      );
+    }
+
     if (this.state.shouldSearch === true) {
       this.setState({ ...this.state, shouldSearch: false });
       return <Redirect push to={"/zoeken/" + this.state.query} />;
@@ -75,9 +95,7 @@ class DesktopContainer extends Component {
                   />
                 </Menu.Item>
                 <Menu.Item>
-                  <Link to="/account/inloggen">
-                    <Button color="green">Inloggen</Button>
-                  </Link>
+                  {loginComponent}
                   <Link to="/favorieten">
                     <HeartButton />
                   </Link>
@@ -94,7 +112,7 @@ class DesktopContainer extends Component {
                       size="tiny"
                       style={{ position: "relative", left: "0%" }}
                     >
-                      {this.props.shoppingcart.count}
+                      {this.props.reduxState.shoppingcart.count}
                     </Label>
                   </Link>
                 </Menu.Item>
@@ -119,7 +137,7 @@ export class Layout extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    shoppingcart: state.shoppingcart
+    reduxState: state
   };
 };
 

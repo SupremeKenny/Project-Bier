@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Button, Divider, Form, Message } from "semantic-ui-react";
+import { validateEmail } from "../FieldValidators.js";
 
 export class LoginComponent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: "",
       password: "",
@@ -16,8 +17,11 @@ export class LoginComponent extends Component {
         email: false,
         password: false
       },
-      displayError: false
+      displayError: false,
+      error: ""
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = (e, { name, value }) =>
@@ -30,21 +34,42 @@ export class LoginComponent extends Component {
     });
   };
 
-  // TODO: Use FieldValidators for this
   validateForm() {
-    let emailValid = !this.state.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    let passwordValid =
-      this.state.password.length > 0 || this.state.password.length <= 8;
+    let emailValid = validateEmail(this.state.email);
+    let passwordValid = this.state.password.length >= 8;
 
     this.setState({
       validationState: { email: emailValid, password: passwordValid }
     });
   }
 
-  // TODO: Implement the functionality of login
-  handleSubmit() {}
+  handleSubmit() {
+    fetch("account/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Email: this.state.email,
+        Password: this.state.password
+      })
+    }).then(results => {
+      if (results.ok) {
+        results.json().then(data => {
+          if (data.loginResponse.success === true) {
+            this.props.submissionMethod(data.loginResponse.token);
+          } else {
+            this.setState({
+              ...this.state,
+              displayError: true,
+              error: data.loginResponse.error
+            });
+          }
+        });
+      }
+    });
+  }
 
   // TODO: Make this function less verbose
   // Lookup how to properly give attributes as parameters such as in handleChange
@@ -52,11 +77,11 @@ export class LoginComponent extends Component {
     switch (field) {
       case "email":
         if (this.state.userHasFocused.email === true) {
-          return this.state.validationState.email ? "error" : "";
+          return this.state.validationState.email ? "" : "error";
         } else return "";
       case "password":
         if (this.state.userHasFocused.password === true) {
-          return this.state.validationState.password ? "error" : "";
+          return this.state.validationState.password ? "" : "error";
         } else return "";
       default:
         return "";
@@ -82,6 +107,7 @@ export class LoginComponent extends Component {
 
         <Form.Input
           className={this.shouldMarkError("password")}
+          type="password"
           placeholder="Wachtwoord"
           name="password"
           width={12}

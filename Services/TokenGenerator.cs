@@ -43,8 +43,7 @@ namespace Project_Bier.Services
             };
 
             IList<Claim> userClaims = await userManager.GetClaimsAsync(user);
-            claims.AddRange(claims);
-
+    
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"]));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
