@@ -4,7 +4,9 @@ import {
   DECREMENT_PRODUCT_CART,
   CLEAR_CART,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  ADD_GUEST,
+  DELETE_GUEST
 } from "./actionsTypes";
 
 export const clearCart = () => ({
@@ -36,5 +38,12 @@ export const loginUser = token => ({
   type: LOGIN,
   token
 });
+
+export const addGuestToStorage = guestInfo => ({
+  type: ADD_GUEST,
+  guestInfo
+});
+
+export const deleteGuest = () => ({type: DELETE_GUEST });
 
 export const logoutUser = () => ({ type: LOGOUT });

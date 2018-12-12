@@ -4,3 +4,5 @@ export const DELETE_PRODUCT_CART = "DELETE_PRODUCT_CART";
 export const CLEAR_CART = "CLEAR_CART";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const ADD_GUEST = "ADD_GUEST";
+export const DELETE_GUEST = "DELETE_GUEST";
