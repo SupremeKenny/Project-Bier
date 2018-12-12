@@ -51,7 +51,7 @@ namespace Project_Bier.Services
                 config["Token:Issuer"],
                 config["Token:Issuer"],
                 claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: credentials);
             
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
