@@ -7,19 +7,24 @@ using Project_Bier.Repository;
 using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
+
+//TODO Sent confirmation email after payment
 namespace Project_Bier.Controllers
 {
     [Route("[controller]/[action]")]
     public class OrderController : Controller
     {
+        UserManager<WebshopUser> UserManager { get; }
         IOrderRepository OrderRepository { get; }
         IProductRepository ProductRepository { get; }
 
-        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
+        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, UserManager<WebshopUser> userManager)
         {
             OrderRepository = orderRepository;
             ProductRepository = productRepository;
+            UserManager = userManager;
         }
 
         [HttpGet]
@@ -34,7 +39,7 @@ namespace Project_Bier.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrder([FromBody] OrderGuestUserViewModel OrderGuestUserViewModel)
+        public IActionResult AddOrderGuest([FromBody] OrderGuestUserViewModel OrderGuestUserViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -58,20 +63,8 @@ namespace Project_Bier.Controllers
 
                 guestUser.ShippingAddress = userAddress;
 
-                decimal totalPriceOrder = 0;
-                List<ProductOrder> productOrders = new List<ProductOrder>();
-                foreach (SelectedProduct selectedProduct in OrderGuestUserViewModel.Products)
-                {
-                    ProductOrder productOrder = new ProductOrder()
-                    {
-                        Guid = Guid.NewGuid(),
-                        ProductId = selectedProduct.Id,
-                        Count = selectedProduct.Count
-                    };
-                    productOrders.Add(productOrder);
-                    decimal price = ProductRepository.GetProductByGuid(selectedProduct.Id).Price;
-                    totalPriceOrder += (selectedProduct.Count * price);
-                }
+                decimal totalPriceOrder = CalculateOrderPrice(OrderGuestUserViewModel.Products);
+                List<ProductOrder> productOrders = GetOrderProducts(OrderGuestUserViewModel.Products);
 
                 // TODO Apply coupon code to order on server side;
 
@@ -94,6 +87,70 @@ namespace Project_Bier.Controllers
             }
 
             return BadRequest();
+        }
+
+        // TODO validate this api route with token
+        [HttpPost]
+        public async Task<IActionResult> AddOrder([FromBody] OrderUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if user exits
+                WebshopUser user = await UserManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    decimal totalPriceOrder = CalculateOrderPrice(model.Products);
+                    List<ProductOrder> productOrders = GetOrderProducts(model.Products);
+
+                    Order newOrder = new Order
+                    {
+                        Guid = Guid.NewGuid(),
+                        Paid = false,
+                        Shipped = false,
+                        OrderCreated = DateTime.Now,
+                        TotalPrice = totalPriceOrder,
+                        CouponCode = model.Coupon,
+                        OrderedProducts = productOrders,
+                        AssociatedUserGuid = user.UserGuid,
+                        OrderedFromGuestAccount = false,
+                        EmailConfirmationSent = false
+                    };
+
+
+                    OrderRepository.AddOrder(newOrder);
+                    return Ok(newOrder.Guid);
+                }
+
+            }
+            return BadRequest();
+        }
+
+        private decimal CalculateOrderPrice(List<SelectedProduct> products)
+        {
+            decimal totalPrice = 0;
+            foreach (SelectedProduct selectedProduct in products)
+            {
+
+                decimal price = ProductRepository.GetProductByGuid(selectedProduct.Id).Price;
+                totalPrice += (selectedProduct.Count * price);
+            }
+            return totalPrice;
+        }
+
+        private List<ProductOrder> GetOrderProducts(List<SelectedProduct> products)
+        {
+            List<ProductOrder> productOrders = new List<ProductOrder>();
+            foreach (SelectedProduct selectedProduct in products)
+            {
+                ProductOrder productOrder = new ProductOrder()
+                {
+                    Guid = Guid.NewGuid(),
+                    ProductId = selectedProduct.Id,
+                    Count = selectedProduct.Count
+                };
+                productOrders.Add(productOrder);
+            }
+            return productOrders;
         }
     }
 }

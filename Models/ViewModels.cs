@@ -53,6 +53,14 @@ namespace Project_Bier.Models.ViewModels
         public string Email { get; set; }
     }
 
+    public class OrderUserViewModel
+    {
+        public List<SelectedProduct> Products { get; set; }
+        public string Email { get; set; }
+        public string Coupon { get; set; }
+    }
+
+
     public class LoginViewModel
     {
         [EmailAddress]
