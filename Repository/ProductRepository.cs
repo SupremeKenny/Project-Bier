@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Project_Bier.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Project_Bier.Pagination;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Project_Bier.Repository
 {
@@ -20,9 +22,24 @@ namespace Project_Bier.Repository
             this.context = applicationDatabaseContext;
         }
 
-        public void AddProduct(Product product)
+        public void AddProduct(Beer product)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            try
+            {
+                int beerExists = context.Beers.Count(b => b.Id == product.Id);
+
+                if (beerExists <= 0)
+                {
+                    context.Beers.Add(product);
+                    context.SaveChanges();
+                }
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
         public void AddProducts(Product[] products)
@@ -59,23 +76,72 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> ListAll()
         {
-            return context.Beers.ToList();
+            return context.Beers
+            .Select (p => p);
         }
 
-        public void RemoveProduct(Guid guid)
+        public void RemoveProduct(String guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var deleteProduct = context.Beers.Find(guid);
+                context.Beers.Remove(deleteProduct);
+                context.SaveChanges();
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
-        public void UpdateProduct(Guid guid, Product newProduct)
+        public void UpdateProduct(Beer newProduct, string oldId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (oldId == newProduct.Id)
+                {
+                    Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == newProduct.Id);
+                    if (productToUpdate != null)
+                    {
+                        productToUpdate.Name = newProduct.Name;
+                        productToUpdate.CategoryId = newProduct.CategoryId;
+                        productToUpdate.Price = newProduct.Price;
+                        productToUpdate.BrewerName = newProduct.BrewerName;
+                        productToUpdate.CountryName = newProduct.CountryName;
+                        productToUpdate.AlcoholPercentage = newProduct.AlcoholPercentage;
+                        productToUpdate.Content = newProduct.Content;
+                        productToUpdate.Url = newProduct.Url;
+                        productToUpdate.Description = newProduct.Description;
+                        
+                        context.SaveChanges();
+                    }
+                }
+                else {
+                    RemoveProduct(oldId);
+                    AddProduct(newProduct);
+                }
+
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            // throw new NotImplementedException();
         }
 
         public IEnumerable<Product> GetHomePageProducts()
         {
             return context.Beers
             .OrderBy(x => Guid.NewGuid()).Take(8);
+        }
+
+        public Page<Beer> Pagination (int page_index, int page_size)
+        {
+            Page<Beer> paginationResult = context.Beers.GetPages(page_index, page_size, m => m.Name);
+
+            return paginationResult;
         }
     }
 }

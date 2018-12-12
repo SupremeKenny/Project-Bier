@@ -135,11 +135,11 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
     case "CLEAR_CART":
 
       //clear in HTML5 Storage
-      localStorage.setItem("Cart", []);
-      localStorage.setItem("CartCount", 0);
-      localStorage.setItem("TotalPrice", 0);
+      localStorage.clear();
+      localStorage.setItem("TotalPrice", 0.0);
 
-      return (state = {count: 0});
+
+      return (state = {count: 0, CartCount: 0, products:[], totalPrice: 0.0});
     default:
       return state;
   }

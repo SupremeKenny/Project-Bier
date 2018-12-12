@@ -15,11 +15,25 @@ namespace Project_Bier.Controllers
     {
         IOrderRepository OrderRepository { get; }
         IProductRepository ProductRepository { get; }
+        IDiscountRepository DiscountRepository { get; }
 
-        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
+        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, IDiscountRepository discountRepository)
         {
             OrderRepository = orderRepository;
             ProductRepository = productRepository;
+            DiscountRepository = discountRepository;
+        }
+
+        [HttpGet]
+        public IActionResult SearchDiscount(String input)
+        {
+            Discount rest = new Discount();
+            rest = DiscountRepository.CheckDiscount(input);
+            if (rest == null)
+            {
+                return NotFound();
+            }
+            return Json(new { discount = rest});
         }
 
         [HttpGet]
@@ -73,6 +87,32 @@ namespace Project_Bier.Controllers
                     totalPriceOrder += (selectedProduct.Count * price);
                 }
 
+                string couponcodedatabase = null;
+                decimal totaldiscount = 0;
+                decimal totalPricewithDiscount = 0;
+
+
+                if(OrderGuestUserViewModel.Coupon != null){
+                    Discount rest = DiscountRepository.CheckDiscount(OrderGuestUserViewModel.Coupon);
+                    if(rest != null){
+                        couponcodedatabase = rest.Code;
+
+                        if(rest.Procent == true){
+                            totaldiscount = Math.Round((totalPriceOrder / 100 * rest.Amount)*100)/100;
+                        } else {
+                            totaldiscount = Math.Round((rest.Amount)*100)/100;
+                        }
+                    }
+                }
+                totalPricewithDiscount = Math.Round((totalPriceOrder - totaldiscount)*100)/100;         
+
+                if(totalPricewithDiscount < 0){
+                    totalPricewithDiscount = 0;
+                }
+
+                
+                
+
                 // TODO Apply coupon code to order on server side;
 
                 Order newOrder = new Order
@@ -82,7 +122,9 @@ namespace Project_Bier.Controllers
                     Shipped = false,
                     OrderCreated = DateTime.Now,
                     TotalPrice = totalPriceOrder,
-                    CouponCode = OrderGuestUserViewModel.Coupon,
+                    Discount = totaldiscount,
+                    FinalPrice = totalPricewithDiscount,
+                    CouponCode = couponcodedatabase,
                     OrderedProducts = productOrders,
                     AssociatedUserGuid = guestUser.UserGuid,
                     OrderedFromGuestAccount = true,

@@ -63,6 +63,7 @@ function validate(voornaam, achternaam, straatnaam, huisnummer, postcode, stad, 
     stad: stad.length === 0,
     telefoonnummer: telefoonnummer.length === 0,
     email: email.length === 0,
+    email: !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
   };
 }
 class InputInfo extends Component {
@@ -146,6 +147,7 @@ class InputInfo extends Component {
 
     componentWillMount(){
       this.setState({products: localStorage.Cart ? JSON.parse(localStorage.Cart) : []})
+      this.setState({discount: localStorage.Discount ? localStorage.Discount : null})
     }
 
     addOrder() {
@@ -160,7 +162,7 @@ class InputInfo extends Component {
       
       body: JSON.stringify({
         
-             "Coupon": "",
+             "Coupon": this.state.discount,
              //TODO:Coupon meegeven
              "PostalCode": this.state.postcode,
              "StreetNumber": this.state.huisnummer,

@@ -48,7 +48,8 @@ namespace Project_Bier.Controllers
             if(products == null) {
                 return NotFound();
             }
-            return Json(new {products = products});
+            return Json(new{products = products});
         }
+
     }
 }

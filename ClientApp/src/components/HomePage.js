@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { ProductCard } from "./ProductCard.js";
 import { BrandImage } from "./brand-image.js";
 import {
