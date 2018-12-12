@@ -3,12 +3,14 @@ import { Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout.js";
 import ProductPage from "./components/ProductPage/product-page.js";
 import { HomePage } from "./components/HomePage.js";
-import ShoppingCart from "./components/ShoppingCartPage.js";
-import Continue from "./components/ContinuePage.js";
-import InputInfo from "./components/InputPage.js";
-import Payment from "./components/PaymentPage.js";
-import Confirmation from "./components/ConfirmationPage.js";
+import  ShoppingCart  from "./components/ShoppingCartPage.js";
+import  Continue from "./components/ContinuePage.js";
+import  Favorites from "./components/FavoritesPage.js"
+import  InputInfo from "./components/InputPage.js";
+import  Payment from "./components/PaymentPage.js";
+import  Confirmation from "./components/ConfirmationPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
+import { SearchPage } from './components/search-page.js'
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -49,6 +51,8 @@ export default class App extends Component {
             <AppRoute path="/payment" layout={Layout} component={Payment} />
             <AppRoute path="/confirmation" layout={Layout} component={Confirmation} />
             <AppRoute path="/category/:id" layout={Layout} component={CategoryPage} />
+            <Route path="/zoeken/:query" layout={Layout} component={SearchPage} />
+            <Route path="/favorieten" layout={Layout} component={Favorites} />
 
             {/* Admin Routes */}
             <AppRoute path="/admin" layout={AdminPage} component={Home} />

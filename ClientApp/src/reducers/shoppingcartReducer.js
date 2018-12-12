@@ -132,7 +132,14 @@ const shoppingcart = (state = INITIAL_DATA, action) => {
         products: state.products,
         totalPrice: state.totalPrice - parseFloat(action.price)*parseInt(action.count),
       });
+    case "CLEAR_CART":
 
+      //clear in HTML5 Storage
+      localStorage.clear();
+      localStorage.setItem("TotalPrice", 0.0);
+
+
+      return (state = {count: 0, CartCount: 0, products:[], totalPrice: 0.0});
     default:
       return state;
   }

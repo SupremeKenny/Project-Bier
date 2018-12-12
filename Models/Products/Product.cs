@@ -2,11 +2,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Nest;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_Bier.Models
 {
     /// <summary>
-    /// Parent class of product that has fields that every products shares
+    /// Base class for product with properties every product has to have
     /// </summary>
     public class Product
     {
@@ -17,5 +19,9 @@ namespace Project_Bier.Models
         public Boolean Available { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
+
+        [NotMapped]
+        [Completion()]
+        public CompletionField Suggest { get; set; }
     }
 }

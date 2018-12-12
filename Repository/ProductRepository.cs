@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Project_Bier.Repository
 {
     /// <summary>
-    /// Concrete implementation of the product repository
+    /// Concrete implementation of the product repository interface
     /// </summary>
     public class ProductRepository : IProductRepository
     {
@@ -27,11 +27,11 @@ namespace Project_Bier.Repository
             // throw new NotImplementedException();
             try
             {
-                int beerExists = context.Beer.Count(b => b.Id == product.Id);
+                int beerExists = context.Beers.Count(b => b.Id == product.Id);
 
                 if (beerExists <= 0)
                 {
-                    context.Beer.Add(product);
+                    context.Beers.Add(product);
                     context.SaveChanges();
                 }
             }
@@ -49,7 +49,7 @@ namespace Project_Bier.Repository
 
         public Product GetProductByGuid(String id)
         {
-            return context.Beer
+            return context.Beers
                 .FirstOrDefault(p => p.Id == id);
         }
 
@@ -71,12 +71,12 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetProductsByCategory(string category)
         {
-            return context.Beer.Where(p => p.CategoryId == category);
+            return context.Beers.Where(p => p.CategoryId == category);
         }
 
         public IEnumerable<Product> ListAll()
         {
-            return context.Beer
+            return context.Beers
             .Select (p => p);
         }
 
@@ -84,8 +84,8 @@ namespace Project_Bier.Repository
         {
             try
             {
-                var deleteProduct = context.Beer.Find(guid);
-                context.Beer.Remove(deleteProduct);
+                var deleteProduct = context.Beers.Find(guid);
+                context.Beers.Remove(deleteProduct);
                 context.SaveChanges();
 
             }
@@ -101,7 +101,7 @@ namespace Project_Bier.Repository
             {
                 if (oldId == newProduct.Id)
                 {
-                    Beer productToUpdate = context.Beer.FirstOrDefault(p => p.Id == newProduct.Id);
+                    Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == newProduct.Id);
                     if (productToUpdate != null)
                     {
                         productToUpdate.Name = newProduct.Name;
@@ -133,13 +133,13 @@ namespace Project_Bier.Repository
 
         public IEnumerable<Product> GetHomePageProducts()
         {
-            return context.Beer
+            return context.Beers
             .OrderBy(x => Guid.NewGuid()).Take(8);
         }
 
         public Page<Beer> Pagination (int page_index, int page_size)
         {
-            Page<Beer> paginationResult = context.Beer.GetPages(page_index, page_size, m => m.Name);
+            Page<Beer> paginationResult = context.Beers.GetPages(page_index, page_size, m => m.Name);
 
             return paginationResult;
         }

@@ -8,6 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Project_Bier.Models;
 using Project_Bier.Repository;
+using Project_Bier.Services;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using Nest;
 
 namespace Project_Bier
 {
@@ -32,6 +37,7 @@ namespace Project_Bier
             });
 
             services.AddDbContext<ApplicationDatabaseContext>();
+
             services.AddIdentity<WebshopUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDatabaseContext>()
                 .AddDefaultTokenProviders();
@@ -51,11 +57,17 @@ namespace Project_Bier
             });
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISearchService<Product>, ElasticSearchService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
+            ConfigureElasticSearch(app, loggerFactory, applicationLifetime, "beer");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,6 +98,48 @@ namespace Project_Bier
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Creates index and documents in Elastic Search instance
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="applicationLifetime"></param>
+        public void ConfigureElasticSearch(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, string indexName)
+        {
+            // If command line argument "--elastic true" is present configure elastic search Engine process
+            applicationLifetime.ApplicationStarted.Register(() =>
+            {
+                if (Configuration["elastic"] != null)
+                {
+                    using (var serviceScope = app.ApplicationServices.CreateScope())
+                    {
+                        var client = ElasticSearchPopulator.Configure(loggerFactory);
+                        IEnumerable<Product> products = serviceScope.ServiceProvider.GetService<IProductRepository>().ListAll();
+
+                        // Clean out index if it exists
+                        if (client.IndexExists(indexName).Exists)
+                        {
+                            client.DeleteIndex(indexName);
+                        }
+
+                        // Add Suggestion strings to product models
+                        foreach (Product product in products)
+                        {
+                            String[] suggestions = ElasticSearchPopulator.SuggestionGenerator(product);
+                            product.Suggest = new CompletionField { Input = suggestions };
+                        }
+
+                        // Insert documents 
+                        if (products != null) 
+                        {
+                            ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, indexName, products);
+                        }
+                        
+                    }
                 }
             });
         }

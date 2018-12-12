@@ -57,18 +57,18 @@ export class AddProducts extends React.Component {
 
     render() {
         // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        // const {
-        //     id,
-        //     name,
-        //     categoryId,
-        //     price,
-        //     brewerName,
-        //     countryName,
-        //     alcoholPercentage,
-        //     content,
-        //     url,
-        //     description
-        // } = this.state;
+        const {
+            id,
+            name,
+            categoryId,
+            price,
+            brewerName,
+            countryName,
+            alcoholPercentage,
+            content,
+            url,
+            description
+        } = this.state;
 
         return (
             <Container>
@@ -175,7 +175,7 @@ export class AddProducts extends React.Component {
                 </Segment>
 
                 {/* Todo: Can delete <pre> if I dont have to display states anymore */}
-                {/* <pre>
+                <pre>
                     {JSON.stringify({
                         id,
                         name,
@@ -188,7 +188,7 @@ export class AddProducts extends React.Component {
                         url,
                         description,
                     }, null, 2)}
-                </pre> */}
+                </pre>
 
             </Container>
         );
@@ -197,23 +197,23 @@ export class AddProducts extends React.Component {
 }
 
 const CategoryId = [
-    { key: '1', text: 'Amber', value: 'amber' },
-    { key: '2', text: 'Barley Wine', value: 'barley-wine' },
-    { key: '3', text: 'Belian Ale', value: 'belian-ale' },
-    { key: '4', text: 'Blond', value: 'blond' },
-    { key: '5', text: 'Bock', value: 'bock' },
-    { key: '6', text: 'Brown Ale', value: 'brown-ale' },
-    { key: '7', text: 'Dubbel', value: 'dubbel' },
-    { key: '8', text: 'India Pale Ale', value: 'india-pale-ale' },
-    { key: '9', text: 'Lager', value: 'lager' },
-    { key: '10', text: 'Pale Ale', value: 'pale-ale' },
-    { key: '11', text: 'Pils', value: 'pils' },
-    { key: '12', text: 'Porter', value: 'porter' },
-    { key: '13', text: 'Quadrupel', value: 'quadrupel' },
-    { key: '14', text: 'Saison', value: 'saison' },
-    { key: '15', text: 'Sour Beer', value: 'sour-beer' },
-    { key: '16', text: 'Stout', value: 'stout' },
-    { key: '17', text: 'Tripel', value: 'tripel' },
-    { key: '18', text: 'Weizen', value: 'weizen' },
-    { key: '19', text: 'Wit', value: 'wit' },
+    { key: '1', text: 'Amber', value: 'Amber' },
+    { key: '2', text: 'Barley Wine', value: 'Barley Wine' },
+    { key: '3', text: 'Belian Ale', value: 'Belgian Ale' },
+    { key: '4', text: 'Blond', value: 'Blond' },
+    { key: '5', text: 'Bock', value: 'Bock' },
+    { key: '6', text: 'Brown Ale', value: 'Brown Ale' },
+    { key: '7', text: 'Dubbel', value: 'Dubbel' },
+    { key: '8', text: 'India Pale Ale', value: 'India Pale Ale' },
+    { key: '9', text: 'Lager', value: 'Lager' },
+    { key: '10', text: 'Pale Ale', value: 'Pale Ale' },
+    { key: '11', text: 'Pils', value: 'Pils' },
+    { key: '12', text: 'Porter', value: 'Porter' },
+    { key: '13', text: 'Quadrupel', value: 'Quadrupel' },
+    { key: '14', text: 'Saison', value: 'Saison' },
+    { key: '15', text: 'Sour Beer', value: 'Sour Beer' },
+    { key: '16', text: 'Stout', value: 'Stout' },
+    { key: '17', text: 'Tripel', value: 'Tripel' },
+    { key: '18', text: 'Weizen', value: 'Weizen' },
+    { key: '19', text: 'Wit', value: 'Wit' },
 ]

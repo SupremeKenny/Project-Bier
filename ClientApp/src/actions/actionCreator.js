@@ -1,6 +1,9 @@
-import { DELETE_PRODUCT_CART, ADD_PRODUCT_CART, DECREMENT_PRODUCT_CART } from './actionsTypes'
+import { DELETE_PRODUCT_CART, ADD_PRODUCT_CART, DECREMENT_PRODUCT_CART, CLEAR_CART, ADD_PRODUCT_FAVORITES, DELETE_PRODUCT_FAVORITES } from './actionsTypes'
 
-let TodoId = 2;
+
+export const clearCart = () => ({
+    type: CLEAR_CART,
+});
 
 export const addCartItem = (id, name, price, url) => ({
     type: ADD_PRODUCT_CART,
@@ -23,4 +26,17 @@ export const decrementCartItem = (id, price) => ({
     price
 });
 
+export const addFavoritesItem = (id, name, price, url) => ({
+    type: ADD_PRODUCT_FAVORITES,
+    id,
+    name,
+    price,
+    url,
+});
+
+export const deleteFavoritesItem = (id, price) => ({
+    type: DELETE_PRODUCT_FAVORITES,
+    id,
+    price
+});
   
