@@ -76,12 +76,22 @@ class EmptyShoppingCart extends Component {
   }
 
   componentWillMount() {
-    fetch("/product/FetchProducts/?id=4").then(results => {
-      results.json().then(data => {
-        this.setState({ products: data.products, loaded: true });
+    this.getExampleProducts();
+  }
+
+  getExampleProducts() {
+    fetch("/product/FetchProducts/4")
+      .then(results => {
+        if (results.ok) {
+          results.json().then(data => {
+            this.setState({ products: data.products, loaded: true });
+          });
+        }
+      })
+      .catch(error => {
+        this.setState({ loaded: true });
+        console.error(error);
       });
-      // TODO implement catch()
-    });
   }
 
   render() {

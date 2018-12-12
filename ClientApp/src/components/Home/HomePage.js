@@ -1,12 +1,7 @@
 import React from "react";
 import { ProductCard, ProductCardPlaceholder } from "../ProductCards.js";
 import { BrandImage } from "./BrandImage";
-import {
-  Container,
-  CardGroup,
-  Header,
-  Divider
-} from "semantic-ui-react";
+import { Container, CardGroup, Header, Divider } from "semantic-ui-react";
 
 const MainContainer = ({ children }) => {
   const sx = {
@@ -33,8 +28,7 @@ const ProductsGroup = props => (
 const ProductsGroupPlaceholder = props => (
   <CardGroup itemsPerRow={4}>
     {props.number.map(number => (
-      <ProductCardPlaceholder key={number}
-      />
+      <ProductCardPlaceholder key={number} />
     ))}
   </CardGroup>
 );
@@ -48,7 +42,6 @@ const BrandShowcase = () => (
         Ontdek vandaag nog het lekkerste craftbier!
       </Header.Subheader>
     </Header>
-
     <Divider />
 
     <div
@@ -77,12 +70,21 @@ export class HomePage extends React.Component {
 
   componentWillMount() {
     this.setTitle();
-    fetch("/product/FetchProducts/?id=8").then(results => {
-      results.json().then(data => {
-        this.setState({ products: data.products, loaded: true });
+    this.getHomepageProducts();
+  }
+
+  getHomepageProducts() {
+    fetch("/product/FetchProducts/8")
+      .then(results => {
+        if (results.ok) {
+          results.json().then(data => {
+            this.setState({ products: data.products, loaded: true });
+          });
+        }
+      }).catch(error => {
+        this.setState({loaded:true})
+        console.error(error);
       });
-      // TODO implement catch()
-    });
   }
 
   setTitle() {
@@ -95,7 +97,9 @@ export class HomePage extends React.Component {
     if (this.state.loaded) {
       productGroup = <ProductsGroup products={this.state.products} />;
     } else {
-      productGroup = <ProductsGroupPlaceholder number={[1, 2, 3, 4, 5, 6, 7, 8]} />;
+      productGroup = (
+        <ProductsGroupPlaceholder number={[1, 2, 3, 4, 5, 6, 7, 8]} />
+      );
     }
 
     return (
@@ -103,7 +107,7 @@ export class HomePage extends React.Component {
         <BrandShowcase />
         <Header as="h1" style={headerStyling} textAlign="center">
           Deze biertjes raden we aan!
-            <Header.Subheader>Lekker, lekker, lekker...</Header.Subheader>
+          <Header.Subheader>Lekker, lekker, lekker...</Header.Subheader>
         </Header>
         <Divider />
         {productGroup}

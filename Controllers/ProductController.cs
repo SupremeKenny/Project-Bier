@@ -10,45 +10,52 @@ using Project_Bier.Models;
 namespace Project_Bier.Controllers
 {
     [Route("[controller]/[action]")]
-    public class ProductController: Controller
+    public class ProductController : Controller
     {
-        IProductRepository productRepository;
+        IProductRepository ProductRepository { get; }
 
         public ProductController(IProductRepository productRepository)
         {
-            this.productRepository = productRepository;
+            ProductRepository = productRepository;
         }
 
         [HttpGet]
         public IActionResult Fetch(String id)
         {
-            Product product = productRepository.GetProductByGuid(id);
-            if(product == null) 
+            Product product = ProductRepository.GetProductByGuid(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return Json(new {product = product});
+            return Json(new { product = product });
         }
 
         [HttpGet]
         public IActionResult FetchCategory(String category, int index)
         {
-            ItemCollection<Product> itemCollection = productRepository.GetProductCollectionByCategory(category, index);
-            if (itemCollection == null) 
+            ItemCollection<Product> itemCollection = ProductRepository.GetProductCollectionByCategory(category, index);
+            if (itemCollection == null)
             {
                 return NotFound();
             }
             return Json(itemCollection);
         }
 
-        [HttpGet]
-        public IActionResult FetchProducts(int id)
+
+        /// <summary>
+        /// Fetches x random products by calliung the productRepository
+        /// </summary>
+        /// <param name="productCount">The number of products to fetch</param>
+        /// <returns></returns>
+        [HttpGet("{productCount}")]
+        public IActionResult FetchProducts(int productCount)
         {
-            IEnumerable<Product> products = productRepository.GetRandomProducts(id);
-            if(products == null) {
+            IEnumerable<Product> products = ProductRepository.GetRandomProducts(productCount);
+            if (products == null)
+            {
                 return NotFound();
             }
-            return Json(new {products = products});
+            return Json(new { products = products });
         }
     }
 }
