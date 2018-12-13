@@ -18,4 +18,4 @@ export const CategoryDict = {
     "wit":"Wit",
     "pils": "Pils",
     "porter": "Porter",
-}
+} 

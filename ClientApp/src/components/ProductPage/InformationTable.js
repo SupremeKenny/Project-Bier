@@ -8,6 +8,7 @@ import {
   Table,
 } from "semantic-ui-react";
 
+// TODO: Correct the display of category
 export const ProductInfoTable = props => {
   return (
     <div>

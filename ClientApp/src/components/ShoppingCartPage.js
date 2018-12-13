@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-//import { getOptions } from "../common"  -----> for options dropdown lists
-
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
 import {
   addCartItem,
   deleteCartItem,
@@ -17,186 +17,312 @@ import {
   Button,
   Divider,
   Input,
+  Header,
+  CardGroup,
+  Icon
 } from "semantic-ui-react";
 
-const Breadcrumb1 = () => (
-  <Breadcrumb size="large">
-    <Breadcrumb.Section active>
-      <a href="/">Home</a>
-    </Breadcrumb.Section>
-    <Breadcrumb.Divider icon="right chevron" />
-    <Breadcrumb.Section active>
-      <a href="/winkelwagen">Mijn Winkelwagen</a>
-    </Breadcrumb.Section>
-  </Breadcrumb>
+const headerStyling = { fontFamily: "Raleway", fontSize: 25, color: "#ffa502" };
+
+const BreadcrumbTop = () => (
+  <div>
+    <Divider hidden />
+    <Breadcrumb>
+      <Link to="/">
+        <Breadcrumb.Section link>Hoofdpagina</Breadcrumb.Section>{" "}
+      </Link>
+      <Breadcrumb.Divider icon="right angle" />
+      <Breadcrumb.Section active>Winkelwagentje</Breadcrumb.Section>
+    </Breadcrumb>
+  </div>
 );
 
-//export default Breadcrumb1
-
-const ButtonCoC = () => (
-  <Button.Group>
-    <Button href="/">Annuleren</Button>
-    <Button.Or text="of" />
-    <Button positive href="/doorgaan">Doorgaan</Button>
-  </Button.Group>
+const CartTop = () => (
+  <div>
+    <BreadcrumbTop />
+    <Divider />
+    <h1>Winkelwagentje</h1>
+    <Divider />
+  </div>
 );
-
-const Space = () => " ";
-
-
 
 class ShoppingCart extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      discount: { procent: false, amount: 0 }
+    };
   }
 
-  componentWillMount(){
-    this.setState({discount: {procent: false, amount: 0}})
-  }
-  
-  handleDiscount = (evt) => {
-    //console.log(evt.target.value);
-    fetch(
-      "https://localhost:5001/order/SearchDiscount?input=" + evt.target.value
-    ) 
-    .then(results => {
-      if(!results.ok){
-        this.setState({discount: {procent: true, amount: 0}});
+  // TODO handle not ok response and catch error
+  handleDiscount = evt => {
+    fetch("/order/SearchDiscount?input=" + evt.target.value).then(results => {
+      if (!results.ok) {
+        this.setState({ discount: { procent: true, amount: 0 } });
         localStorage.setItem("Discount", null);
-
       }
       results.json().then(data => {
         console.log(data.discount);
-        this.setState({discount: {procent: data.discount.procent, amount: data.discount.amount}}, () => console.log(this.state.discount));
-        localStorage.setItem("Discount", (data.discount.code));
+        this.setState(
+          {
+            discount: {
+              procent: data.discount.procent,
+              amount: data.discount.amount
+            }
+          },
+          () => console.log(this.state.discount)
+        );
+        localStorage.setItem("Discount", data.discount.code);
       });
-      
     });
-  }
+  };
 
-  handleTotal = (total) => {
-    if(total > 0){
+  handleTotal = total => {
+    if (total > 0) {
       return total;
     } else {
       return 0;
     }
-  }
-    
+  };
+
   render() {
-    var totaal;
-    return (
-      <Container>
-        <Divider hidden />
-        <Breadcrumb1 />
-        <Divider />
-        <h1>Mijn Winkelwagen</h1>
-        <Divider hidden />
-        <Divider />
+    if (this.props.shoppingcart.products.length !== 0) {
+      return (
+        <Container>
+          <Divider hidden />
+          <BreadcrumbTop />
+          <Divider />
+          <h1>Mijn Winkelwagen</h1>
+          <Divider hidden />
+          <Divider />
 
-        <div>
-          {this.props.shoppingcart.products.length != 0 ? (
-            
-            <Grid divided="vertically" columns="equal" padded='vertically' verticalAlign='middle'>
-              {this.props.shoppingcart.products.map(product => (
-                <Grid.Row key={product.id}>
-                  <Grid.Column width={2}>
-                    <Image src={product.url} size="mini" />
-                  </Grid.Column>
-                  <Grid.Column width={4}>{product.name}</Grid.Column>
-                  <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
-                  <Grid.Column width={4}>
-                    <Space />
-                    <div className="ui right labeled input small">
-                      <input type="text" id="txtNum" value={product.count} readOnly/>
-                      <div className="ui mini vertical buttons">
-                        <button
-                          className="ui icon button"
-                          command="Up"
-                          onClick={() => {
-                            this.props.addCartItem(
-                              product.id,
-                              product.name,
-                              product.price,
-                              product.url
-                            );
-                          }}
-                        >
-                          {" "}
-                          <i className="up chevron icon" />
-                        </button>
-                        <button
-                          className="ui icon button"
-                          command="Down"
-                          onClick={() => {
-                            this.props.decrementCartItem(product.id, product.price);
-                          }}
-                        >
-                          {" "}
-                          <i className="down chevron icon" />
-                        </button>
+          <div>
+            {this.props.shoppingcart.products.length != 0 ? (
+              <Grid
+                divided="vertically"
+                columns="equal"
+                padded="vertically"
+                verticalAlign="middle"
+              >
+                {this.props.shoppingcart.products.map(product => (
+                  <Grid.Row key={product.id}>
+                    <Grid.Column width={2}>
+                      <Image src={product.url} size="mini" />
+                    </Grid.Column>
+                    <Grid.Column width={4}>{product.name}</Grid.Column>
+                    <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
+                    <Grid.Column width={4}>
+                      <div className="ui right labeled input small">
+                        <input
+                          type="text"
+                          id="txtNum"
+                          value={product.count}
+                          readOnly
+                        />
+                        <div className="ui mini vertical buttons">
+                          <button
+                            className="ui icon button"
+                            command="Up"
+                            onClick={() => {
+                              this.props.addCartItem(
+                                product.id,
+                                product.name,
+                                product.price,
+                                product.url
+                              );
+                            }}
+                          >
+                            <i className="up chevron icon" />
+                          </button>
+                          <button
+                            className="ui icon button"
+                            command="Down"
+                            onClick={() => {
+                              this.props.decrementCartItem(
+                                product.id,
+                                product.price
+                              );
+                            }}
+                          >
+                            <i className="down chevron icon" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column width={2}>
-                    <Button
-                      negative
-                      onClick={() => {
-                        this.props.deleteCartItem(product.id, product.count, product.price);
-                      }}
-                    >
-                      {" "}
-                      Verwijder{" "}
-                    </Button>
-                  </Grid.Column>
-                  <Grid.Column width={2}>
-                    Totaal: €
-                    {Math.round(product.count * product.price * 100) / 100}
-                  </Grid.Column>
-                </Grid.Row>
-              ))}
-            </Grid>
-          ) : (
-            <div>Je winkelwagen is leeg</div>
-          )}{" "}
-        </div>
+                    </Grid.Column>
+                    <Grid.Column width={2}>
+                      <Button
+                        negative
+                        onClick={() => {
+                          this.props.deleteCartItem(
+                            product.id,
+                            product.count,
+                            product.price
+                          );
+                        }}
+                      >
+                        Verwijder
+                      </Button>
+                    </Grid.Column>
+                    <Grid.Column width={2}>
+                      Totaal: €
+                      {Math.round(product.count * product.price * 100) / 100}
+                    </Grid.Column>
+                  </Grid.Row>
+                ))}
+              </Grid>
+            ) : (
+              <div>Je winkelwagen is leeg</div>
+            )}
+          </div>
+          <Divider />
+          <Container textAlign="left">
+            <h4>
+              Kortingscode:{" "}
+              <Input
+                placeholder="Vul je kortingscode in..."
+                onChange={this.handleDiscount}
+              />
+            </h4>
+          </Container>
+          <Container textAlign="right">
+            {this.state.discount.amount != 0 ? (
+              <h3>
+                <h3>
+                  SubTotaal: €{" "}
+                  {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
+                </h3>
+                {this.state.discount.procent == true ? (
+                  <div>
+                    <h3>Korting: {this.state.discount.amount} % </h3>
+                    <h3>
+                      Totaal: €{" "}
+                      {Math.round(
+                        (this.props.shoppingcart.totalPrice -
+                          (this.props.shoppingcart.totalPrice / 100) *
+                            this.state.discount.amount) *
+                          100
+                      ) / 100}
+                    </h3>
+                  </div>
+                ) : (
+                  <div>
+                    <h3>Korting: - € {this.state.discount.amount}</h3>
+                    {}
+
+                    <h3>
+                      Totaal: €{" "}
+                      {this.handleTotal(
+                        Math.round(
+                          (this.props.shoppingcart.totalPrice -
+                            this.state.discount.amount) *
+                            100
+                        ) / 100
+                      )}
+                    </h3>
+                  </div>
+                )}
+              </h3>
+            ) : (
+              <h3>
+                Totaal: €{" "}
+                {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
+              </h3>
+            )}
+          </Container>
+          <Divider />
+          <Button floated="right" animated href="/checkout" color="green">
+            <Button.Content visible>Verder met bestellen</Button.Content>
+            <Button.Content hidden>
+              <Icon name="arrow right" />
+            </Button.Content>
+          </Button>
+          <Button floated="left" animated href="/">
+            <Button.Content visible>Terug naar winkel</Button.Content>
+            <Button.Content hidden>
+              <Icon name="arrow left" />
+            </Button.Content>
+          </Button>
+        </Container>
+      );
+    } else {
+      return <EmptyShoppingCart />;
+    }
+  }
+}
+
+class EmptyShoppingCart extends Component {
+  constructor() {
+    super();
+    this.state = { products: [], loaded: false };
+  }
+
+  componentWillMount() {
+    this.getExampleProducts();
+  }
+
+  getExampleProducts() {
+    fetch("/product/FetchProducts/4")
+      .then(results => {
+        if (results.ok) {
+          results.json().then(data => {
+            this.setState({ products: data.products, loaded: true });
+          });
+        }
+      })
+      .catch(error => {
+        this.setState({ loaded: true });
+        console.error(error);
+      });
+  }
+
+  render() {
+    let productGroup;
+    if (this.state.loaded) {
+      productGroup = <ProductsGroup products={this.state.products} />;
+    } else {
+      productGroup = <ProductsGroupPlaceholder number={[1, 2, 3, 4]} />;
+    }
+    return (
+      <div>
+        <CartTop />
+        <p> Je hebt geen producten in je winkelwagentje!</p>
+        <Button positive href="/">
+          Verder met winkelen
+        </Button>
         <Divider />
-        <Container textAlign="left">
-          <h4>
-            Kortingscode: <Input placeholder="Vul je kortingscode in..." onChange={this.handleDiscount}/>
-          </h4>
-        </Container>
-        <Container textAlign="right">
-          
-          {this.state.discount.amount != 0 ? (
-          <h3>
-          <h3>SubTotaal: € {Math.round(this.props.shoppingcart.totalPrice*100)/100}</h3>
-          {this.state.discount.procent == true ?
-           ( 
-             <div>
-            <h3>Korting: {this.state.discount.amount} % </h3> 
-            <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice - this.props.shoppingcart.totalPrice/100*this.state.discount.amount)*100)/100)}</h3>
-            </div>
-           ) : 
-           (
-             <div>
-           <h3>Korting: - € {this.state.discount.amount}</h3>
-           { }
-          
-           <h3>Totaal: € {this.handleTotal((Math.round((this.props.shoppingcart.totalPrice - this.state.discount.amount)*100)/100))}</h3>
-            </div>
-           )}
-          </h3>) : (
-           <h3>Totaal: € {(Math.round((this.props.shoppingcart.totalPrice)*100)/100)}</h3>
 
-          ) }
-
-
-          <ButtonCoC />
-        </Container>
-      </Container>
+        <Header as="h3" style={headerStyling} textAlign="center">
+          Deze biertjes zijn bijvoorbeeld heel lekker!
+          <Header.Subheader>Erg lekker, lekker, lekker...</Header.Subheader>
+        </Header>
+        {productGroup}
+      </div>
     );
   }
 }
+
+// TODO Move this to a seperate file, as it is duplicate from HomePage.js
+const ProductsGroup = props => (
+  <CardGroup itemsPerRow={4}>
+    {props.products.map(beer => (
+      <ProductCard
+        id={beer.id}
+        title={beer.name}
+        url={beer.url}
+        price={beer.price}
+      />
+    ))}
+  </CardGroup>
+);
+
+// TODO Move this to a seperate file, as it is duplicate from HomePage.js
+const ProductsGroupPlaceholder = props => (
+  <CardGroup itemsPerRow={4}>
+    {props.number.map(number => (
+      <ProductCardPlaceholder key={number} />
+    ))}
+  </CardGroup>
+);
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(

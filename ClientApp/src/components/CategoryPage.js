@@ -1,5 +1,6 @@
 import React from "react";
-import { ProductCard } from "./ProductCard.js";
+
+import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
 import { Loader, CardGroup, Container, Dropdown, Icon, Grid, GridColumn, Button} from "semantic-ui-react";
 import { CategoryDict } from "./Categories.js";
 import InfiniteScroll from 'react-infinite-scroller';
@@ -13,10 +14,13 @@ const MainContainer = ({ children }) => {
 };
 
 const LoaderContainer = () => {
-  var containerHeight = (window.innerHeight / 3) * 2;
-  return <Container style={{ height: containerHeight }}>
-    <Loader active inline='centered' />
-  </Container>
+  let numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+  return <CardGroup itemsPerRow={4}>
+    {numbers.map(number => (
+      <ProductCardPlaceholder
+        key={number}
+      />
+    ))}</CardGroup>
 }
 
 // const options = [
@@ -121,8 +125,8 @@ export class CategoryPage extends React.Component {
 
   loadItems() {
     fetch(
-      "https://localhost:5001/product/fetchcategory?category=" +
-      this.props.match.params.id + "&index=" + this.state.currentIndex
+      "/product/fetchcategory?category=" +
+      CategoryDict[this.props.match.params.id] + "&index=" + this.state.currentIndex
     ).then(results => {
       results.json().then(data => {
         var newIndex = this.state.currentIndex + 1;
