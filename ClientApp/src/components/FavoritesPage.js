@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+  deleteFavoritesItem,
+} from "../actions/actionCreator";
+import { bindActionCreators } from 'redux';
+import { Link } from "react-router-dom";
 
 import {
     Header,
@@ -36,6 +41,12 @@ import {
   );
 
   class Favorites extends Component {
+    constructor() {
+      super();
+      this.state = {
+      };
+    }
+
     render() {
       return(
         <Container>
@@ -47,33 +58,63 @@ import {
           <Divider/>
 
           <div>
-            <Grid divided='vertically' columns="equal">
+           {this.props.favorites.products.length != 0 ? (
+
+            <Grid divided='vertically' columns="equal" padded='vertically' verticalAlign='middle'>
+             {this.props.favorites.products.map(product => (
               <Grid.Row>
                 <Grid.Column width={2}>
-                  <h2>img</h2>
+                  <Image src={product.url} size='mini' />
                 </Grid.Column>
-                <Grid.Column width={4}><h2>name</h2></Grid.Column>
-                <Grid.Column width={2}><h2>Prijs</h2></Grid.Column>
+                <Grid.Column width={4}>{product.name}</Grid.Column>
+                <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                 <Grid.Column textAlign='right'>
+                 <Link to={"/product/" + product.id}>
                   <Popup 
-                    trigger={<Button content="Toevoegen" icon="cart" color="green" />}
+                    trigger={<Button content="Toevoegen" icon="cart" color="green"/>}
                     content="Klik om het product toe te voegen aan jouw winkelwagen."
                     hideOnScroll
                    />
-                  <Button negative>Verwijder</Button>
+                 </Link>
+                  <Button 
+                    negative
+                    onClick={() => {
+                      this.props.deleteFavoritesItem(product.id, product.price);
+                    }}
+                  >
+                    {" "}
+                    Verwijder{" "}
+                  </Button>
                 </Grid.Column>
               </Grid.Row>
-            
+             ))}
             </Grid>
-          
-
+           ) : (
+             <div>Je favorietenlijst is leeg</div>
+           )}{" "}
           </div>
-
         </Container>
       );
 
     }
   }
 
+  const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+      {
+        deleteFavoritesItem,
+      },
+      dispatch 
+    )
+  };
+
+  const mapStateToProps = state => {
+    return {
+      favorites: state.favorites,
+    }
+  };
+
   export default connect(
+    mapStateToProps,
+    mapDispatchToProps
   )(Favorites);

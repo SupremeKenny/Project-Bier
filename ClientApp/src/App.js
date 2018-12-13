@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout.js";
 import ProductPage from "./components/ProductPage/ProductPage.js";
 import { HomePage } from "./components/Home/HomePage.js";
@@ -11,7 +11,7 @@ import Favorites from "./components/FavoritesPage.js";
 import { CategoryPage } from "./components/CategoryPage.js";
 import { SearchPage } from "./components/SearchPage";
 import { Provider } from "react-redux";
-import  LoginPage  from "./components/Login/LoginPage";
+import LoginPage from "./components/Login/LoginPage";
 import Registration from "./components/Registration/Registration.js";
 import Checkout from "./components/Ordering/Checkout.js";
 
@@ -20,6 +20,17 @@ import { createStore } from "redux";
 import reducer from "./reducers";
 import throttle from "lodash/throttle";
 import Overview from "./components/Ordering/Overview.js";
+
+import { AdminPage } from "./components/AdminPage.js";
+import { Home } from "./components/AdminPage/Home.js";
+
+import { AllProducts } from "./components/AdminPage/Products/AllProducts.js";
+import { AddProducts } from "./components/AdminPage/Products/AddProduct.js";
+import { EditProducts } from "./components/AdminPage/Products/EditProduct.js";
+import { SearchProduct } from "./components/AdminPage/Products/SearchProduct.js";
+
+import { AllUsers } from "./components/AdminPage/Users/AllUsers.js";
+import { AddUser } from "./components/AdminPage/Users/AddUser.js";
 
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
@@ -31,29 +42,115 @@ store.subscribe(
   1000
 );
 
+//TODO if layout is set to null throw error
+const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => (
+      <Layout>
+        <Component {...props} />
+      </Layout>
+    )}
+  />
+);
+
 export default class App extends Component {
   displayName = App.name;
 
   render() {
     return (
       <Provider store={store}>
-        <Layout>
-          <div>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/product/:id" component={ProductPage} />
-            <Route path="/winkelwagen" component={ShoppingCart} />
-            <Route path="/checkout" component={Checkout} />
-            <Route path="/bestellengast" component={InputInfo} />
-            <Route path="/betalen/:id" component={Payment} />
-            <Route path="/confirmation" component={Confirmation} />
-            <Route path="/overzicht" component={Overview} />
-            <Route path="/category/:id" component={CategoryPage} />
-            <Route path="/zoeken/:query" component={SearchPage} />
-            <Route path="/account/inloggen" component={LoginPage} />
-            <Route path="/account/registreren" component={Registration} />
-            <Route path="/favorieten" component={Favorites} />
-          </div>
-        </Layout>
+        <div>
+          <Switch>
+            <AppRoute exact path="/" layout={Layout} component={HomePage} />
+            <AppRoute
+              path="/product/:id"
+              layout={Layout}
+              component={ProductPage}
+            />
+            <AppRoute
+              path="/winkelwagen"
+              component={ShoppingCart}
+              layout={Layout}
+            />
+            <AppRoute path="/checkout" component={Checkout} layout={Layout} />
+            <AppRoute
+              path="/bestellengast"
+              layout={Layout}
+              component={InputInfo}
+            />
+            <AppRoute path="/betalen/:id" component={Payment} layout={Layout} />
+            <AppRoute
+              path="/confirmation"
+              layout={Layout}
+              component={Confirmation}
+            />
+            <AppRoute path="/overzicht" component={Overview} layout={Layout} />
+            <AppRoute
+              path="/category/:id"
+              layout={Layout}
+              component={CategoryPage}
+            />
+            <AppRoute
+              path="/zoeken/:query"
+              layout={Layout}
+              component={SearchPage}
+            />
+            <AppRoute
+              path="/account/inloggen"
+              layout={Layout}
+              component={LoginPage}
+            />
+            <AppRoute
+              path="/account/registreren"
+              layout={Layout}
+              component={Registration}
+            />
+            <AppRoute
+              path="/favorieten"
+              component={Favorites}
+              layout={Layout}
+            />
+
+            {/* Admin Routes */}
+            <AppRoute path="/admin" layout={AdminPage} component={Home} />
+            <AppRoute
+              path="/admin-searchProduct"
+              layout={AdminPage}
+              component={SearchProduct}
+            />
+            <AppRoute
+              path="/admin-addProduct"
+              layout={AdminPage}
+              component={AddProducts}
+            />
+            <AppRoute
+              path="/admin-allProducts"
+              layout={AdminPage}
+              component={AllProducts}
+            />
+            <AppRoute
+              path="/admin-addUser"
+              layout={AdminPage}
+              component={AddUser}
+            />
+            <AppRoute
+              path="/admin-allUsers"
+              layout={AdminPage}
+              component={AllUsers}
+            />
+            <AppRoute
+              path="/admin-accountSettings"
+              layout={AdminPage}
+              component={Home}
+            />
+            <AppRoute
+              path="/admin-editProduct/:id"
+              layout={AdminPage}
+              component={EditProducts}
+            />
+          </Switch>
+        </div>
       </Provider>
     );
   }

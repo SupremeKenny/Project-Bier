@@ -176,6 +176,22 @@ namespace ProjectBier.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Project_Bier.Models.Discount", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("Code");
+
+                    b.Property<bool>("Procent");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("Discount");
+                });
+
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>
                 {
                     b.Property<Guid>("Guid")

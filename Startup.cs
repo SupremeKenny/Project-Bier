@@ -71,11 +71,13 @@ namespace Project_Bier
                 options.User.RequireUniqueEmail = true;
             });
 
+            // Add scoped services
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISearchService<Product>, ElasticSearchService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
 
         }
 

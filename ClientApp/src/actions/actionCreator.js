@@ -3,6 +3,8 @@ import {
   ADD_PRODUCT_CART,
   DECREMENT_PRODUCT_CART,
   CLEAR_CART,
+  ADD_PRODUCT_FAVORITES,
+  DELETE_PRODUCT_FAVORITES,
   LOGIN,
   LOGOUT,
   ADD_GUEST,
@@ -44,6 +46,20 @@ export const addGuestToStorage = guestInfo => ({
   guestInfo
 });
 
-export const deleteGuest = () => ({type: DELETE_GUEST });
+export const deleteGuest = () => ({ type: DELETE_GUEST });
 
 export const logoutUser = () => ({ type: LOGOUT });
+
+export const addFavoritesItem = (id, name, price, url) => ({
+  type: ADD_PRODUCT_FAVORITES,
+  id,
+  name,
+  price,
+  url
+});
+
+export const deleteFavoritesItem = (id, price) => ({
+  type: DELETE_PRODUCT_FAVORITES,
+  id,
+  price
+});

@@ -57,5 +57,6 @@ namespace Project_Bier.Controllers
             }
             return Json(new { products = products });
         }
+
     }
 }

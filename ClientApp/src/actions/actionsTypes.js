@@ -6,3 +6,5 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const ADD_GUEST = "ADD_GUEST";
 export const DELETE_GUEST = "DELETE_GUEST";
+export const ADD_PRODUCT_FAVORITES = "ADD_PRODUCT_FAVORITES";
+export const DELETE_PRODUCT_FAVORITES = "DELETE_PRODUCT_FAVORITES";
