@@ -4,19 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Project_Bier.Repository;
 
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20181128085133_initial")]
-    partial class initial
+    [Migration("20181204122244_Province")]
+    partial class Province
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -134,6 +137,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<bool>("Available");
 
+                    b.Property<string>("BeerColourHex");
+
                     b.Property<string>("BrewerName");
 
                     b.Property<string>("CategoryId");
@@ -148,11 +153,15 @@ namespace ProjectBier.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<string>("ServingGlass");
+
+                    b.Property<string>("ServingTemperature");
+
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Beer");
+                    b.ToTable("Beers");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.Category", b =>
@@ -167,22 +176,6 @@ namespace ProjectBier.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Project_Bier.Models.Discount", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Amount");
-
-                    b.Property<string>("Code");
-
-                    b.Property<bool>("Procent");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("Project_Bier.Models.FavoriteList", b =>
@@ -288,6 +281,8 @@ namespace ProjectBier.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired();
+
+                    b.Property<string>("Province");
 
                     b.Property<string>("StreetName")
                         .IsRequired();

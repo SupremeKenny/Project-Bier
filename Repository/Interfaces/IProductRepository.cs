@@ -37,7 +37,7 @@ namespace Project_Bier.Repository
 
         IEnumerable<Product>  ListAll();
 
-        IEnumerable<Product> GetHomePageProducts();
+        IEnumerable<Product> GetRandomProducts(int count);
 
         Page<Beer> Pagination (int page_index, int page_size);
 
