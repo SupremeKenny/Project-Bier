@@ -53,7 +53,7 @@ class DatabasePopulator:
             for data in self.json_data:
                 if data:
                     # Generate an id
-                    data['id'] = data['title'].replace(" ", "-").lower() + "-" + str(data['content'])
+                    data['id'] = data['title'].lower().replace(" ", "-").replace("/", "") + "-" + str(data['content'])
 
                     # Make sure there are no duplicate ids, because it is a key
                     if data['id'] not in seen_id:

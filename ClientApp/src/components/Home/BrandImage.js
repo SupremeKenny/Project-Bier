@@ -29,6 +29,7 @@ export class BrandImage extends React.Component {
         className={this.state.className}
         src={this.props.url}
         style={this.imageStyling}
+        alt=""
       />
     );
   }

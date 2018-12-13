@@ -16,32 +16,70 @@ using Microsoft.Extensions.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using PostcodeAPI;
+using PostcodeAPI.Model;
 
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 using Project_Bier.Repository;
+using Project_Bier.Services;
 
 
 namespace Project_Bier.Controllers
 {
-    class RegisterResponse
-    {
-        public bool Success { get; set; }
-        public List<string> Errors { get; set; }
-        // Token
-    }
-
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<WebshopUser> userManager;
         private readonly SignInManager<WebshopUser> signInManager;
-        private readonly IUserContext userContext;
+        private readonly ITokenGenerator tokenGenerator;
+        private readonly IConfiguration config;
+        private readonly IAddressRepository addressRepository;
 
-        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager)
+        public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
+            ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.tokenGenerator = tokenGenerator;
+            this.config = config;
+            this.addressRepository = addressRepository;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                LoginResponse loginResponse = new LoginResponse();
+                WebshopUser user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+
+                    var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
+                    if (result.Succeeded)
+                    {
+                        string token = await tokenGenerator.GenerateTokenLogin(user);
+                        loginResponse.Success = true;
+                        loginResponse.Token = token;
+
+                        return Ok(new { loginResponse });
+                    }
+                    else
+                    {
+                        loginResponse.Success = false;
+                        return Ok(new { loginResponse });
+                    }
+                }
+                else
+                {
+                    loginResponse.Success = false;
+                    loginResponse.Error = "User could not be found. Or Password does not match login.";
+                    return Ok(new { loginResponse });
+                }
+            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -68,29 +106,18 @@ namespace Project_Bier.Controllers
                     StreetName = model.StreetName,
                     CityName = model.CityName,
                     Country = model.Country,
+                    Province = model.Province,
                     AssociatedUser = newUser.UserGuid
                 };
 
                 newUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
                 IdentityResult registerResult = await userManager.CreateAsync(newUser, model.Password);
-
+                RegisterResponse registerResponse = new RegisterResponse();
                 if (registerResult.Succeeded)
                 {
-                    // TODO 
-                    // Log Information
-                    // Send email for confirmation to the user
-
-                    // Sign in the user
-                    var signInResult = await signInManager.CheckPasswordSignInAsync(newUser, model.Password, false);
-                    if (signInResult.Succeeded)
-                    {
-                        // TODO: Log Login , create generation of JWT
-                        await userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.Role, "Member"));
-                        //userContext.SetUserGuidCookies(newUser.UserGuid);
-                        //return Ok(new {token = userContext.GenerateToken(newUser)});
-
-                        return Ok(new { message = "okay done" });
-                    }
+                    // TODO: Log Information about Register Result and Send Welcome mail
+                    registerResponse.Success = true;
+                    return Ok(new { registerResponse });
                 }
 
                 List<String> errors = new List<string>();
@@ -99,13 +126,10 @@ namespace Project_Bier.Controllers
                     errors.Add(error.Description);
                 }
 
-                var registerResponse = new RegisterResponse
-                {
-                    Success = false,
-                    Errors = errors
-                };
+                registerResponse.Success = false;
+                registerResponse.Errors = errors;
+                return Ok(new { registerResponse });
 
-                return Ok(new{registerResponse});
             }
             return BadRequest();
         }
@@ -120,14 +144,20 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> Login([FromBody] ViewModel model)
+        //TODO Secure this with token
+        [HttpGet]
+        public async Task<IActionResult> GetAccountInfo(string id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IActionResult> Logout()
-        {
-            throw new NotImplementedException();
+            WebshopUser user = await userManager.FindByEmailAsync(id);
+            if (user != null)
+            {
+                ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
+                return Ok(new { address });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         public Task<IActionResult> ResetPassword([FromBody] ViewModel model)
@@ -135,5 +165,34 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpPost]
+        public IActionResult FetchAddress([FromBody] PostcodeApiRequestModel model)
+        {
+            PostcodeApiClient client = new PostcodeApiClient(config["PostcodeAPI:Key"]);
+            try
+            {
+                var result = client.GetAddress(model.Zip, Int32.Parse(model.Number));
+                Address address = result.Embedded.Addresses[0];
+                AddressResponse response = new AddressResponse
+                {
+                    City = address.City.ToString(),
+                    Street = address.Street.ToString(),
+                    Province = address.Province.ToString()
+                };
+                return Ok(new { response });
+            }
+            catch (System.ArgumentException)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetLimit()
+        {
+            PostcodeApiClient client = new PostcodeApiClient(config["PostcodeAPI:Key"]);
+            var remaining = client.RequestsRemaining;
+            return Ok(new { remaining });
+        }
     }
 }

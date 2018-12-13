@@ -131,10 +131,10 @@ namespace Project_Bier.Repository
             // throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> GetHomePageProducts()
+        public IEnumerable<Product> GetRandomProducts(int count)
         {
             return context.Beers
-            .OrderBy(x => Guid.NewGuid()).Take(8);
+            .OrderBy(x => Guid.NewGuid()).Take(count);
         }
 
         public Page<Beer> Pagination (int page_index, int page_size)
