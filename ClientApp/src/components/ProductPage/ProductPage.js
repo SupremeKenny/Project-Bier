@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
 import { HeartButton} from './HeartButton.js';
-import { addFavoritesItem } from '../../actions/actionCreator'
 
 import {
   Header,
@@ -19,10 +18,8 @@ import {
   Icon,
   Popup,
   Divider,
-  Loader,
-  Item
+  Loader
 } from "semantic-ui-react";
-import favorites from "../../reducers/favoritesReducer.js";
 
 class ProductPage extends Component {
   constructor() {
@@ -34,14 +31,15 @@ class ProductPage extends Component {
     };
   }
 
+  // TODO check if the fetch is okay and catch errors
   componentWillMount() {
     fetch(
-      "https://localhost:5001/product/fetch?id=" + this.props.match.params.id
+      "product/fetch?id=" + this.props.match.params.id
     ).then(results => {
       results.json().then(data => {
-        this.setState({ product: data.product, loaded: true, favorited: localStorage.getItem('Favorites', this.state.product.id) !== JSON.stringify(this.state.product.id) ? false : true });
+        this.setState({ product: data.product, loaded: true});
         this.setTitle();
-        console.log(data);
+
       });
     });
   }
@@ -50,12 +48,15 @@ class ProductPage extends Component {
     document.title = "Beer Buddy: " + this.state.product.name;
   }
 
-  handleFavorited = () => {
-    this.setState({ favorited: true })
-  }
-
-  handleUnfavorited = () => {
-    this.setState({ favorited: false })
+  getFavoriteInfo = () => {
+    if (this.state.loaded) {
+      return {
+        "id": this.state.product.id,
+        "name": this.state.product.name,
+        "price": this.state.product.price,
+        "url": this.state.product.url
+      }
+    }
   }
 
   render() {
@@ -66,7 +67,6 @@ class ProductPage extends Component {
     } else
       return (
         <MainContainer>
-
           <Breadcrumb>
             <Link to="/">
               <Breadcrumb.Section link>Hoofdpagina</Breadcrumb.Section>{" "}
@@ -95,12 +95,11 @@ class ProductPage extends Component {
                 content={this.state.product.content}
                 country={this.state.product.countryName}
                 percentage={this.state.product.alcoholPercentage}
-                category={CategoryDict[this.state.product.categoryId]}
+                category={this.state.product.categoryId}
                 link={this.state.product.categoryId}
               />
 
               <PriceDisplay price={this.state.product.price} />
-
               <Divider hidden />
 
               <div>
@@ -114,37 +113,11 @@ class ProductPage extends Component {
 
                 <Popup
                   trigger={
-                   <HeartButton />
+                    <HeartButton onProductPage={true} product={this.getFavoriteInfo()} />
                   }
                   content="Voeg toe aan verlanglijstje"
                   position="bottom left"
                 />
-                
-                <div>
-                  <Grid>
-                    <Grid.Column width={8}>
-                      <Popup
-                        trigger={<Button
-                          color='red'
-                          icon='heart'
-                          onClick={() => { this.props.addFavoritesItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }}
-                        ></Button>}
-                        content='Voeg toe aan favorietenlijst'
-                        on='click'
-                        open={this.state.favorited}
-                        onClose={this.handleUnfavorited}
-                        onOpen={this.handleFavorited}
-                        position="bottom right"
-                      />
-                    </Grid.Column>
-      
-                    <Grid.Column width={8}>
-                      <Header>Favorited</Header>
-                      <pre>{JSON.stringify(this.state.favorited, null, 2)}</pre>
-                    </Grid.Column>
-                  </Grid>
-                </div>
-
               </div>
 
             </DescriptionContainer>
@@ -229,11 +202,16 @@ const PriceDisplay = props => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    favorites: state.favorites
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    addCartItem,
-    addFavoritesItem
+    addCartItem
   }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(ProductPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProductPage)
