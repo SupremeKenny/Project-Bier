@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
+import  ProductCard,{ ProductCardPlaceholder } from "./ProductCards.js";
 import {
   addCartItem,
   deleteCartItem,

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
+import  ProductCard, { ProductCardPlaceholder } from "./ProductCards.js";
 import { CardGroup, Container} from "semantic-ui-react";
 import InfiniteScroll from 'react-infinite-scroller';
 

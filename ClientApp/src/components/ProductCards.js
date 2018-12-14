@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { addCartItem } from '../actions/actionCreator'
+import { bindActionCreators } from 'redux'
 
 import {
   Image,
@@ -7,8 +10,39 @@ import {
   Popup,
   Card,
   Statistic,
-  Placeholder
+  Placeholder,
+  Icon
 } from "semantic-ui-react";
+
+export const ProductCardPlaceholder = () => {
+  return (
+    <Card className="product-card" style={{ height: 472 }}>
+      <Placeholder style={{ height: 300 }}>
+        <Placeholder.Image />
+      </Placeholder>
+      <Card.Content fluid="true">
+        <Card.Header style={{ minHeight: 50 }}>
+          <Placeholder>
+            <Placeholder.Header image>
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </Placeholder.Header>
+          </Placeholder>
+        </Card.Header>
+      </Card.Content>
+      <Card.Content fluid="true">
+        <div className="ui center aligned">
+          <Popup
+            trigger={<Button content="Toevoegen" icon="cart" color="green" />}
+            content="Klik om het product toe te voegen aan jouw winkelwagen."
+            hideOnScroll
+          />
+        </div>
+      </Card.Content>
+    </Card>
+  );
+};
+
 
 class ImageHover extends React.Component {
   constructor(props) {
@@ -42,66 +76,63 @@ class ImageHover extends React.Component {
   }
 }
 
-export const ProductCard = props => {
-  return (
-    <Card className="product-card">
-      <Link to={"/product/" + props.id}>
-        <ImageHover url={props.url} />
-      </Link>
+class ProductCard extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-      <Card.Content fluid="true">
-        <Card.Header style={{ minHeight: 50 }}>
-          <Link to={"/product/" + props.id}>{props.title} </Link>
-        </Card.Header>
-        <Card.Description>
-          <Statistic size="mini">
-            <Statistic.Value>
-              € {String(props.price).replace(".", ",")}
-            </Statistic.Value>
-          </Statistic>
-        </Card.Description>
-      </Card.Content>
+  addToCart = () => {
+    this.props.addCartItem(this.props.id, this.props.title, this.props.price, this.props.url);
+  }
 
-      <Card.Content fluid="true">
-        <div className="ui center aligned">
-          <Link to={"/product/" + props.id}>
-            <Popup
-              trigger={<Button content="Toevoegen" icon="cart" color="green" />}
-              content="Klik om het product toe te voegen aan jouw winkelwagen."
-              hideOnScroll
-            />
-          </Link>
-        </div>
-      </Card.Content>
-    </Card>
-  );
-};
+  render() {
+    return (
+      <Card className="product-card">
+        <Link to={"/product/" + this.props.id}>
+          <ImageHover url={this.props.url} />
+        </Link>
 
-export const ProductCardPlaceholder = () => {
-  return (
-    <Card className="product-card" style={{ height: 472 }}>
-      <Placeholder style={{ height: 300 }}>
-        <Placeholder.Image />
-      </Placeholder>
-      <Card.Content fluid="true">
-        <Card.Header style={{ minHeight: 50 }}>
-          <Placeholder>
-            <Placeholder.Header image>
-              <Placeholder.Line />
-              <Placeholder.Line />
-            </Placeholder.Header>
-          </Placeholder>
-        </Card.Header>
-      </Card.Content>
-      <Card.Content fluid="true">
-        <div className="ui center aligned">
-          <Popup
-            trigger={<Button content="Toevoegen" icon="cart" color="green" />}
-            content="Klik om het product toe te voegen aan jouw winkelwagen."
-            hideOnScroll
-          />
-        </div>
-      </Card.Content>
-    </Card>
-  );
-};
+        <Card.Content fluid="true">
+          <Card.Header style={{ minHeight: 50 }}>
+            <Link to={"/product/" + this.props.id}>{this.props.title} </Link>
+          </Card.Header>
+          <Card.Description>
+            <Statistic size="mini">
+              <Statistic.Value>
+                € {String(this.props.price).replace(".", ",")}
+              </Statistic.Value>
+            </Statistic>
+          </Card.Description>
+        </Card.Content>
+
+        <Card.Content fluid="true">
+          <div className="ui center aligned">
+            <Link to="/winkelwagen">
+              <Popup
+                trigger={
+                  <Button animated color="green" onClick={() => { this.addToCart() }}>
+                    <Button.Content visible>Toevoegen</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name="cart" />
+                    </Button.Content>
+                  </Button>}
+                content="Klik om het product direct toe te voegen aan jouw winkelwagen."
+                hideOnScroll
+              />
+            </Link>
+          </div>
+        </Card.Content>
+      </Card>
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    addCartItem
+  }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(ProductCard)
+
+

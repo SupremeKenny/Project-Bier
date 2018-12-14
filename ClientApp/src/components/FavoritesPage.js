@@ -54,7 +54,7 @@ class Favorites extends Component {
                   <Grid.Column width={2}>
                     <Image src={product.url} size='mini' />
                   </Grid.Column>
-                  <Grid.Column width={4}> <Link to={"/product/" + product.id}></Link>{product.name}</Grid.Column>
+                  <Grid.Column width={4}> <Link to={"/product/" + product.id}>{product.name}</Link></Grid.Column>
                   <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                   <Grid.Column textAlign='right'>
 
