@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
 import { ProductInfoTable } from "./InformationTable.js"
 import { connect } from "react-redux";
 import { addCartItem } from '../../actions/actionCreator'
 import { bindActionCreators } from 'redux'
-import { HeartButton} from './HeartButton.js';
+import HeartButton from './HeartButton.js';
 
 import {
   Header,
@@ -26,8 +25,7 @@ class ProductPage extends Component {
     super();
     this.state = {
       product: {},
-      loaded: false,
-      favorited: {}
+      loaded: false
     };
   }
 
@@ -37,7 +35,7 @@ class ProductPage extends Component {
       "product/fetch?id=" + this.props.match.params.id
     ).then(results => {
       results.json().then(data => {
-        this.setState({ product: data.product, loaded: true});
+        this.setState({ product: data.product, loaded: true });
         this.setTitle();
 
       });
@@ -60,6 +58,22 @@ class ProductPage extends Component {
   }
 
   render() {
+    // Set label and button for favorite
+    let favoriteLabel;
+    let favoriteButton;
+
+    if (this.props.favorites.products.some(item => { return item.id === this.state.product.id; })) {
+      favoriteLabel = <Label color="red" size="large">Jouw Favoriet</Label>;
+    } else {
+      favoriteButton = <Popup
+        trigger={
+          <HeartButton onProductPage={true} product={this.getFavoriteInfo()} />
+        }
+        content="Voeg toe aan verlanglijstje"
+        position="bottom left"
+      />;
+    }
+
     if (!this.state.loaded) {
       return (
         <Loader />
@@ -74,7 +88,7 @@ class ProductPage extends Component {
             <Breadcrumb.Divider icon="right angle" />
             <Link to={"/category/" + this.state.product.categoryId}>
               <Breadcrumb.Section link>
-                {CategoryDict[this.state.product.categoryId]}
+                {this.state.product.categoryId}
               </Breadcrumb.Section>
             </Link>
             <Breadcrumb.Divider icon="right angle" />
@@ -89,6 +103,7 @@ class ProductPage extends Component {
               title={this.state.product.name}
               descriptionText={this.state.product.description}
               brand={this.state.product.brand}
+              favoriteLabel={favoriteLabel}
             >
               <ProductInfoTable
                 brand={this.state.product.brewerName}
@@ -106,18 +121,18 @@ class ProductPage extends Component {
                 <Button
                   color="green"
                   size="large"
-                  onClick={() => { this.props.addCartItem(this.state.product.id, this.state.product.name, this.state.product.price, this.state.product.url); }} style={{ marginTop: "25px" }}
+                  onClick={() => {
+                    this.props.addCartItem(
+                      this.state.product.id,
+                      this.state.product.name,
+                      this.state.product.price,
+                      this.state.product.url);
+                  }} style={{ marginTop: "25px" }}
                 >
                   Toevoegen aan winkelmand <Icon name="plus" fitted="true" />
                 </Button>
 
-                <Popup
-                  trigger={
-                    <HeartButton onProductPage={true} product={this.getFavoriteInfo()} />
-                  }
-                  content="Voeg toe aan verlanglijstje"
-                  position="bottom left"
-                />
+                {favoriteButton}
               </div>
 
             </DescriptionContainer>
@@ -163,6 +178,7 @@ const DescriptionContainer = props => {
       <Label color="green" size="large">
         Op voorraad
       </Label>
+      {props.favoriteLabel}
 
       <p style={sxc}>
         {props.descriptionText}

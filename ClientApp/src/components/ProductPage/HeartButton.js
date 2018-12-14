@@ -7,7 +7,7 @@ import {
   Button
 } from "semantic-ui-react";
 
-export class HeartButton extends React.Component {
+class HeartButton extends React.Component {
   constructor(props) {
     super(props)
     this.state = { classNameHover: '' }
@@ -55,4 +55,6 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeartButton)
+
+
+export default connect(null, mapDispatchToProps)(HeartButton)

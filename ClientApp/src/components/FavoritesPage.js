@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   deleteFavoritesItem,
+  addCartItem
 } from "../actions/actionCreator";
 import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
@@ -28,6 +29,7 @@ const BreadcrumbTop = () => (
   </Breadcrumb>
 );
 
+//Maybe extract onClick handling to seperate methods for better readability
 class Favorites extends Component {
   constructor() {
     super();
@@ -52,16 +54,19 @@ class Favorites extends Component {
                   <Grid.Column width={2}>
                     <Image src={product.url} size='mini' />
                   </Grid.Column>
-                  <Grid.Column width={4}>{product.name}</Grid.Column>
+                  <Grid.Column width={4}> <Link to={"/product/" + product.id}></Link>{product.name}</Grid.Column>
                   <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
                   <Grid.Column textAlign='right'>
-                    <Link to={"/product/" + product.id}>
-                      <Popup
-                        trigger={<Button content="Toevoegen" icon="cart" color="green" />}
-                        content="Klik om het product toe te voegen aan jouw winkelwagen."
-                        hideOnScroll
-                      />
-                    </Link>
+
+                    <Popup
+                      trigger={<Button content="Toevoegen" icon="cart" color="green" 
+                      onClick={() => {
+                        this.props.addCartItem(product.id, product.name, product.price, product.url);
+                        this.props.deleteFavoritesItem(product.id);
+                      }} />}
+                      content="Klik om het product toe te voegen aan jouw winkelwagen."
+                    />
+
                     <Button
                       negative
                       onClick={() => {
@@ -87,6 +92,7 @@ class Favorites extends Component {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
+      addCartItem,
       deleteFavoritesItem,
     },
     dispatch
