@@ -32,6 +32,8 @@ import { SearchProduct } from "./components/AdminPage/Products/SearchProduct.js"
 import { AllUsers } from "./components/AdminPage/Users/AllUsers.js";
 import { AddUser } from "./components/AdminPage/Users/AddUser.js";
 
+import AccountOverview from "./components/User/AccountOverview.js";
+
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
 
@@ -109,6 +111,12 @@ export default class App extends Component {
             <AppRoute
               path="/favorieten"
               component={Favorites}
+              layout={Layout}
+            />
+
+            <AppRoute
+              path="/account/overzicht"
+              component={AccountOverview}
               layout={Layout}
             />
 
