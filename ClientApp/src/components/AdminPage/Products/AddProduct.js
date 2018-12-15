@@ -41,7 +41,7 @@ export class AddProducts extends React.Component {
 
         // var validate = this.state.id
         // console.log(validate)
-        if (this.state.id != "" && this.state.name != "" && this.state.categoryId != "" && this.state.price != "") {
+        if (this.state.id !== "" && this.state.name !== "" && this.state.categoryId !== "" && this.state.price !== "") {
             console.log("Uitgevoerd"),
             fetch('admin/Create/', {
                 headers:{

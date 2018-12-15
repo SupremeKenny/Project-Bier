@@ -77,9 +77,6 @@ class ImageHover extends React.Component {
 }
 
 class ProductCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   addToCart = () => {
     this.props.addCartItem(this.props.id, this.props.title, this.props.price, this.props.url);

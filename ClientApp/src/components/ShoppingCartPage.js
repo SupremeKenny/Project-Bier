@@ -97,7 +97,7 @@ class ShoppingCart extends Component {
           <Divider />
 
           <div>
-            {this.props.shoppingcart.products.length != 0 ? (
+            {this.props.shoppingcart.products.length !== 0 ? (
               <Grid
                 divided="vertically"
                 columns="equal"
@@ -185,13 +185,13 @@ class ShoppingCart extends Component {
             </h4>
           </Container>
           <Container textAlign="right">
-            {this.state.discount.amount != 0 ? (
+            {this.state.discount.amount !== 0 ? (
               <h3>
                 <h3>
                   SubTotaal: €{" "}
                   {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
                 </h3>
-                {this.state.discount.procent == true ? (
+                {this.state.discount.procent === true ? (
                   <div>
                     <h3>Korting: {this.state.discount.amount} % </h3>
                     <h3>

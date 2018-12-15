@@ -31,9 +31,7 @@ const BreadcrumbTop = () => (
 
 //Maybe extract onClick handling to seperate methods for better readability
 class Favorites extends Component {
-  constructor() {
-    super();
-  }
+ 
 
   render() {
     return (
@@ -46,7 +44,7 @@ class Favorites extends Component {
         <Divider />
 
         <div>
-          {this.props.favorites.products.length != 0 ? (
+          {this.props.favorites.products.length !== 0 ? (
 
             <Grid divided='vertically' columns="equal" padded='vertically' verticalAlign='middle'>
               {this.props.favorites.products.map(product => (
