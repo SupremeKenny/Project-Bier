@@ -11,7 +11,7 @@ Grid,
 Header,
 Container,
 Segment,
-Confirm,
+Popup,
     } from 'semantic-ui-react';
     
 export class AllProducts extends React.Component{
@@ -21,114 +21,74 @@ export class AllProducts extends React.Component{
             products: {},
             loaded: false,
             activePage: 1,
-            boundaryRange: 0,
-            siblingRange: 1,
-            showEllipsis: true,
-            showFirstAndLastNav: true,
-            showPreviousAndNextNav: true,
             totalPages: 1,
-            open: false,
-            deleteProduct: '',
         };
       }
 
-    show = (id) => this.setState({ open: true , deleteProduct: id})
-    handleCancel = () => this.setState({ open: false })
-
-    handleDelete = (id) => { 
-        console.log('Current Id: ' + id),
-        console.log('Active Page: ' + this.state.activePage)  
-        fetch('/admin/Delete/' + id, {  
-            method: 'delete'  
-        })
-        .then (data => {
-            this.setState ({open: false})
-        })
-        // .then(data => {  
-        //     this.setState(  
-        //         {  
-        //             products: this.state.products.filter((rec) => {  
-        //                 return (rec.id !== id);  
-        //             }),
-        //         })
-        // });
-
-        // console.log (this.state.activePage);
-
-        // console.log ("Product Verwijderd");
-
-        /// Als ik op pagina 0 iets delete --> activepage  = 1
-
-        fetch("/admin/FetchAllProducts/" + (this.state.activePage - 1) + "/15")
-        .then(results => {
-          results.json().then(data => {
-            console.log(data.items)
-            if (data.totalPages !== this.state.totalPages){
-                console.log ('Pagina heeft geen items meer!');
-                fetch("/admin/FetchAllProducts/" + (this.state.activePage - 2) + "/15")
-                .then(results => {
-                    results.json().then(data => {
-                        // console.log(data)
-                        this.setState({totalPages: data.totalPages, products: data.items, activePage: 1});
-                    });
-                });
-            }
-            else this.setState({totalPages: data.totalPages, products: data.items});
-
-          });
-        });
-
-    }
-
-      handlePaginationChange = (e, { activePage }) =>{
-        fetch("/admin/FetchAllProducts/" + (activePage - 1)+ "/15")
-        .then(results => {
-          results.json().then(data => {
-            console.log(data)
-            this.setState({totalPages: data.totalPages, products: data.items, loaded: true, activePage });
-          });
-        });
-      } 
-
-      componentDidMount() {
+    componentDidMount() {
+        console.log("CompomnentDidMount")
         fetch("/admin/FetchAllProducts/0/15")
         .then(results => {
           results.json().then(data => {
-            console.log(data)
             this.setState({totalPages: data.totalPages, products: data.items, loaded: true });
           });
         });
-      }
+    }
 
-      showMessage = (item) => {
-        const style = {
-            paddingLeft: '1.5em',
-            paddingRight: '1.5em',
-            paddingTop: '1em',
-            paddingBottom: '1em'
-        }
-          return (
-              <Container style = {style}>
-                <List >
-                    <List.Item>
-                    <b>Het product met de volgende ID wordt verwijderd: </b> 
-                    <Segment>{item}</Segment>
-                    </List.Item>
-                </List>
-            </Container>
+    handlePaginationChange = (e, { activePage }) => {
+        // console.log ("handlePaginationChange: " + activePage)
+        this.setState({loaded:false})
+        this.fetchData (activePage)
+    }
 
-          )
-          
-      } 
+    handleDeleteProduct = (id) => {
+        // console.log ("handDeleteProduct: " + id)
+        this.setState({loaded: false})
+        fetch('/admin/Delete/' + id, {  
+            method: 'delete'  
+        })
+        .then (response =>{
+            // console.log ("Request Status Code: " + response.status)
+            if (response.ok){
+                alert("Product is succesvol verwijderd")
+                this.fetchData (this.state.activePage)
+            }
+            else {
+                this.setState({loaded: true})
+                alert("Error! Product is niet verwijderd")
+            }
+        })
+    }
+
+    fetchData = currentPage => {
+        // console.log ("fetchData: " + currentPage)
+        fetch("/admin/FetchAllProducts/" + (currentPage - 1) + "/15")
+        .then(results => {
+            results.json()
+            .then(data => {
+                // console.log (data.items)
+                // console.log ("Aantal producten: " + data.count)
+                if (data.count === 0 && data.totalPages >= 1){
+                    console.log ("Empty page")
+                    this.fetchData(currentPage - 1)
+                }
+                else {
+                    console.log ("Total Pages: " + data.totalPages + " | Product Count: " + data.count)
+                    this.setState ({
+                        totalPages: data.totalPages,
+                        products: data.items,
+                        activePage: currentPage,
+                        loaded: true
+                    })
+                }
+                
+            })
+        })
+    }
 
     render(){
         const {
             activePage,
-            boundaryRange,
-            siblingRange,
-            showEllipsis,
-            showFirstAndLastNav,
-            showPreviousAndNextNav,
             totalPages,
           } = this.state
 
@@ -142,54 +102,75 @@ export class AllProducts extends React.Component{
         return(
             <Container>
                 <Header as='h1'>Alle Producten</Header>
-                {/* <Divider/> */}
                 <Segment>
                     <Grid columns={1}>
                         <Grid.Column>
-                            <List divided verticalAlign='middle'>
+                            <List divided verticalAlign='bottom' size = {'small'}>
                                 {
                                     this.state.products.map(p => (
-                                        <List.Item key = {p.id}>
+                                        <List.Item key = {p.id} >
                                             <List.Content floated='right'>
-                                                <Button content = "Delete" onClick = {this.show.bind(this, p.id, p)}/>
-                                                <Confirm
-                                                    open={this.state.open}
-                                                    header= 'Product Verwijderen'
-                                                    // content= {'Product Id: ' + deleteProduct}
-                                                    content= {this.showMessage.bind(this, this.state.deleteProduct)}
-                                                    onCancel={this.handleCancel}
-                                                    onConfirm={this.handleDelete.bind(this, this.state.deleteProduct)}
-                                                />
+                                                <Popup
+                                                trigger = {
+                                                    <Button color = "red" size = 'tiny' animated>
+                                                        <Button.Content visible content = 'Delete'/>
+                                                        <Button.Content hidden>
+                                                            <Icon name='delete' />
+                                                        </Button.Content>
+                                                    </Button>
+                                                }
+                                                on = 'click'
+                                                position = 'right center'
+                                                >
+                                                    <Grid>
+                                                        <Grid.Column textAlign='center'>
+                                                            <Header 
+                                                            as='h4' 
+                                                            content = "Weet u het zeker?"
+                                                            />
+                                                            <Button 
+                                                            content = "Verwijder"  
+                                                            color = "green" 
+                                                            onClick = {this.handleDeleteProduct.bind (this, p.id)}
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid>
+                                                </Popup>
                                             </List.Content>
+
                                             <List.Content floated='right'>
                                                 <Link to={"/admin-editProduct/" + p.id}>
-                                                    <Button content = "Edit"/>
+                                                    <Button animated size = 'tiny'>
+                                                        <Button.Content visible content = 'Edit' color/>
+                                                        <Button.Content hidden>
+                                                            <Icon name='edit outline' />
+                                                        </Button.Content>
+                                                    </Button>
                                                 </Link>
                                             </List.Content>
-                                            <Icon name = "beer"/>
-                                            <List.Content >{p.name}</List.Content>
+
+                                            <Icon name = "angle right" size = 'big'/>
+
+                                            <List.Content verticalAlign='bottom' >
+                                                <List.Header>
+                                                    {p.name}
+                                                </List.Header>
+                                                {p.id}
+                                            </List.Content>
                                         </List.Item>
                                     )
                                 )}
-                                {/* <List.Item/> */}
                             </List>
                         </Grid.Column>
-
 
                         <Grid.Column>
                             <Pagination
                                     activePage={activePage}
-                                    boundaryRange={boundaryRange}
+                                    totalPages={totalPages}
                                     onPageChange={this.handlePaginationChange}
                                     size='mini'
-                                    siblingRange={siblingRange}
-                                    totalPages={totalPages}
-                                    // Heads up! All items are powered by shorthands, if you want to hide one of them, just pass `null` as value
-                                    ellipsisItem={showEllipsis ? undefined : null}
-                                    firstItem={showFirstAndLastNav ? undefined : null}
-                                    lastItem={showFirstAndLastNav ? undefined : null}
-                                    prevItem={showPreviousAndNextNav ? undefined : null}
-                                    nextItem={showPreviousAndNextNav ? undefined : null}
+                                    boundaryRange={0}
+                                    siblingRange={1}
                                 />
                         </Grid.Column>
                     </Grid>

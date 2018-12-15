@@ -1,7 +1,7 @@
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { HeartButton } from "./ProductPage/HeartButton.js";
+import  HeartButton  from "./ProductPage/HeartButton.js";
 import { NavigationBar } from "./Navigation/NavigationBar.js";
 import { Footer } from "./Navigation/Footer.js";
 

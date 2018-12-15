@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StepOrder } from "./StepOrder.js";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { LoginComponent } from "../Login/LoginComponent.js";
 import { Link, Redirect } from "react-router-dom";
 import {

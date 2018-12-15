@@ -63,7 +63,7 @@ const shoppingcart = (state = loadState(), action) => {
       );
 
       // Remove id if it is the last one
-      if (lastOne == true) {
+      if (lastOne === true) {
         state.products = state.products.filter(
           product => product.id !== action.id
         );

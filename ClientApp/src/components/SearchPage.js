@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCard } from "./ProductCards.js";
+import  ProductCard  from "./ProductCards.js";
 import { Loader, CardGroup, Container } from "semantic-ui-react";
 
 const MainContainer = ({ children }) => {

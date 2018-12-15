@@ -6,24 +6,10 @@ import { bindActionCreators } from 'redux'
 import {
   Container,
   Button,
-  Icon,
   Divider,
-  Step
 } from "semantic-ui-react";
 
 //TODO Refactoring
-const sizes = ['mini', 'tiny', 'small', 'large', 'big', 'huge', 'massive']
-
-const Space = () => " ";
-
-const ButtonCoC = () => (
-  <Button.Group size={'big'}>
-    <Button href="/input">Teruggaan</Button>
-    <Button.Or text="of" />
-    <Button positive href="/confirmation">Doorgaan</Button>
-  </Button.Group>
-);
-
 
 // TODO after payment, delete guest user info
 class Payment extends Component {

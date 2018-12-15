@@ -77,11 +77,11 @@ namespace Project_Bier.Controllers
 
             /// Use Post in Postman 
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Beer product = new Beer {
                 Id = "Id-" + i,
-                Name = "0" + i + " - test",
+                Name = "*" + i + " - test",
                 CategoryId = "Amber",
                 Price = 2
                 };

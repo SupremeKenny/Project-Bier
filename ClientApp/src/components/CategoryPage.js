@@ -1,8 +1,7 @@
 import React from "react";
 
-import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
-import { Loader, CardGroup, Container, Dropdown, Icon, Grid, GridColumn, Button} from "semantic-ui-react";
-import { CategoryDict } from "./Categories.js";
+import  ProductCard, { ProductCardPlaceholder } from "./ProductCards.js";
+import { CardGroup, Container} from "semantic-ui-react";
 import InfiniteScroll from 'react-infinite-scroller';
 
 const MainContainer = ({ children }) => {
@@ -122,16 +121,16 @@ export class CategoryPage extends React.Component {
   pageReset() {
     this.setState({ products: [], currentIndex: 0, hasMoreItems: true });
   }
-
+  
+  // check for ok and error
   loadItems() {
     fetch(
       "/product/fetchcategory?category=" +
-      CategoryDict[this.props.match.params.id] + "&index=" + this.state.currentIndex
+      this.props.match.params.id + "&index=" + this.state.currentIndex
     ).then(results => {
       results.json().then(data => {
         var newIndex = this.state.currentIndex + 1;
         var hasMore = !(newIndex === data.totalCollections + 1);
-        console.log(hasMore);
         this.setState({ products: this.state.products.concat(data.items), currentIndex: newIndex, hasMoreItems: hasMore })
       });
     });
@@ -158,7 +157,7 @@ export class CategoryPage extends React.Component {
   render() {
     return (
       <MainContainer>
-        <h1>{CategoryDict[this.props.match.params.id]} </h1>
+        <h1>{this.props.match.params.id} </h1>
         {/* <FilterDropdown/> */}
         {/* <SortDropdown/> */}
 

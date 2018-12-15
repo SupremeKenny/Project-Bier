@@ -1,5 +1,4 @@
 import React from 'react';
-import { CategoryDict } from "../Categories.js";
 import { Link } from "react-router-dom";
 
 import {
@@ -8,7 +7,6 @@ import {
   Table,
 } from "semantic-ui-react";
 
-// TODO: Correct the display of category
 export const ProductInfoTable = props => {
   return (
     <div>

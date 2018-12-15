@@ -33,7 +33,7 @@ class LoginPage extends Component {
     let expired = currentTime > loginExpiryDate;
     if (this.props.reduxState.loggedIn && !expired) {
       this.setState({ ...this.state, shouldRedirect: true });
-    } else if (this.props.reduxState.loggedIn != false && expired) {
+    } else if (this.props.reduxState.loggedIn !== false && expired) {
       this.setState({
         ...this.state,
         content:
