@@ -110,6 +110,7 @@ namespace Project_Bier.Controllers
                     AssociatedUser = newUser.UserGuid
                 };
 
+                newUser.PhoneNumber = model.PhoneNumber;
                 newUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
                 IdentityResult registerResult = await userManager.CreateAsync(newUser, model.Password);
                 RegisterResponse registerResponse = new RegisterResponse();
@@ -146,6 +147,7 @@ namespace Project_Bier.Controllers
 
         //TODO Secure this with token
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAccountInfo(string id)
         {
             WebshopUser user = await userManager.FindByEmailAsync(id);
@@ -158,6 +160,31 @@ namespace Project_Bier.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAccountInformation()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            WebshopUser user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+
+                ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
+                return Ok(new { address = address, email = user.Email, name = user.FirstName, lastName = user.LastName, phone = user.PhoneNumber });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> UpdateAccountInformation(string id)
+        {
+            return Ok();
         }
 
         public Task<IActionResult> ResetPassword([FromBody] ViewModel model)

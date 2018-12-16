@@ -1,33 +1,31 @@
-import React, { Component } from "react";
-import { validateEmail, validateZipCode } from "../FieldValidators.js";
+import React, { Component } from 'react';
 import {
-  Container,
-  Button,
-  Divider,
-  Form,
-  Header,
-  Message,
-  Icon,
-  Image,
-} from "semantic-ui-react";
+  validateEmail,
+  validateZipCode,
+  validateName,
+  validatePhoneNumber,
+  validateNum
+} from '../../fieldValidators.js';
+import { fetchPostcodeApi } from '../../postcodeapi.js';
+import { Container, Button, Divider, Form, Header, Message, Icon, Image } from 'semantic-ui-react';
 
-// TODO Stricter validation of house number and phone number
-// TODO: The fields of this and guestorder are pretty much the same, so find a way to not use duplicate
+// TODO: Find a way to modularize this Component, because pretty much same code is used here
+// and on GuestOrderForm, PersonalOverview
+// This is minor but will generate technical debt if this was a real project
 export default class Registration extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
-      tussen: "",
-      surname: "",
-      street: "",
-      houseNumber: "",
-      zip: "",
-      city: "",
-      phone: "",
-      email: "",
-      province: "",
-      password: "",
+      name: '',
+      surname: '',
+      street: '',
+      houseNumber: '',
+      zip: '',
+      city: '',
+      phone: '',
+      email: '',
+      province: '',
+      password: '',
 
       focused: {
         name: false,
@@ -49,16 +47,8 @@ export default class Registration extends Component {
 
       formCompleted: false,
 
-      error:
-        "Om de bestelling correct te verwerken moet uw alle informatie in het formulier invullen."
+      error: 'Om de bestelling correct te verwerken moet uw alle informatie in het formulier invullen.'
     };
-  }
-
-  //TODO Read this from store instead of directly from localStorage
-  componentWillMount() {
-    this.setState({
-      products: localStorage.Cart ? JSON.parse(localStorage.Cart) : []
-    });
   }
 
   componentDidUpdate() {
@@ -71,7 +61,7 @@ export default class Registration extends Component {
   handleChange = (e, { name, value }) => {
     // If the zip or housenumber change we can no longer assume the fetched address is correct
     // Therefore we need to fetch it again
-    if (name === "zip" || name === "houseNumber") {
+    if (name === 'zip' || name === 'houseNumber') {
       this.setState({
         ...this.state,
         [name]: value,
@@ -121,19 +111,13 @@ export default class Registration extends Component {
    */
   handleFieldComplete() {
     // Both fields should have been focused
-    if (this.state.focused["zip"] && this.state.focused["houseNumber"]) {
+    if (this.state.focused['zip'] && this.state.focused['houseNumber']) {
       // Both fields should be correct
-      if (
-        this.state.validationState["zip"] &&
-        this.state.validationState["houseNumber"]
-      ) {
+      if (this.state.validationState['zip'] && this.state.validationState['houseNumber']) {
         // The address must not have changed and not be correct and fetched already
-        if (
-          this.state.addressCorrect === false &&
-          this.state.addressFetched === false
-        ) {
+        if (this.state.addressCorrect === false && this.state.addressFetched === false) {
           this.setState({ ...this.state, addressFetched: true }, () => {
-            this.fetchPostcodeApi();
+            this.postcodeCall();
           });
         }
       }
@@ -142,32 +126,29 @@ export default class Registration extends Component {
 
   shouldMarkError(fieldName) {
     if (this.state.focused[fieldName]) {
-      return this.state.validationState[fieldName] ? "" : "error";
-    } else return "";
+      return this.state.validationState[fieldName] ? '' : 'error';
+    } else return '';
   }
 
   validateForm(callback) {
     let fields = {
-      name: this.state.name.length > 0,
-      surname: this.state.surname.length > 0,
-      houseNumber: this.state.houseNumber.length > 0,
+      name: this.state.name.length > 0 && validateName(this.state.name),
+      surname: this.state.surname.length > 0 && validateName(this.state.surname),
+      houseNumber: this.state.houseNumber.length > 0 && validateNum(this.state.houseNumber),
       zip: validateZipCode(this.state.zip),
-      phone: this.state.phone.length > 0,
+      phone: this.state.phone.length > 0 && validatePhoneNumber(this.state.phone),
       email: validateEmail(this.state.email),
       password: this.state.password.length >= 8
     };
     this.setState({ ...this.state, validationState: fields }, callback);
   }
 
-  // Catch error
   register() {
-    console.log("Trying to register");
-
-    fetch("account/register", {
-      method: "POST",
+    fetch('account/register', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         Email: this.state.email,
@@ -176,54 +157,46 @@ export default class Registration extends Component {
         StreetNumber: this.state.houseNumber,
         StreetName: this.state.street,
         CityName: this.state.city,
-        Country: "Nederland",
+        Country: 'Nederland',
         FirstName: this.state.name,
-        LastName: this.state.tussen + this.state.achternaam,
-        Province: this.state.province
+        LastName: this.state.surname,
+        Province: this.state.province,
+        PhoneNumber: this.state.phone
       })
-    }).then(results => {
-      if (results.ok) {
-        results.json().then(data => {
-          if (data.registerResponse.success === true) {
-            this.setState({ ...this.state, formCompleted: true });
-          } else {
-            this.setState({
-              ...this.state,
-              displayErrorForm: true,
-              error: data.registerResponse.errors[0]
-            });
-          }
-        });
-      } else {
-        console.log("Failed ");
-      }
-    });
+    })
+      .then(results => {
+        if (results.ok) {
+          results.json().then(data => {
+            if (data.registerResponse.success === true) {
+              this.setState({ ...this.state, formCompleted: true });
+            } else {
+              this.setState({
+                ...this.state,
+                displayErrorForm: true,
+                error: data.registerResponse.errors[0]
+              });
+            }
+          });
+        } else {
+          console.log('Failed to register');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  // TODO: Implement catch
-  fetchPostcodeApi() {
-    fetch("account/fetchAddress", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        Zip: this.state.zip,
-        Number: this.state.houseNumber
-      })
-    }).then(results => {
-      if (results.ok) {
-        results.json().then(data =>
-          this.setState({
-            ...this.state,
-            street: data.response.street,
-            city: data.response.city,
-            province: data.response.province,
-            displayAdditional: true,
-            addressCorrect: true
-          })
-        );
+  postcodeCall = () => {
+    fetchPostcodeApi(this.state.zip, this.state.houseNumber).then(data => {
+      if (typeof data !== undefined) {
+        this.setState({
+          ...this.state,
+          street: data.response.street,
+          city: data.response.city,
+          province: data.response.province,
+          displayAdditional: true,
+          addressCorrect: true
+        });
       } else {
         this.setState({
           ...this.state,
@@ -238,38 +211,22 @@ export default class Registration extends Component {
         });
       }
     });
-  }
+  };
 
+  // TODO: make the fields not have to manually give paramater string to shouldMarkError and handleBlur
   render() {
-    const {
-      name,
-      surname,
-      street,
-      houseNumber,
-      zip,
-      city,
-      phone,
-      email,
-      tussen,
-      province,
-      password
-    } = this.state;
+    const { name, surname, street, houseNumber, zip, city, phone, email, province, password } = this.state;
 
     let errorForm;
     if (this.state.displayErrorForm) {
       errorForm = (
-        <Message
-          error
-          style={{ marginTop: "1em" }}
-          header="Wij wijzen u op het volgende:"
-          content={this.state.error}
-        />
+        <Message error style={{ marginTop: '1em' }} header="Wij wijzen u op het volgende:" content={this.state.error} />
       );
-    } else errorForm = "";
+    }
 
-    let additionalFields;
+    let addressFields;
     if (this.state.displayAdditional) {
-      additionalFields = (
+      addressFields = (
         <Form.Group>
           <Form.Input readOnly width={5} label="Straatnaam" value={street} />
           <Form.Input readOnly width={5} label="Stad" value={city} />
@@ -284,7 +241,7 @@ export default class Registration extends Component {
           <Container>
             <Message
               info
-              style={{ marginTop: "1em" }}
+              style={{ marginTop: '1em' }}
               header="Vul het formulier volledig in,"
               content="Vul uw gegevens in om te registreren bij BeerBuddy."
             />
@@ -303,20 +260,11 @@ export default class Registration extends Component {
                   width={6}
                   name="name"
                   value={name}
-                  className={this.shouldMarkError("name")}
+                  className={this.shouldMarkError('name')}
                   label="Voornaam"
-                  placeholder="Klaas"
+                  placeholder="John"
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("name")}
-                />
-
-                <Form.Input
-                  fluid
-                  width={4}
-                  label="Tussenvoegsel"
-                  placeholder="van"
-                  value={tussen}
-                  onChange={this.handleChange}
+                  onBlur={this.handleBlur('name')}
                 />
 
                 <Form.Input
@@ -325,11 +273,11 @@ export default class Registration extends Component {
                   width={6}
                   name="surname"
                   value={surname}
-                  className={this.shouldMarkError("surname")}
+                  className={this.shouldMarkError('surname')}
                   label="Achternaam"
-                  placeholder="Schouten"
+                  placeholder="Doe"
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("surname")}
+                  onBlur={this.handleBlur('surname')}
                 />
               </Form.Group>
 
@@ -337,50 +285,45 @@ export default class Registration extends Component {
                 <Form.Input
                   required
                   width={4}
-                  className={this.shouldMarkError("zip")}
+                  className={this.shouldMarkError('zip')}
                   name="zip"
                   label="Postcode"
-                  placeholder="1234AB"
+                  placeholder="3011 WN"
                   value={zip}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("zip")}
+                  onBlur={this.handleBlur('zip')}
                   maxLength={7}
                 />
 
                 <Form.Input
                   required
                   width={2}
-                  className={this.shouldMarkError("houseNumber")}
+                  className={this.shouldMarkError('houseNumber')}
                   name="houseNumber"
                   label="Huisnummer"
-                  placeholder="12"
+                  placeholder="107"
                   value={houseNumber}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("houseNumber")}
+                  onBlur={this.handleBlur('houseNumber')}
                   maxLength={5}
                 />
 
-                <Form.Input
-                  label="Toevoeging"
-                  placeholder="a"
-                  maxLength={3}
-                  width={2}
-                />
+                <Form.Input label="Toevoeging" placeholder="a" maxLength={3} width={2} />
               </Form.Group>
 
-              {additionalFields}
+              {addressFields}
 
               <Form.Group>
                 <Form.Input
                   required
                   width={6}
-                  className={this.shouldMarkError("phone")}
+                  className={this.shouldMarkError('phone')}
                   name="phone"
                   label="Telefoonnummer"
                   placeholder="0612345678"
                   value={phone}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("phone")}
+                  onBlur={this.handleBlur('phone')}
                 />
               </Form.Group>
 
@@ -390,13 +333,13 @@ export default class Registration extends Component {
                   iconPosition="left"
                   required
                   width={6}
-                  className={this.shouldMarkError("email")}
+                  className={this.shouldMarkError('email')}
                   name="email"
                   label="E-mailadres"
                   placeholder="123@hotmail.com"
                   value={email}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("email")}
+                  onBlur={this.handleBlur('email')}
                 >
                   <Icon name="at" />
                   <input />
@@ -409,12 +352,12 @@ export default class Registration extends Component {
                   iconPosition="left"
                   required
                   width={6}
-                  className={this.shouldMarkError("password")}
+                  className={this.shouldMarkError('password')}
                   name="password"
                   label="Wachtwoord"
                   value={password}
                   onChange={this.handleChange}
-                  onBlur={this.handleBlur("password")}
+                  onBlur={this.handleBlur('password')}
                 >
                   <Icon name="key" />
                   <input />
@@ -439,7 +382,7 @@ export default class Registration extends Component {
         <div>
           <Message
             positive
-            style={{ marginTop: "1em" }}
+            style={{ marginTop: '1em' }}
             header="U bent succesvol geregistreerd"
             content="U zal zodadelijk een bevestigingsmail ontvangen. Veel plezier met winkelen bij BeerBuddy."
           />

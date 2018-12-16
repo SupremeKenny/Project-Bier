@@ -31,6 +31,8 @@ namespace Project_Bier.Models.ViewModels
         public string LastName { get; set; }
         [Required]
         public string Province { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
     }
 
     public class SelectedProduct
