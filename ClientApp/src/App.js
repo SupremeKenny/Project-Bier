@@ -32,6 +32,10 @@ import { SearchProduct } from "./components/AdminPage/Products/SearchProduct.js"
 import { AllUsers } from "./components/AdminPage/Users/AllUsers.js";
 import { AddUser } from "./components/AdminPage/Users/AddUser.js";
 
+import { AllDiscounts } from "./components/AdminPage/Discounts/AllDiscount"
+import { EditDiscounts } from "./components/AdminPage/Discounts/EditDiscount"
+import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
+
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
 
@@ -148,6 +152,22 @@ export default class App extends Component {
               path="/admin-editProduct/:id"
               layout={AdminPage}
               component={EditProducts}
+            />
+
+            <AppRoute
+              path="/admin-editDiscount/:id"
+              layout={AdminPage}
+              component={EditDiscounts}
+            />
+            <AppRoute
+              path="/admin-allDiscounts"
+              layout={AdminPage}
+              component={AllDiscounts}
+            />
+            <AppRoute
+              path="/admin-addDiscount"
+              layout={AdminPage}
+              component={AddDiscount}
             />
           </Switch>
         </div>

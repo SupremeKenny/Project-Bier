@@ -13,10 +13,38 @@ namespace Project_Bier.Controllers
     public class AdminController: Controller
     {
         IProductRepository productRepository;
+        IDiscountRepository discountRepository;
 
-        public AdminController(IProductRepository productRepository)
+        public AdminController(IProductRepository productRepository, IDiscountRepository discountRepository)
         {
             this.productRepository = productRepository;
+            this.discountRepository = discountRepository;
+        }
+
+        [HttpGet]
+        public IActionResult FetchAllDiscounts() 
+        {
+            var discounts = discountRepository.ListAll();
+            
+            
+            if(discounts == null) {
+                return NotFound();
+            }
+
+
+            return new OkObjectResult(new {discounts= discounts});
+        }
+
+        [HttpDelete("{code}")]
+        public void deletediscount(String code)  
+        {  
+            discountRepository.RemoveDiscount(code); 
+        }
+
+        [HttpPost]
+        public void CreateDiscount ([FromBody] Discount discount)
+        {
+            discountRepository.AddDiscount(discount);
         }
 
 

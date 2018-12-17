@@ -20,7 +20,7 @@ namespace Project_Bier.Repository
 
         void UpdateDiscount(Guid guid, Discount newDiscount);
 
-        void RemoveDiscount(Guid guid);
+        void RemoveDiscount(string code);
 
         IEnumerable<Discount>  ListAll();
 

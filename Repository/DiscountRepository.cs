@@ -29,7 +29,19 @@ namespace Project_Bier.Repository
 
         public void AddDiscount(Discount discount)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            try
+            {
+                
+                    context.Discount.Add(discount);
+                    context.SaveChanges();
+            
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
         public IEnumerable<Discount> ListAll()
@@ -37,9 +49,20 @@ namespace Project_Bier.Repository
             return context.Discount.ToList();
         }
 
-        public void RemoveDiscount(Guid guid)
+        public void RemoveDiscount(string code)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                var deleteDiscount = this.CheckDiscount(code);
+                context.Discount.Remove(deleteDiscount);
+                context.SaveChanges();
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public void UpdateDiscount(Guid guid, Discount newDiscount)
