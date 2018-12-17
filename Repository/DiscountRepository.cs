@@ -65,9 +65,33 @@ namespace Project_Bier.Repository
             }
         }
 
-        public void UpdateDiscount(Guid guid, Discount newDiscount)
+        public void UpdateDiscount(Discount newDiscount, string code)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (code == newDiscount.Code)
+                {
+                    Discount productToUpdate = context.Discount.FirstOrDefault(p => p.Code == newDiscount.Code);
+                    if (productToUpdate != null)
+                    {
+                        productToUpdate.Code = newDiscount.Code;
+                        productToUpdate.Procent = newDiscount.Procent;
+                        productToUpdate.Amount = newDiscount.Amount;
+                       
+                        context.SaveChanges();
+                    }
+                }
+                else {
+                    RemoveDiscount(code);
+                    AddDiscount(newDiscount);
+                }
+
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
     }

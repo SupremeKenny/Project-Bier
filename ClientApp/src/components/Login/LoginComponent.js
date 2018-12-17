@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Button, Divider, Form } from "semantic-ui-react";
-import { validateEmail } from "../FieldValidators.js";
+import { validateEmail } from "../../fieldValidators.js";
 
 export class LoginComponent extends Component {
   constructor(props) {

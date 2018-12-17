@@ -47,6 +47,16 @@ namespace Project_Bier.Controllers
             discountRepository.AddDiscount(discount);
         }
 
+        [HttpPut("{id}")]
+        public void UpdateDiscount ([FromBody] Discount discount, String id)
+        {
+
+            /// Save Changes
+            discountRepository.UpdateDiscount(discount, id);
+
+            
+        }
+
 
         [HttpGet("{page_index}/{numberOfProducts}")]
         public IActionResult FetchAllProducts (int page_index, int numberOfProducts) 

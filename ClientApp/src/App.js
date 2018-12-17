@@ -36,6 +36,8 @@ import { AllDiscounts } from "./components/AdminPage/Discounts/AllDiscount"
 import { EditDiscount } from "./components/AdminPage/Discounts/EditDiscount"
 import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
 
+import AccountOverview from "./components/User/AccountOverview.js";
+
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
 
@@ -113,6 +115,12 @@ export default class App extends Component {
             <AppRoute
               path="/favorieten"
               component={Favorites}
+              layout={Layout}
+            />
+
+            <AppRoute
+              path="/account/overzicht"
+              component={AccountOverview}
               layout={Layout}
             />
 

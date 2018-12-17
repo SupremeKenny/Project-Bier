@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Project_Bier.Repository;
@@ -9,14 +10,15 @@ using Project_Bier.Repository;
 namespace ProjectBier.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    partial class ApplicationDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181217131654_AddOrderStatus")]
+    partial class AddOrderStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -178,14 +180,16 @@ namespace ProjectBier.Migrations
 
             modelBuilder.Entity("Project_Bier.Models.Discount", b =>
                 {
-                    b.Property<string>("Code")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd();
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<string>("Code");
+
                     b.Property<bool>("Procent");
 
-                    b.HasKey("Code");
+                    b.HasKey("Guid");
 
                     b.ToTable("Discount");
                 });
@@ -249,8 +253,6 @@ namespace ProjectBier.Migrations
 
                     b.Property<DateTime>("OrderShipped");
 
-                    b.Property<int>("OrderStatus");
-
                     b.Property<bool>("OrderedFromGuestAccount");
 
                     b.Property<bool>("Paid");
@@ -258,6 +260,8 @@ namespace ProjectBier.Migrations
                     b.Property<bool>("Shipped");
 
                     b.Property<decimal>("TotalPrice");
+
+                    b.Property<int>("orderStatus");
 
                     b.HasKey("Guid");
 
