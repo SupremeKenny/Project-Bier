@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Project_Bier.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Project_Bier.Models.ViewModels;
 
 namespace Project_Bier.Repository
 {
@@ -49,21 +50,21 @@ namespace Project_Bier.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IQueryable<object> GetAllUserOrders(Guid id)
+        public List<OrderOverviewModel> GetAllUserOrders(Guid id)
         {
-            var userOrders =
+            var userOrders = 
                 from order in context.Order
                 where order.AssociatedUserGuid == id
-                select new
+                select new OrderOverviewModel
                 {
-                    Guid = order.Guid,
-                    Price = order.FinalPrice,
-                    Products = order.OrderedProducts,
+                    OrderNumber = order.Guid.ToString(),
+                    FinalPrice = order.FinalPrice,
+                    OrderedProducts = order.OrderedProducts.ToList(),
                     Date = order.OrderCreated,
-                    Status = order.OrderStatus
+                    OrderStatus = order.OrderStatus
                 };
 
-            return userOrders;
+            return userOrders.ToList();
         }
 
         public IEnumerable<Order> ListAll()

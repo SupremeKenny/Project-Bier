@@ -8,22 +8,23 @@ using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 
 namespace Project_Bier.Controllers
-{
+{   
+    // TODO Routes should be protected with admin role tokens
+    // Why do the CUD operations not return anything? 
     [Route("[controller]/[action]")]
     public class AdminController: Controller
     {
-        IProductRepository productRepository;
+        IProductRepository ProductRepository {get;}
 
         public AdminController(IProductRepository productRepository)
         {
-            this.productRepository = productRepository;
+            ProductRepository = productRepository;
         }
-
 
         [HttpGet("{page_index}/{numberOfProducts}")]
         public IActionResult FetchAllProducts (int page_index, int numberOfProducts) 
         {
-            var projects = productRepository.Pagination(page_index, numberOfProducts);
+            var projects = ProductRepository.Pagination(page_index, numberOfProducts);
 
             IEnumerable<object> resultToReturn = projects.Items.Select(prod => new 
             {
@@ -35,14 +36,13 @@ namespace Project_Bier.Controllers
                 return NotFound();
             }
 
-
             return new OkObjectResult(new {TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count()});
         }
 
         [HttpGet("{id}")]
         public IActionResult Fetch(String id)
         {
-            Product product = productRepository.GetProductByGuid(id);
+            Product product = ProductRepository.GetProductByGuid(id);
             if(product == null) 
             {
                 return NotFound();
@@ -53,50 +53,20 @@ namespace Project_Bier.Controllers
         [HttpDelete("{id}")]
         public void Delete(String id)  
         {  
-            productRepository.RemoveProduct(id); 
+            ProductRepository.RemoveProduct(id); 
         }
 
         [HttpPost]
         public void Create ([FromBody] Beer product)
         {
-            productRepository.AddProduct(product);
+            ProductRepository.AddProduct(product);
         }
 
         [HttpPut("{id}")]
         public void Update ([FromBody] Beer product, String id)
         {
-
-            /// Save Changes
-            productRepository.UpdateProduct(product, id);
-
-            
-        }
-
-        [HttpPost]
-        public void CreateTest (){
-
-            /// Use Post in Postman 
-
-            for (int i = 0; i < 10; i++)
-            {
-                Beer product = new Beer {
-                Id = "Id-" + i,
-                Name = "*" + i + " - test",
-                CategoryId = "Amber",
-                Price = 2
-                };
-                productRepository.AddProduct(product);
-            }
-
-            // Beer product = new Beer {
-            //     Id = "Id-",
-            //     Name = "0" + " - test",
-            //     CategoryId = "Amber",
-            //     Price = 2
-            //     };
-            //     productRepository.AddProduct(product);
+            ProductRepository.UpdateProduct(product, id);   
         }
 
     }
-
 }

@@ -95,4 +95,28 @@ namespace Project_Bier.Models.ViewModels
         public string Zip { get; set; }
         public string Number { get; set; }
     }
+
+    /// <summary>
+    /// Response view model for account order overview
+    /// </summary>
+    public class ProductOverviewModel
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Url { get; set; }
+        public int Count { get; set; }
+    }
+
+    /// <summary>
+    /// Response view model for account order overview
+    /// </summary>
+    public class OrderOverviewModel
+    {
+        public DateTime Date { get; set; }
+        public string OrderNumber { get; set; }
+        public OrderStatus OrderStatus { get; set; }
+        public decimal FinalPrice {get; set;}
+        public List<ProductOrder> OrderedProducts { get; set; }
+        public List<ProductOverviewModel> Products {get; set;}
+    }
 }

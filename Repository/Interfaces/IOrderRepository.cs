@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Project_Bier.Models;
+using Project_Bier.Models.ViewModels;
 
 namespace Project_Bier.Repository
 {
@@ -27,7 +28,7 @@ namespace Project_Bier.Repository
 
         IEnumerable<Order>  ListAll();
 
-        IQueryable<object> GetAllUserOrders(Guid id);
+        List<OrderOverviewModel> GetAllUserOrders(Guid id);
 
     }
 }

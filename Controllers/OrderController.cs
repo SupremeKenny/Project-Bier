@@ -57,17 +57,29 @@ namespace Project_Bier.Controllers
             return Json(new { order = order });
         }
 
-        // TODO also return product information
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetUserOrders() 
+        public async Task<IActionResult> GetUserOrders()
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
             WebshopUser user = await UserManager.FindByIdAsync(userId);
             if (user != null)
             {
-                IQueryable<object> userOrders = OrderRepository.GetAllUserOrders(user.UserGuid);
-                return Ok(new {userOrders});
+                List<OrderOverviewModel> orders = OrderRepository.GetAllUserOrders(user.UserGuid);
+
+                // Can be done in subquery in repository but this also works
+                foreach (OrderOverviewModel order in orders)
+                {
+                    order.Products = new List<ProductOverviewModel>();
+                    foreach (ProductOrder productOrder in order.OrderedProducts)
+                    {
+                        order.Products.Add(ProductRepository.GetOverviewModel(productOrder));
+                    }
+                    // Set the null to erase duplicate data
+                    order.OrderedProducts = null;
+                }
+
+                return Ok(new { orders });
             }
             else
             {
