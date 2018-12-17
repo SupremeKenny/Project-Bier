@@ -32,7 +32,12 @@ import { SearchProduct } from "./components/AdminPage/Products/SearchProduct.js"
 import { AllUsers } from "./components/AdminPage/Users/AllUsers.js";
 import { AddUser } from "./components/AdminPage/Users/AddUser.js";
 
+import { AllDiscounts } from "./components/AdminPage/Discounts/AllDiscount"
+import { EditDiscount } from "./components/AdminPage/Discounts/EditDiscount"
+import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
+
 import AccountOverview from "./components/User/AccountOverview.js";
+import { AppRoute } from "./AppRoute.js"
 
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
@@ -42,18 +47,6 @@ store.subscribe(
     saveState(store.getState());
   }),
   1000
-);
-
-//TODO if layout is set to null throw error
-const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => (
-      <Layout>
-        <Component {...props} />
-      </Layout>
-    )}
-  />
 );
 
 export default class App extends Component {
@@ -120,6 +113,16 @@ export default class App extends Component {
               layout={Layout}
             />
 
+            <AppRoute
+              path="/account/overzicht"
+              component={AccountOverview}
+              layout={Layout}
+            />
+
+             <AppRoute
+              path="/account/test"
+            />
+
             {/* Admin Routes */}
             <AppRoute path="/admin" layout={AdminPage} component={Home} />
             <AppRoute
@@ -156,6 +159,22 @@ export default class App extends Component {
               path="/admin-editProduct/:id"
               layout={AdminPage}
               component={EditProducts}
+            />
+
+            <AppRoute
+              path="/admin-editDiscount/:id"
+              layout={AdminPage}
+              component={EditDiscount}
+            />
+            <AppRoute
+              path="/admin-allDiscounts"
+              layout={AdminPage}
+              component={AllDiscounts}
+            />
+            <AppRoute
+              path="/admin-addDiscount"
+              layout={AdminPage}
+              component={AddDiscount}
             />
           </Switch>
         </div>

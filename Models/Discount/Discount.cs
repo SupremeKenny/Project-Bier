@@ -11,7 +11,6 @@ namespace Project_Bier.Models
     public class Discount
     {
         [Key]
-        public Guid Guid { get; set; }
         public string Code { get; set; }
         public bool Procent { get; set; }
         public decimal Amount { get; set; }

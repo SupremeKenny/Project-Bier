@@ -14,12 +14,51 @@ namespace Project_Bier.Controllers
     [Route("[controller]/[action]")]
     public class AdminController: Controller
     {
-        IProductRepository ProductRepository {get;}
+        IProductRepository productRepository;
+        IDiscountRepository discountRepository;
 
-        public AdminController(IProductRepository productRepository)
+        public AdminController(IProductRepository productRepository, IDiscountRepository discountRepository)
         {
-            ProductRepository = productRepository;
+            this.productRepository = productRepository;
+            this.discountRepository = discountRepository;
         }
+
+        [HttpGet]
+        public IActionResult FetchAllDiscounts() 
+        {
+            var discounts = discountRepository.ListAll();
+            
+            
+            if(discounts == null) {
+                return NotFound();
+            }
+
+
+            return new OkObjectResult(new {discounts= discounts});
+        }
+
+        [HttpDelete("{code}")]
+        public void deletediscount(String code)  
+        {  
+            discountRepository.RemoveDiscount(code); 
+        }
+
+        [HttpPost]
+        public void CreateDiscount ([FromBody] Discount discount)
+        {
+            discountRepository.AddDiscount(discount);
+        }
+
+        [HttpPut("{id}")]
+        public void UpdateDiscount ([FromBody] Discount discount, String id)
+        {
+
+            /// Save Changes
+            discountRepository.UpdateDiscount(discount, id);
+
+            
+        }
+
 
         [HttpGet("{page_index}/{numberOfProducts}")]
         public IActionResult FetchAllProducts (int page_index, int numberOfProducts) 

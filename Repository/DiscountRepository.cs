@@ -21,16 +21,27 @@ namespace Project_Bier.Repository
 
         public Discount CheckDiscount(String input)
         {
-            var rest = context.Discount
-                    .Where(b => b.Code == input)
-                    .FirstOrDefault();
-            
-            return rest;
+            return context.Discount
+                .Where(b => b.Code == input)
+                 .FirstOrDefault();
+
         }
 
         public void AddDiscount(Discount discount)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            try
+            {
+                
+                    context.Discount.Add(discount);
+                    context.SaveChanges();
+            
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
         public IEnumerable<Discount> ListAll()
@@ -38,14 +49,49 @@ namespace Project_Bier.Repository
             return context.Discount.ToList();
         }
 
-        public void RemoveDiscount(Guid guid)
+        public void RemoveDiscount(string code)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                var deleteDiscount = this.CheckDiscount(code);
+                context.Discount.Remove(deleteDiscount);
+                context.SaveChanges();
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
-        public void UpdateDiscount(Guid guid, Discount newDiscount)
+        public void UpdateDiscount(Discount newDiscount, string code)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (code == newDiscount.Code)
+                {
+                    Discount productToUpdate = context.Discount.FirstOrDefault(p => p.Code == newDiscount.Code);
+                    if (productToUpdate != null)
+                    {
+                        productToUpdate.Code = newDiscount.Code;
+                        productToUpdate.Procent = newDiscount.Procent;
+                        productToUpdate.Amount = newDiscount.Amount;
+                       
+                        context.SaveChanges();
+                    }
+                }
+                else {
+                    RemoveDiscount(code);
+                    AddDiscount(newDiscount);
+                }
+
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
     }
