@@ -60,9 +60,8 @@ class ShoppingCart extends Component {
       if (!results.ok) {
         this.setState({ discount: { procent: true, amount: 0 } });
         localStorage.setItem("Discount", null);
-      }
+      } else {
       results.json().then(data => {
-        console.log(data.discount);
         this.setState(
           {
             discount: {
@@ -70,10 +69,10 @@ class ShoppingCart extends Component {
               amount: data.discount.amount
             }
           },
-          () => console.log(this.state.discount)
         );
         localStorage.setItem("Discount", data.discount.code);
       });
+    }
     });
   };
 

@@ -40,6 +40,18 @@ export const NavMenu = () => {
 
                 </Menu.Menu>
             </Menu.Item>
+            <Menu.Item>
+                Kortingscodes
+                <Menu.Menu>
+                    <Menu.Item name='addUser'>
+                        <Link to="/admin-addDiscount">Toevoegen</Link>
+                    </Menu.Item>
+                    <Menu.Item name='allUsers'>
+                        <Link to="/admin-allDiscounts">Alle Kortingscodes</Link>
+                    </Menu.Item>
+
+                </Menu.Menu>
+            </Menu.Item>
 
             <Menu.Item
             name = "accountSettings"
