@@ -76,6 +76,24 @@ namespace Project_Bier.Repository
 
             return totalpricelastweek;
         }
+
+        public Dictionary<string, int> popularbeers()
+        {
+            IEnumerable<ProductOrder> allItems = context.ProductOrder;
+            var ordereditems = allItems.GroupBy(item => item.ProductId)
+                                        .Select(g => new {ProductId = g.Key, Count= g.Sum(s => s.Count)})
+                                        .OrderByDescending(iets => iets.Count)
+                                        .Take(10);
+
+
+            Dictionary<string, int> popularbeers = new Dictionary<string, int>();
+
+            foreach (var result in ordereditems){
+                popularbeers.Add(result.ProductId, result.Count);
+            }
+
+            return popularbeers;
+        }
         
 
     }

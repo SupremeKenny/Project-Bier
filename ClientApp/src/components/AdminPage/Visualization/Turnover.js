@@ -2,8 +2,6 @@ import React from "react";
 import {
     Header,
     Segment,
-    Form,
-    Select,
     Container,
     Dimmer,
     Loader
@@ -70,8 +68,3 @@ export class Turnover extends React.Component {
     }
 
 }
-
-const Procent = [
-    { key: '1', text: 'Procent', value: 'Procent' },
-    { key: '2', text: 'Euro', value: 'Euro' }
-]

@@ -47,6 +47,18 @@ namespace Project_Bier.Controllers
                     turnover3weekago = turnover3weekago
                     });
         }
+
+        [HttpGet]
+        public IActionResult FetchPopularBeers() 
+        {
+
+            var temp = OrderRepository.popularbeers();
+
+            return new OkObjectResult(
+                new {
+                    popularbeers = temp
+                    });
+        }
         
 
     }

@@ -30,6 +30,8 @@ namespace Project_Bier.Repository
 
         decimal TurnOverxWeeksago(int weeks);
 
+        Dictionary<string, int> popularbeers();
+
 
     }
 }
