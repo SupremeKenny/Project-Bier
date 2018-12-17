@@ -70,20 +70,26 @@ export class AllDiscounts extends React.Component {
 			method: "DELETE",
 		}).then(response => {
 			if (response.ok) {
-                let discounts = this.state.discounts;
+				let discounts = this.state.discounts;
 				delete discounts[id];
 				this.setState(
-					{ ...this.state,
+					{
+						...this.state,
 						displayMessage: true,
 						message: "Code: " + id + " is succesvol verwijderd!",
-                        discounts: discounts,
-                        loaded: true
+						discounts: discounts,
+						loaded: true,
 					},
 					this.messageShowCallback,
 				);
 			} else {
 				this.setState(
-					{ ...this.state, message: "Oopsie doopsie, something went wrong....", loaded: true, displayMessage: true },
+					{
+						...this.state,
+						message: "Oopsie doopsie, something went wrong....",
+						loaded: true,
+						displayMessage: true,
+					},
 					this.messageShowCallback,
 				);
 			}
@@ -91,28 +97,28 @@ export class AllDiscounts extends React.Component {
 	};
 
 	messageShowCallback = () => {
-        setTimeout(() => {
-            this.setState({...this.state, message: "", displayMessage: false});
-        }, 3000);
-    };
+		setTimeout(() => {
+			this.setState({ ...this.state, message: "", displayMessage: false });
+		}, 3000);
+	};
 
 	listDiscountItems = () => {
 		let items = [];
 		for (var key in this.state.discounts) {
 			var value = this.state.discounts[key];
 			items.push(value);
-        }
-        
-        if(Object.keys(this.state.discounts).length === 0 && this.state.discounts.constructor === Object) {
-            return (<p>Er zijn op dit moment geen kortingscodes actief.</p>);
-        }
+		}
+
+		if (Object.keys(this.state.discounts).length === 0 && this.state.discounts.constructor === Object) {
+			return <p>Er zijn op dit moment geen kortingscodes actief.</p>;
+		}
 		return items.map(p => (
 			<List.Item key={p.code}>
 				<List.Content floated="right">
 					<Popup
 						trigger={
 							<Button color="red" size="tiny" animated>
-								<Button.Content visible content="Delete" />
+								<Button.Content visible content="Verwijderen" />
 								<Button.Content hidden>
 									<Icon name="delete" />
 								</Button.Content>
@@ -124,8 +130,8 @@ export class AllDiscounts extends React.Component {
 							<Grid.Column textAlign="center">
 								<Header as="h4" content="Weet u het zeker?" />
 								<Button
-									content="Verwijder"
-									color="green"
+									content="Ja"
+									color="red"
 									onClick={this.handleDeleteProduct.bind(this, p.code)}
 								/>
 							</Grid.Column>
@@ -133,19 +139,10 @@ export class AllDiscounts extends React.Component {
 					</Popup>
 				</List.Content>
 
-				<List.Content floated="right">
-					<Link to={"/admin-editdiscount/" + p.code}>
-						<Button animated size="tiny">
-							<Button.Content visible content="Edit" />
-							<Button.Content hidden>
-								<Icon name="edit outline" />
-							</Button.Content>
-						</Button>
-					</Link>
-				</List.Content>
-
 				<List.Content verticalAlign="bottom">
-					<List.Header>{p.code}</List.Header>
+					<Header as="h4">
+						<Link to={"/admin-editdiscount/" + p.code}>{p.code}</Link>
+					</Header>
 					{p.procent ? <div>{p.amount} procent korting </div> : <div>{p.amount} euro korting </div>}
 				</List.Content>
 			</List.Item>
@@ -153,14 +150,10 @@ export class AllDiscounts extends React.Component {
 	};
 
 	render() {
-        let message;
-        if(this.state.displayMessage) {
-            message = <Message
-            header='Notificatie'
-            content={this.state.message}
-            positive
-          />
-        }
+		let message;
+		if (this.state.displayMessage) {
+			message = <Message header="Notificatie" content={this.state.message} positive />;
+		}
 		if (!this.state.loaded) {
 			return (
 				<Dimmer active inverted>
@@ -170,7 +163,7 @@ export class AllDiscounts extends React.Component {
 		} else
 			return (
 				<Container>
-                {message}
+					{message}
 					<Header as="h1">Kortingscodes</Header>
 					<Segment>
 						<Grid columns={1}>

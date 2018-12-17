@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Project_Bier.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Project_Bier.Models.ViewModels;
 
 namespace Project_Bier.Repository
 {
@@ -41,6 +42,29 @@ namespace Project_Bier.Repository
         {
             return context.Order
                 .FirstOrDefault(p => p.Guid == id);
+        }
+
+        /// <summary>
+        /// Returns the order of a certain user.null
+        /// Only returns guid, final price and the products by using projection
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<OrderOverviewModel> GetAllUserOrders(Guid id)
+        {
+            var userOrders = 
+                from order in context.Order
+                where order.AssociatedUserGuid == id
+                select new OrderOverviewModel
+                {
+                    OrderNumber = order.Guid.ToString(),
+                    FinalPrice = order.FinalPrice,
+                    OrderedProducts = order.OrderedProducts.ToList(),
+                    Date = order.OrderCreated,
+                    OrderStatus = order.OrderStatus
+                };
+
+            return userOrders.ToList();
         }
 
         public IEnumerable<Order> ListAll()
