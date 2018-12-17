@@ -26,7 +26,7 @@ namespace Project_Bier.Repository
         public void AddProduct(Beer product)
         {
             bool beerExists = context.Beers.Any(b => b.Id == product.Id);
-            if (beerExists)
+            if (!beerExists)
             {
                 context.Beers.Add(product);
                 context.SaveChanges();
@@ -74,30 +74,30 @@ namespace Project_Bier.Repository
             context.SaveChanges();
         }
 
-        public void UpdateProduct(Beer newProduct, string oldId)
+        public void UpdateProduct(Beer modifiedProduct, string oldId)
         {
-            if (oldId == newProduct.Id)
+            if (oldId == modifiedProduct.Id)
             {
-                Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == newProduct.Id);
+                Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == modifiedProduct.Id);
                 if (productToUpdate != null)
                 {
-                    productToUpdate.Name = newProduct.Name;
-                    productToUpdate.CategoryId = newProduct.CategoryId;
-                    productToUpdate.Price = newProduct.Price;
-                    productToUpdate.BrewerName = newProduct.BrewerName;
-                    productToUpdate.CountryName = newProduct.CountryName;
-                    productToUpdate.AlcoholPercentage = newProduct.AlcoholPercentage;
-                    productToUpdate.Content = newProduct.Content;
-                    productToUpdate.Url = newProduct.Url;
-                    productToUpdate.Description = newProduct.Description;
-
+                    productToUpdate.Name = modifiedProduct.Name;
+                    productToUpdate.CategoryId = modifiedProduct.CategoryId;
+                    productToUpdate.Price = modifiedProduct.Price;
+                    productToUpdate.BrewerName = modifiedProduct.BrewerName;
+                    productToUpdate.CountryName = modifiedProduct.CountryName;
+                    productToUpdate.AlcoholPercentage = modifiedProduct.AlcoholPercentage;
+                    productToUpdate.Content = modifiedProduct.Content;
+                    productToUpdate.Url = modifiedProduct.Url;
+                    productToUpdate.Description = modifiedProduct.Description;
                     context.SaveChanges();
                 }
             }
             else
             {
+                // If the id has been changed then we should add a new product
                 RemoveProduct(oldId);
-                AddProduct(newProduct);
+                AddProduct(modifiedProduct);
             }
         }
 
