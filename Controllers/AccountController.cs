@@ -146,23 +146,6 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
-        //TODO remove this duplicate method
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetAccountInfo(string id)
-        {
-            WebshopUser user = await userManager.FindByEmailAsync(id);
-            if (user != null)
-            {
-                ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
-                return Ok(new { address });
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAccountInformation()
