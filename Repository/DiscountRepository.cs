@@ -21,11 +21,10 @@ namespace Project_Bier.Repository
 
         public Discount CheckDiscount(String input)
         {
-            var rest = context.Discount
-                    .Where(b => b.Code == input)
-                    .FirstOrDefault();
-            
-            return rest;
+            return context.Discount
+                .Where(b => b.Code == input)
+                 .FirstOrDefault();
+
         }
 
         public void AddDiscount(Discount discount)
