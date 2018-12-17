@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Project_Bier.Models;
+using Project_Bier.Models.ViewModels;
 
 namespace Project_Bier.Repository
 {
@@ -32,6 +34,7 @@ namespace Project_Bier.Repository
 
         Dictionary<string, int> popularbeers();
 
+        List<OrderOverviewModel> GetAllUserOrders(Guid id);
 
     }
 }
