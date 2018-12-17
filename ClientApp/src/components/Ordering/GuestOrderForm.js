@@ -3,7 +3,7 @@ import { StepOrder } from "./StepOrder.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addGuestToStorage } from "../../actions/actionCreator";
-import { validateEmail, validateZipCode } from "../FieldValidators.js";
+import { validateEmail, validateZipCode } from "../../fieldValidators.js";
 import {
   Container,
   Button,
