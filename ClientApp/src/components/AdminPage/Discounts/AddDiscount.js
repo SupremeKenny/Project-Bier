@@ -20,7 +20,7 @@ export class AddDiscount extends React.Component {
 
     handleSubmit = () => {
         let bodyData = null;
-        if(this.state.procent == "Procent"){
+        if(this.state.procent === "Procent"){
             bodyData = JSON.stringify({
                 "Code":               this.state.code,
                 "Procent":            true,

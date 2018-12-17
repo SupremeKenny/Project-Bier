@@ -33,7 +33,7 @@ import { AllUsers } from "./components/AdminPage/Users/AllUsers.js";
 import { AddUser } from "./components/AdminPage/Users/AddUser.js";
 
 import { AllDiscounts } from "./components/AdminPage/Discounts/AllDiscount"
-import { EditDiscounts } from "./components/AdminPage/Discounts/EditDiscount"
+import { EditDiscount } from "./components/AdminPage/Discounts/EditDiscount"
 import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
 
 const persistedState = loadState();
@@ -157,7 +157,7 @@ export default class App extends Component {
             <AppRoute
               path="/admin-editDiscount/:id"
               layout={AdminPage}
-              component={EditDiscounts}
+              component={EditDiscount}
             />
             <AppRoute
               path="/admin-allDiscounts"

@@ -78,7 +78,6 @@ export class AllDiscounts extends React.Component{
                                     this.state.Discounts.map(p => (
                                         
                                         <List.Item key = {p.code} >
-                                        {console.log(p)}
                                             <List.Content floated='right'>
                                                 <Popup
                                                 trigger = {
@@ -109,7 +108,7 @@ export class AllDiscounts extends React.Component{
                                             </List.Content>
 
                                             <List.Content floated='right'>
-                                                <Link to={"/admin-editProduct/" + p.id}>
+                                                <Link to={"/admin-editdiscount/" + p.code}>
                                                     <Button animated size = 'tiny'>
                                                         <Button.Content visible content = 'Edit' color/>
                                                         <Button.Content hidden>
