@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCard, ProductCardPlaceholder } from "../ProductCards.js";
+import  ProductCard, { ProductCardPlaceholder } from "../ProductCards.js";
 import { BrandImage } from "./BrandImage";
 import { Container, CardGroup, Header, Divider } from "semantic-ui-react";
 

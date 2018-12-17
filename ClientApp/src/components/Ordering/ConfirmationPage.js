@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import { StepOrder } from "./StepOrder.js";
 import {
     Container,
-    Icon,
-    Divider,
-    Step
+    Divider
   } from "semantic-ui-react";
-
-const Space = () => " ";
 
 export default class Confirmation extends Component {
     render() {

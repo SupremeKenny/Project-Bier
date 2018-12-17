@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Button, Divider, Form, Message } from "semantic-ui-react";
+import { Button, Divider, Form } from "semantic-ui-react";
 import { validateEmail } from "../FieldValidators.js";
 
 export class LoginComponent extends Component {
@@ -91,8 +91,7 @@ export class LoginComponent extends Component {
   // Implement error message
   render() {
     const { email, password } = this.state;
-    let errorMessage = <Message />;
-
+    
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Input

@@ -54,12 +54,11 @@ export const addFavoritesItem = (id, name, price, url) => ({
   type: ADD_PRODUCT_FAVORITES,
   id,
   name,
-  price,
+  price, 
   url
 });
 
-export const deleteFavoritesItem = (id, price) => ({
+export const deleteFavoritesItem = id => ({
   type: DELETE_PRODUCT_FAVORITES,
-  id,
-  price
+  id
 });

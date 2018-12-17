@@ -1,9 +1,8 @@
 import React from "react";
-
-import { ProductCard, ProductCardPlaceholder } from "./ProductCards.js";
-import { Loader, CardGroup, Container, Dropdown, Icon, Grid, GridColumn, Button} from "semantic-ui-react";
-import { CategoryDict } from "./Categories.js";
-import InfiniteScroll from 'react-infinite-scroller';
+import { Link } from "react-router-dom";
+import ProductCard, { ProductCardPlaceholder } from "./ProductCards.js";
+import { CardGroup, Container, Breadcrumb, Divider } from "semantic-ui-react";
+import InfiniteScroll from "react-infinite-scroller";
 
 const MainContainer = ({ children }) => {
   const sx = {
@@ -14,14 +13,32 @@ const MainContainer = ({ children }) => {
 };
 
 const LoaderContainer = () => {
-  let numbers = [1, 2, 3, 4, 5, 6, 7, 8]
-  return <CardGroup itemsPerRow={4}>
-    {numbers.map(number => (
-      <ProductCardPlaceholder
-        key={number}
-      />
-    ))}</CardGroup>
-}
+  let numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+  return (
+    <CardGroup itemsPerRow={4}>
+      {numbers.map(number => (
+        <ProductCardPlaceholder key={number} />
+      ))}
+    </CardGroup>
+  );
+};
+
+const BreadcrumbTop = props => {
+  return (
+    <div>
+      <Breadcrumb>
+        <Link to="/">
+          <Breadcrumb.Section>Hoofdpagina</Breadcrumb.Section>{" "}
+        </Link>
+        <Breadcrumb.Divider icon="right angle" />
+        <Link to={"/category/" + props.url}>
+          <Breadcrumb.Section>{props.url}</Breadcrumb.Section>
+        </Link>
+      </Breadcrumb>
+      <Divider />
+    </div>
+  );
+};
 
 // const options = [
 //   { key: 'test1', text: 'test1', value: 'test1' },
@@ -31,12 +48,11 @@ const LoaderContainer = () => {
 //   { key: 'test5', text: 'test5', value: 'test5' },
 // ]
 
-// const filterStyle = { 
-//   // marginBottom: '0em', 
+// const filterStyle = {
+//   // marginBottom: '0em',
 //   marginTop: '1em',
-//   width: "70%"        
+//   width: "70%"
 //                     };
-
 
 // const FilterDropdown = props => (
 
@@ -51,7 +67,7 @@ const LoaderContainer = () => {
 //       <Dropdown placeholder= 'Brouwer' fluid selection options={options}/>
 //     </Grid.Column>
 //     <Grid.Column>
-//       <Dropdown placeholder= 'Herkomst' fluid selection options={options}/>  
+//       <Dropdown placeholder= 'Herkomst' fluid selection options={options}/>
 //     </Grid.Column>
 //   </Grid>
 //   )
@@ -76,16 +92,16 @@ const LoaderContainer = () => {
 //       <Grid.Column floated='right' width={4}>
 //         <span>
 //           Sorteer op: {' '}
-//           <Dropdown 
-//           inline 
-//           options={sortValues} 
-//           defaultValue={sortValues[0].key 
+//           <Dropdown
+//           inline
+//           options={sortValues}
+//           defaultValue={sortValues[0].key
 //           } />
 //         </span>
 //       </Grid.Column>
 //     </Grid>
 //   )
-  
+
 // }
 
 // const color = {
@@ -123,16 +139,22 @@ export class CategoryPage extends React.Component {
     this.setState({ products: [], currentIndex: 0, hasMoreItems: true });
   }
 
+  // check for ok and error
   loadItems() {
     fetch(
       "/product/fetchcategory?category=" +
-      CategoryDict[this.props.match.params.id] + "&index=" + this.state.currentIndex
+        this.props.match.params.id +
+        "&index=" +
+        this.state.currentIndex
     ).then(results => {
       results.json().then(data => {
         var newIndex = this.state.currentIndex + 1;
         var hasMore = !(newIndex === data.totalCollections + 1);
-        console.log(hasMore);
-        this.setState({ products: this.state.products.concat(data.items), currentIndex: newIndex, hasMoreItems: hasMore })
+        this.setState({
+          products: this.state.products.concat(data.items),
+          currentIndex: newIndex,
+          hasMoreItems: hasMore
+        });
       });
     });
   }
@@ -153,15 +175,13 @@ export class CategoryPage extends React.Component {
   //   });
   // }
 
-  
-
   render() {
     return (
       <MainContainer>
-        <h1>{CategoryDict[this.props.match.params.id]} </h1>
+        <BreadcrumbTop url={this.props.match.params.id}/>
+        <h1>{this.props.match.params.id} </h1>
         {/* <FilterDropdown/> */}
         {/* <SortDropdown/> */}
-
 
         {/* <Grid>
           <Grid.Column floated='left' width={5}>
@@ -187,10 +207,9 @@ export class CategoryPage extends React.Component {
           hasMore={this.state.hasMoreItems}
           loader={<LoaderContainer />}
           useWindow={true}
-          threshold={400}
+          threshold={500}
         >
           <CardGroup itemsPerRow={4}>
-
             {this.state.products.map(item => (
               <ProductCard
                 url={item.url}
@@ -199,7 +218,8 @@ export class CategoryPage extends React.Component {
                 id={item.id}
                 key={item.id}
               />
-            ))}</CardGroup>
+            ))}
+          </CardGroup>
         </InfiniteScroll>
       </MainContainer>
     );

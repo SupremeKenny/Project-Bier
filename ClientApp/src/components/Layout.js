@@ -1,9 +1,10 @@
 import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { HeartButton } from "./ProductPage/HeartButton.js";
+import HeartButton from "./ProductPage/HeartButton.js";
 import { NavigationBar } from "./Navigation/NavigationBar.js";
 import { Footer } from "./Navigation/Footer.js";
+import UserDropdown from "./User/UserDropdown.js";
 
 import {
   Button,
@@ -11,9 +12,16 @@ import {
   Input,
   Image,
   Menu,
-  Label,
-  Dropdown
+  Label
 } from "semantic-ui-react";
+
+const LoginButton = () => {
+  return (
+    <Link to="/account/inloggen">
+      <Button color="green">Inloggen</Button>
+    </Link>
+  );
+}
 
 class DesktopContainer extends Component {
   constructor(props) {
@@ -28,24 +36,10 @@ class DesktopContainer extends Component {
     this.setState({ ...this.state, shouldSearch: true });
   };
 
-  // TODO
   render() {
-    let loginComponent;
+    let loginComponent = <LoginButton />;
     if (this.props.reduxState.login.loggedIn) {
-      loginComponent = (
-        <Dropdown text={"Welkom " + this.props.reduxState.login.userName} floating button className='icon' color="green">
-          <Dropdown.Menu >
-            <Dropdown.Item text="Account Overzicht" />
-            <Dropdown.Item text="Uitloggen" />
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    } else {
-      loginComponent = (
-        <Link to="/account/inloggen">
-          <Button color="green">Inloggen</Button>
-        </Link>
-      );
+      loginComponent = <UserDropdown />;
     }
 
     if (this.state.shouldSearch === true) {

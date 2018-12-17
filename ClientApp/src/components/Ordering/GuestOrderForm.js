@@ -65,7 +65,7 @@ class InputInfo extends Component {
   handleChange = (e, { name, value }) => {
     // If the zip or housenumber change we can no longer assume the fetched address is correct
     // Therefore we need to fetch it again
-    if (name == "zip" || name == "houseNumber") {
+    if (name === "zip" || name === "houseNumber") {
       this.setState({
         ...this.state,
         [name]: value,
@@ -140,8 +140,8 @@ class InputInfo extends Component {
       ) {
         // The address must not have changed and not be correct and fetched already
         if (
-          this.state.addressCorrect == false &&
-          this.state.addressFetched == false
+          this.state.addressCorrect === false &&
+          this.state.addressFetched === false
         ) {
           this.setState({ ...this.state, addressFetched: true }, () => {
             this.fetchPostcodeApi();
