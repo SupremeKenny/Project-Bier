@@ -37,6 +37,7 @@ import { EditDiscount } from "./components/AdminPage/Discounts/EditDiscount"
 import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
 
 import AccountOverview from "./components/User/AccountOverview.js";
+import { AppRoute } from "./AppRoute.js"
 
 const persistedState = loadState();
 const store = createStore(reducer, persistedState);
@@ -46,18 +47,6 @@ store.subscribe(
     saveState(store.getState());
   }),
   1000
-);
-
-//TODO if layout is set to null throw error
-const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => (
-      <Layout>
-        <Component {...props} />
-      </Layout>
-    )}
-  />
 );
 
 export default class App extends Component {
@@ -122,6 +111,16 @@ export default class App extends Component {
               path="/account/overzicht"
               component={AccountOverview}
               layout={Layout}
+            />
+
+            <AppRoute
+              path="/account/overzicht"
+              component={AccountOverview}
+              layout={Layout}
+            />
+
+             <AppRoute
+              path="/account/test"
             />
 
             {/* Admin Routes */}
