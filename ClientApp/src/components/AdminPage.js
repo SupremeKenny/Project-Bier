@@ -10,10 +10,10 @@ export class AdminPage extends React.Component
         return (
             <AdminLayout>
                 <Grid >
-                    <Grid.Column width={4}>
+                    <Grid.Column width={1}>
                         <NavMenu/>
                     </Grid.Column>
-                    <Grid.Column width={12}>
+                    <Grid.Column width={15}>
                         {this.props.children}
                     </Grid.Column>
                 </Grid>
