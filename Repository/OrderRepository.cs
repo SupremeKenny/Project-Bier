@@ -58,5 +58,25 @@ namespace Project_Bier.Repository
             throw new NotImplementedException();
         }
 
+        public decimal TurnOverLastWeek()
+        {
+            IEnumerable<Order> allItems = context.Order
+                        .Where(s => s.OrderCreated.AddDays(7) > DateTime.Now);
+            decimal totalpricelastweek = allItems.Sum(s => s.FinalPrice);
+
+            return totalpricelastweek;
+        }
+
+        public decimal TurnOverxWeeksago(int weeks)
+        {
+            IEnumerable<Order> allItems = context.Order
+                        .Where(s => s.OrderCreated.AddDays(7 + 7*weeks) > DateTime.Now)
+                        .Where(s => s.OrderCreated.AddDays(7*weeks) < DateTime.Now);
+            decimal totalpricelastweek = allItems.Sum(s => s.FinalPrice);
+
+            return totalpricelastweek;
+        }
+        
+
     }
 }

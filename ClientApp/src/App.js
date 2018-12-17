@@ -36,6 +36,10 @@ import { AllDiscounts } from "./components/AdminPage/Discounts/AllDiscount"
 import { EditDiscount } from "./components/AdminPage/Discounts/EditDiscount"
 import { AddDiscount } from "./components/AdminPage/Discounts/AddDiscount"
 
+import { Turnover } from "./components/AdminPage/Visualization/Turnover"
+import { Popularbeers } from "./components/AdminPage/Visualization/Popularbeers"
+import { Populardiscounts } from "./components/AdminPage/Visualization/Populardiscounts"
+
 import AccountOverview from "./components/User/AccountOverview.js";
 
 const persistedState = loadState();
@@ -176,6 +180,21 @@ export default class App extends Component {
               path="/admin-addDiscount"
               layout={AdminPage}
               component={AddDiscount}
+            />
+            <AppRoute
+              path="/admin-turnover"
+              layout={AdminPage}
+              component={Turnover}
+            />
+            <AppRoute
+              path="/admin-popularbeers"
+              layout={AdminPage}
+              component={Popularbeers}
+            />
+            <AppRoute
+              path="/admin-populardiscounts"
+              layout={AdminPage}
+              component={Populardiscounts}
             />
           </Switch>
         </div>

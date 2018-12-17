@@ -26,5 +26,10 @@ namespace Project_Bier.Repository
 
         IEnumerable<Order>  ListAll();
 
+        decimal TurnOverLastWeek();
+
+        decimal TurnOverxWeeksago(int weeks);
+
+
     }
 }

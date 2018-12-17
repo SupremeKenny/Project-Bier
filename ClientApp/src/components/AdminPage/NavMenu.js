@@ -43,13 +43,28 @@ export const NavMenu = () => {
             <Menu.Item>
                 Kortingscodes
                 <Menu.Menu>
-                    <Menu.Item name='addUser'>
+                    <Menu.Item name='addDiscount'>
                         <Link to="/admin-addDiscount">Toevoegen</Link>
                     </Menu.Item>
-                    <Menu.Item name='allUsers'>
+                    <Menu.Item name='AllDiscount'>
                         <Link to="/admin-allDiscounts">Alle Kortingscodes</Link>
                     </Menu.Item>
 
+                </Menu.Menu>
+            </Menu.Item>
+
+            <Menu.Item>
+                Statistieken
+                <Menu.Menu>
+                    <Menu.Item name='turnover'>
+                        <Link to="/admin-turnover">Omzet</Link>
+                    </Menu.Item>
+                    <Menu.Item name='popularbeers'>
+                        <Link to="/admin-popularbeers">Populaire biertjes</Link>
+                    </Menu.Item>
+                    <Menu.Item name='populardiscounts'>
+                        <Link to="/admin-populardiscount">Populaire Kortingscodes</Link>
+                    </Menu.Item>
                 </Menu.Menu>
             </Menu.Item>
 
