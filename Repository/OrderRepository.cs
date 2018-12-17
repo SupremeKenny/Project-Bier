@@ -43,6 +43,29 @@ namespace Project_Bier.Repository
                 .FirstOrDefault(p => p.Guid == id);
         }
 
+        /// <summary>
+        /// Returns the order of a certain user.null
+        /// Only returns guid, final price and the products by using projection
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IQueryable<object> GetAllUserOrders(Guid id)
+        {
+            var userOrders =
+                from order in context.Order
+                where order.AssociatedUserGuid == id
+                select new
+                {
+                    Guid = order.Guid,
+                    Price = order.FinalPrice,
+                    Products = order.OrderedProducts,
+                    Date = order.OrderCreated,
+                    Status = order.OrderStatus
+                };
+
+            return userOrders;
+        }
+
         public IEnumerable<Order> ListAll()
         {
             throw new NotImplementedException();
