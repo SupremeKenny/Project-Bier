@@ -6,8 +6,6 @@ using Project_Bier.Models;
 
 namespace Project_Bier.Models.ViewModels
 {
-    public class ViewModel { }
-
     public class RegisterViewModel
     {
         [EmailAddress]
@@ -15,6 +13,28 @@ namespace Project_Bier.Models.ViewModels
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string PostalCode { get; set; }
+        [Required]
+        public string StreetNumber { get; set; }
+        [Required]
+        public string StreetName { get; set; }
+        [Required]
+        public string CityName { get; set; }
+        [Required]
+        public string Country { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Province { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    public class UpdateInfoModel
+    {
         [Required]
         public string PostalCode { get; set; }
         [Required]

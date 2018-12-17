@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { validateEmail, validateZipCode } from "../../fieldValidators.js";
-import { Container, Button, Divider, Form, Header, Message, Icon, Image } from "semantic-ui-react";
+import {
+	validateEmail,
+	validateZipCode,
+	validateName,
+	validatePhoneNumber,
+	validateNum,
+} from "../../fieldValidators.js";
+import { fetchPostcodeApi } from "../../postcodeapi.js";
+import { Container, Button, Divider, Form, Message, Icon } from "semantic-ui-react";
 
-// TODO Stricter validation of house number and phone number
-// TODO: The fields of this and guestorder are pretty much the same, so find a way to not use duplicate
 export default class PersonalInfoOverview extends Component {
 	constructor(props) {
 		super(props);
@@ -26,7 +31,7 @@ export default class PersonalInfoOverview extends Component {
 				zip: false,
 				city: false,
 				phone: false,
-				email: false
+				email: false,
 			},
 
 			validationState: {},
@@ -35,17 +40,62 @@ export default class PersonalInfoOverview extends Component {
 			addressFetched: false,
 			addressCorrect: false,
 
-			formCompleted: false
+			formCompleted: false,
+
+			error: "Vul gelieve alle velden in als uw de gegevens wil aanpassen.",
 		};
 	}
 
 	componentDidMount() {
-		//this.validateForm();
+		this.validateForm();
 	}
 
 	componentDidUpdate() {
 		this.handleFieldComplete();
 	}
+
+	submitChange = () => {
+		fetch("account/UpdateAccountInformation", {
+			method: "PUT",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + this.props.token,
+			},
+			body: JSON.stringify({
+				PostalCode: this.state.zip,
+				StreetNumber: this.state.houseNumber,
+				StreetName: this.state.street,
+				CityName: this.state.city,
+				Country: "Nederland",
+				FirstName: this.state.name,
+				LastName: this.state.surname,
+				Province: this.state.province,
+				PhoneNumber: this.state.phone,
+			}),
+		})
+			.then(results => {
+				if (results.ok) {
+					this.setState({ ...this.state, formCompleted: true });
+				} else {
+					this.setState({
+						...this.state,
+						displayErrorForm: true,
+						error:
+							"Er is iets misgegaan tijdens het aanpassen van uw gegevens. Gelieve contact op te nemen met de klantenservice of probeer het later opnieuw.",
+					});
+				}
+			})
+			.catch(error => {
+				console.log(error);
+				this.setState({
+					...this.state,
+					displayErrorForm: true,
+					error:
+						"Er is iets misgegaan tijdens het aanpassen van uw gegevens. Gelieve contact op te nemen met de klantenservice of probeer het later opnieuw.",
+				});
+			});
+	};
 
 	/**
 	 * Change the state if a field changes. Called in OnChange in form
@@ -58,7 +108,7 @@ export default class PersonalInfoOverview extends Component {
 				...this.state,
 				[name]: value,
 				addressFetched: false,
-				addressCorrect: false
+				addressCorrect: false,
 			});
 		} else {
 			this.setState({ ...this.state, [name]: value });
@@ -66,7 +116,13 @@ export default class PersonalInfoOverview extends Component {
 	};
 
 	onSubmit = e => {
-		this.validateForm(this.handleSubmit);
+		this.setState({ ...this.state, focused: { ...this.state.focused, zip: true, houseNumber: true } }, () => {
+			if (this.state.addressCorrect === false && this.state.addressFetched === false) {
+				this.validateForm(this.handleFieldComplete(this.handleSubmit));
+			} else if (this.state.addressCorrect === true && this.state.addressFetched === true) {
+				this.validateForm(this.handleSubmit);
+			}
+		});
 	};
 
 	handleSubmit = evt => {
@@ -76,7 +132,7 @@ export default class PersonalInfoOverview extends Component {
 		}
 
 		if (validated) {
-			this.register();
+			this.submitChange();
 		} else {
 			let focusedNew = {};
 			for (var focused in this.state.focused) {
@@ -85,7 +141,7 @@ export default class PersonalInfoOverview extends Component {
 			this.setState({
 				...this.state,
 				displayErrorForm: true,
-				focused: focusedNew
+				focused: focusedNew,
 			});
 		}
 	};
@@ -101,7 +157,7 @@ export default class PersonalInfoOverview extends Component {
 	/**
 	 * Fetches additional fields if certain state is true
 	 */
-	handleFieldComplete() {
+	handleFieldComplete(callback) {
 		// Both fields should have been focused
 		if (this.state.focused["zip"] && this.state.focused["houseNumber"]) {
 			// Both fields should be correct
@@ -109,7 +165,7 @@ export default class PersonalInfoOverview extends Component {
 				// The address must not have changed and not be correct and fetched already
 				if (this.state.addressCorrect === false && this.state.addressFetched === false) {
 					this.setState({ ...this.state, addressFetched: true }, () => {
-						this.fetchPostcodeApi();
+						this.postcodeCall(callback);
 					});
 				}
 			}
@@ -124,41 +180,29 @@ export default class PersonalInfoOverview extends Component {
 
 	validateForm(callback) {
 		let fields = {
-			name: this.state.name.length > 0,
-			surname: this.state.surname.length > 0,
-			houseNumber: this.state.houseNumber.length > 0,
+			name: this.state.name.length > 0 && validateName(this.state.name),
+			surname: this.state.surname.length > 0 && validateName(this.state.surname),
+			houseNumber: this.state.houseNumber.length > 0 && validateNum(this.state.houseNumber),
 			zip: validateZipCode(this.state.zip),
-			phone: this.state.phone.length > 0,
+			phone: this.state.phone.length > 0 && validatePhoneNumber(this.state.phone),
 			email: validateEmail(this.state.email),
-			password: this.state.password.length >= 8
 		};
 		this.setState({ ...this.state, validationState: fields }, callback);
 	}
 
-	// TODO: Implement catch
-	// TODO make this a seperate function
-	fetchPostcodeApi() {
-		fetch("account/fetchAddress", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				Zip: this.state.zip,
-				Number: this.state.houseNumber
-			})
-		}).then(results => {
-			if (results.ok) {
-				results.json().then(data =>
-					this.setState({
+	postcodeCall = callback => {
+		fetchPostcodeApi(this.state.zip, this.state.houseNumber).then(data => {
+			if (typeof data !== undefined) {
+				this.setState(
+					{
 						...this.state,
 						street: data.response.street,
 						city: data.response.city,
 						province: data.response.province,
 						displayAdditional: true,
-						addressCorrect: true
-					})
+						addressCorrect: true,
+					},
+					callback,
 				);
 			} else {
 				this.setState({
@@ -169,25 +213,20 @@ export default class PersonalInfoOverview extends Component {
 					validationState: {
 						...this.validationState,
 						zip: false,
-						houseNumber: false
-					}
+						houseNumber: false,
+					},
 				});
 			}
 		});
-	}
+	};
 
 	render() {
-		const { name, surname, street, houseNumber, zip, city, phone, email, province } = this.state;
+		const { name, surname, street, houseNumber, zip, city, phone, province, error } = this.state;
 
 		let errorForm;
 		if (this.state.displayErrorForm) {
 			errorForm = (
-				<Message
-					error
-					style={{ marginTop: "1em" }}
-					header="Wij wijzen u op het volgende:"
-					content={this.state.error}
-				/>
+				<Message error style={{ marginTop: "1em" }} header="Wij wijzen u op het volgende:" content={error} />
 			);
 		} else errorForm = "";
 
@@ -265,7 +304,7 @@ export default class PersonalInfoOverview extends Component {
 									maxLength={5}
 								/>
 
-								<Form.Input label="Toevoeging" placeholder="a" maxLength={3} width={2} />
+								<Form.Input label="Toevoeging" placeholder="A" maxLength={3} width={2} />
 							</Form.Group>
 
 							{additionalFields}
@@ -284,26 +323,6 @@ export default class PersonalInfoOverview extends Component {
 								/>
 							</Form.Group>
 
-							<Header as="h4">Inloggegevens</Header>
-							<Form.Group>
-								<Form.Input
-									iconPosition="left"
-									required
-									width={6}
-									className={this.shouldMarkError("email")}
-									name="email"
-									label="E-mailadres"
-									placeholder="123@hotmail.com"
-									value={email}
-									onChange={this.handleChange}
-									onBlur={this.handleBlur("email")}
-								>
-									<Icon name="at" />
-									<input />
-								</Form.Input>
-							</Form.Group>
-
-							<Divider hidden />
 							<Divider />
 						</Form>
 					</Container>
@@ -318,33 +337,12 @@ export default class PersonalInfoOverview extends Component {
 			);
 		} else {
 			return (
-				<div>
-					<Message
-						positive
-						style={{ marginTop: "1em" }}
-						header="U bent succesvol geregistreerd"
-						content="U zal zodadelijk een bevestigingsmail ontvangen. Veel plezier met winkelen bij BeerBuddy."
-					/>
-
-					<Divider />
-
-					<Button floated="right" animated positive href="/account/inloggen">
-						<Button.Content visible>Inloggen</Button.Content>
-						<Button.Content hidden>
-							<Icon name="arrow right" />
-						</Button.Content>
-					</Button>
-
-					<Button floated="left" animated positive href="/">
-						<Button.Content visible>Terug naar winkel</Button.Content>
-						<Button.Content hidden>
-							<Icon name="arrow left" />
-						</Button.Content>
-					</Button>
-					<Container>
-						<Image src="anim.gif" size="large" />
-					</Container>
-				</div>
+				<Message
+					positive
+					style={{ marginTop: "1em" }}
+					header="U gegevens zijn aangepast"
+					content="Dankuwel voor het gebruiken van BeerBuddy. Uw aanpassing is verwerkt."
+				/>
 			);
 		}
 	}

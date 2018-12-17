@@ -140,12 +140,13 @@ namespace Project_Bier.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> ForgotPassword([FromBody] ViewModel model)
+        public Task<IActionResult> ForgotPassword()
         {
+            // TODO send mail with password reset link
             throw new NotImplementedException();
         }
 
-        //TODO Secure this with token
+        //TODO remove this duplicate method
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAccountInfo(string id)
@@ -170,7 +171,6 @@ namespace Project_Bier.Controllers
             WebshopUser user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-
                 ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
                 return Ok(new { address = address, email = user.Email, name = user.FirstName, lastName = user.LastName, phone = user.PhoneNumber });
             }
@@ -180,16 +180,49 @@ namespace Project_Bier.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> UpdateAccountInformation(string id)
+        public async Task<IActionResult> UpdateAccountInformation([FromBody] UpdateInfoModel model)
         {
-            return Ok();
-        }
+            if (ModelState.IsValid)
+            {
+                string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+                WebshopUser user = await userManager.FindByIdAsync(userId);
 
-        public Task<IActionResult> ResetPassword([FromBody] ViewModel model)
-        {
-            throw new NotImplementedException();
+                ShippingAddress address = addressRepository.GetByGuid(user.UserGuid);
+
+                // Only if the address changed make database transactions
+                if (model.PostalCode != user.ShippingAddresses.FirstOrDefault().PostalCode)
+                {
+                    ShippingAddress userAddress = new ShippingAddress
+                    {
+                        PostalCode = model.PostalCode,
+                        StreetNumber = model.StreetNumber,
+                        StreetName = model.StreetName,
+                        CityName = model.CityName,
+                        Country = model.Country,
+                        Province = model.Province,
+                        AssociatedUser = user.UserGuid
+                    };
+                    addressRepository.DeleteAddress(user.UserGuid);
+                    user.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
+                }
+
+                user.PhoneNumber = model.PhoneNumber;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else return BadRequest();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]

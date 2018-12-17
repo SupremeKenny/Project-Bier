@@ -29,7 +29,5 @@ function handleResponse(response) {
 }
 
 function handleNetworkError(error) {
-	throw {
-		msg: error.message
-	};
+	throw error;
 }
