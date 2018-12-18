@@ -54,7 +54,6 @@ class ShoppingCart extends Component {
     };
   }
 
-  // TODO handle not ok response and catch error
   handleDiscount = evt => {
     fetch("/order/SearchDiscount?input=" + evt.target.value).then(results => {
       if (!results.ok) {

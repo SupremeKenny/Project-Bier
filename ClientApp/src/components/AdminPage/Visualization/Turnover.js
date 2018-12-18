@@ -35,13 +35,6 @@ export class Turnover extends React.Component {
 
 
     render() {
-        // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        const {
-            omzethuidigeweek,
-            turnover1weekago,
-            turnover2weekago,
-            turnover3weekago,
-        } = this.state;
 
 
         if (!this.state.loaded) {

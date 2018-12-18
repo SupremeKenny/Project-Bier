@@ -46,7 +46,7 @@ export class Populardiscounts extends React.Component {
                     
                     {
                         Object.keys(this.state.populardiscounts).map((key, index) => ( 
-                            <p key={index}> {key} is {this.state.populardiscounts[key]} keer verkocht.</p> 
+                            <p key={index}> {key} is {this.state.populardiscounts[key]} keer gebruikt.</p> 
                             ))
                     }
                    
