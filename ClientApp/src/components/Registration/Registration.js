@@ -47,7 +47,7 @@ export default class Registration extends Component {
 
 			formCompleted: false,
 
-			error: "Om de bestelling correct te verwerken moet uw alle informatie in het formulier invullen.",
+			error: "Om de bestelling correct te verwerken, moet u alle benodigde informatie in het formulier invullen.",
 		};
 	}
 
@@ -245,7 +245,7 @@ export default class Registration extends Component {
 						<Message
 							info
 							style={{ marginTop: "1em" }}
-							header="Vul het formulier volledig in,"
+							header="Vul het formulier volledig in."
 							content="Vul uw gegevens in om te registreren bij BeerBuddy."
 						/>
 						<Divider hidden />

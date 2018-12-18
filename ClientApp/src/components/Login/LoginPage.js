@@ -37,7 +37,7 @@ class LoginPage extends Component {
       this.setState({
         ...this.state,
         content:
-          "Login is verlopen, voor alsjeblieft je wachtwoord in om verder te gaan."
+          "Login is verlopen, voer alsjeblieft je wachtwoord in om verder te gaan."
       });
     }
   }
