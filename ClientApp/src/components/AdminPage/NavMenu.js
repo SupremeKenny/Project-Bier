@@ -58,7 +58,7 @@ export const NavMenu = () => {
                         <Link to="/admin-popularbeers">Populaire biertjes</Link>
                     </Menu.Item>
                     <Menu.Item name='populardiscounts'>
-                        <Link to="/admin-populardiscount">Populaire Kortingscodes</Link>
+                        <Link to="/admin-populardiscounts">Populaire Kortingscodes</Link>
                     </Menu.Item>
                 </Menu.Menu>
             </Menu.Item>

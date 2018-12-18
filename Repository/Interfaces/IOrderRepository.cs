@@ -34,6 +34,8 @@ namespace Project_Bier.Repository
 
         Dictionary<string, int> popularbeers();
 
+        Dictionary<string, int> populardiscounts();
+
         List<OrderOverviewModel> GetAllUserOrders(Guid id);
 
     }

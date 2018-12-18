@@ -59,6 +59,18 @@ namespace Project_Bier.Controllers
                     popularbeers = temp
                     });
         }
+
+        [HttpGet]
+        public IActionResult FetchPopularDiscounts() 
+        {
+
+            var temp = OrderRepository.populardiscounts();
+
+            return new OkObjectResult(
+                new {
+                    populardiscounts = temp
+                    });
+        }
         
 
     }

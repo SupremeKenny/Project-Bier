@@ -119,6 +119,26 @@ namespace Project_Bier.Repository
             return popularbeers;
         }
         
+        public Dictionary<string, int> populardiscounts()
+        {
+            IEnumerable<Order> allItems = context.Order;
+            var ordereditems = allItems.GroupBy(item => item.CouponCode)
+                                        .Select(g => new {CouponCode = g.First().CouponCode, Count= g.Count()})
+                                        .OrderByDescending(iets => iets.Count)
+                                        .Take(10);
+
+
+            Dictionary<string, int> populardiscounts = new Dictionary<string, int>();
+
+            foreach (var result in ordereditems){
+                if(result.CouponCode != null && result.CouponCode != ""){
+                    populardiscounts.Add(result.CouponCode, result.Count);
+                }
+            }
+
+            return populardiscounts;
+        }
+        
 
     }
 }
