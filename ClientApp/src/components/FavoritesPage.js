@@ -60,7 +60,6 @@ class Favorites extends Component {
                       trigger={<Button content="Toevoegen" icon="cart" color="green" 
                       onClick={() => {
                         this.props.addCartItem(product.id, product.name, product.price, product.url);
-                        this.props.deleteFavoritesItem(product.id);
                       }} />}
                       content="Klik om het product toe te voegen aan jouw winkelwagen."
                     />
