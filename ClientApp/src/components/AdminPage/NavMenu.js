@@ -4,7 +4,7 @@ import { Menu, Sidebar } from "semantic-ui-react";
 
 export const NavMenu = () => {
 	return (
-		<Sidebar as={Menu} inverted vertical visible={true} width="wide" textAlign="left">
+		<Menu inverted vertical>
 			<Menu.Item name="Home">
 				<Link to="/admin">Home</Link>
 			</Menu.Item>
@@ -66,6 +66,6 @@ export const NavMenu = () => {
 			<Menu.Item name="accountSettings">
 				<Link to="/admin-accountSettings">Account Settings</Link>
 			</Menu.Item>
-		</Sidebar>
+		</Menu>
 	);
 };
