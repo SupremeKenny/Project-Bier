@@ -24,5 +24,14 @@ namespace Project_Bier.Repository
             return context.Addresses
                 .FirstOrDefault(p => p.AssociatedUser == guid);
         }
+
+        public void DeleteAddress(Guid guid)
+        {
+            ShippingAddress address = context.Addresses.FirstOrDefault(p => p.AssociatedUser == guid);
+            if (address != null)
+            {
+                context.Addresses.Remove(address);
+            }
+        }
     }
 }

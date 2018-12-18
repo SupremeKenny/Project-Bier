@@ -15,5 +15,6 @@ namespace Project_Bier.Repository
     public interface IAddressRepository
     {
         ShippingAddress GetByGuid(Guid guid);
+        void DeleteAddress(Guid guid);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Models;
+using Project_Bier.Models.ViewModels;
 using Project_Bier.Pagination;
 
 namespace Project_Bier.Repository
@@ -22,8 +23,6 @@ namespace Project_Bier.Repository
 
         void RemoveProduct(String guid);
 
-        void AddProducts(Product[] products);
-
         Product GetProductByGuid(String id);
 
         IEnumerable<Product> GetProductsByCategory(string category);
@@ -38,6 +37,13 @@ namespace Project_Bier.Repository
         IEnumerable<Product>  ListAll();
 
         IEnumerable<Product> GetRandomProducts(int count);
+
+        /// <summary>
+        /// Returns an overview view model based on a productOrder model
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        ProductOverviewModel GetOverviewModel(ProductOrder order);
 
         Page<Beer> Pagination (int page_index, int page_size);
 

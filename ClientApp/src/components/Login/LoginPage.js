@@ -68,17 +68,13 @@ class LoginPage extends Component {
                   </Grid.Column>
                   <Grid.Column>
                     <Header as="h3"> Nieuw bij BeerBuddy?</Header>
-                    <p>Maak binnen enkele minuten een nieuw account aan!</p>
-                    <Form onSubmit={this.handleSubmit}>
-                      <Form.Input
-                        placeholder="Emailadres"
-                        name="email"
-                        width={12}
-                      />
-                      <Button positive href="/account/registreren">
-                        Maak een account aan
-                      </Button>
-                    </Form>
+                    <p>
+                      Vul uw gegevens in en maak binnen enkele minuten een nieuw
+                      account aan!
+                    </p>
+                    <Button positive href="/account/registreren">
+                      Maak een account aan
+                    </Button>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>

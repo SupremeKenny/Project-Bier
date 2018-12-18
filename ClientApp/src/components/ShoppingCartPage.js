@@ -54,15 +54,13 @@ class ShoppingCart extends Component {
     };
   }
 
-  // TODO handle not ok response and catch error
   handleDiscount = evt => {
     fetch("/order/SearchDiscount?input=" + evt.target.value).then(results => {
       if (!results.ok) {
         this.setState({ discount: { procent: true, amount: 0 } });
         localStorage.setItem("Discount", null);
-      }
+      } else {
       results.json().then(data => {
-        console.log(data.discount);
         this.setState(
           {
             discount: {
@@ -70,10 +68,10 @@ class ShoppingCart extends Component {
               amount: data.discount.amount
             }
           },
-          () => console.log(this.state.discount)
         );
         localStorage.setItem("Discount", data.discount.code);
       });
+    }
     });
   };
 

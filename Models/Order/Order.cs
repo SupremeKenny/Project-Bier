@@ -6,7 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_Bier.Models
 {
-
+    public enum OrderStatus
+    {
+        Received = 0,
+        OnRoute = 1,
+        Delivered = 2
+    }
 
     public class Order
     {
@@ -14,6 +19,8 @@ namespace Project_Bier.Models
         public Guid Guid { get; set; }
         public bool Paid { get; set; }
         public bool Shipped { get; set; }
+
+        public OrderStatus OrderStatus { get; set; }
 
         public DateTime OrderCreated { get; set; }
         public DateTime OrderPaid { get; set; }

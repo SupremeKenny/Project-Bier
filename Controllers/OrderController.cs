@@ -8,7 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 //TODO Sent confirmation email after payment
 namespace Project_Bier.Controllers
@@ -51,6 +55,36 @@ namespace Project_Bier.Controllers
                 return NotFound();
             }
             return Json(new { order = order });
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetUserOrders()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            WebshopUser user = await UserManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                List<OrderOverviewModel> orders = OrderRepository.GetAllUserOrders(user.UserGuid);
+
+                // Can be done in subquery in repository but this also works
+                foreach (OrderOverviewModel order in orders)
+                {
+                    order.Products = new List<ProductOverviewModel>();
+                    foreach (ProductOrder productOrder in order.OrderedProducts)
+                    {
+                        order.Products.Add(ProductRepository.GetOverviewModel(productOrder));
+                    }
+                    // Set the null to erase duplicate data
+                    order.OrderedProducts = null;
+                }
+
+                return Ok(new { orders });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -139,6 +173,7 @@ namespace Project_Bier.Controllers
         }
 
         // TODO validate this api route with token
+        // TODO add discount for logged in user
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] OrderUserViewModel model)
         {
@@ -158,11 +193,13 @@ namespace Project_Bier.Controllers
                         Shipped = false,
                         OrderCreated = DateTime.Now,
                         TotalPrice = totalPriceOrder,
+                        FinalPrice = totalPriceOrder,
                         CouponCode = model.Coupon,
                         OrderedProducts = productOrders,
                         AssociatedUserGuid = user.UserGuid,
                         OrderedFromGuestAccount = false,
-                        EmailConfirmationSent = false
+                        EmailConfirmationSent = false,
+                        OrderStatus = OrderStatus.Received
                     };
 
 

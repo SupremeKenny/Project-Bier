@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Project_Bier.Pagination;
 using Microsoft.AspNetCore.Mvc;
+using Project_Bier.Models.ViewModels;
 
 namespace Project_Bier.Repository
 {
@@ -24,27 +25,12 @@ namespace Project_Bier.Repository
 
         public void AddProduct(Beer product)
         {
-            // throw new NotImplementedException();
-            try
+            bool beerExists = context.Beers.Any(b => b.Id == product.Id);
+            if (!beerExists)
             {
-                int beerExists = context.Beers.Count(b => b.Id == product.Id);
-
-                if (beerExists <= 0)
-                {
-                    context.Beers.Add(product);
-                    context.SaveChanges();
-                }
+                context.Beers.Add(product);
+                context.SaveChanges();
             }
-            catch (System.Exception)
-            {
-                
-                throw;
-            }
-        }
-
-        public void AddProducts(Product[] products)
-        {
-            throw new NotImplementedException();
         }
 
         public Product GetProductByGuid(String id)
@@ -61,8 +47,9 @@ namespace Project_Bier.Repository
             IEnumerable<Product> actualItems = allItems
                 .Skip(index * ProductRepository.LoadSize)
                 .Take(ProductRepository.LoadSize);
-            
-            return new ItemCollection<Product>(){
+
+            return new ItemCollection<Product>()
+            {
                 Index = index,
                 Items = actualItems,
                 TotalCollections = totalCollections
@@ -77,71 +64,64 @@ namespace Project_Bier.Repository
         public IEnumerable<Product> ListAll()
         {
             return context.Beers
-            .Select (p => p);
+            .Select(p => p);
         }
 
         public void RemoveProduct(String guid)
         {
-            try
-            {
-                var deleteProduct = context.Beers.Find(guid);
-                context.Beers.Remove(deleteProduct);
-                context.SaveChanges();
-
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            var deleteProduct = context.Beers.Find(guid);
+            context.Beers.Remove(deleteProduct);
+            context.SaveChanges();
         }
 
-        public void UpdateProduct(Beer newProduct, string oldId)
+        public void UpdateProduct(Beer modifiedProduct, string oldId)
         {
-            try
+            if (oldId == modifiedProduct.Id)
             {
-                if (oldId == newProduct.Id)
+                Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == modifiedProduct.Id);
+                if (productToUpdate != null)
                 {
-                    Beer productToUpdate = context.Beers.FirstOrDefault(p => p.Id == newProduct.Id);
-                    if (productToUpdate != null)
-                    {
-                        productToUpdate.Name = newProduct.Name;
-                        productToUpdate.CategoryId = newProduct.CategoryId;
-                        productToUpdate.Price = newProduct.Price;
-                        productToUpdate.BrewerName = newProduct.BrewerName;
-                        productToUpdate.CountryName = newProduct.CountryName;
-                        productToUpdate.AlcoholPercentage = newProduct.AlcoholPercentage;
-                        productToUpdate.Content = newProduct.Content;
-                        productToUpdate.Url = newProduct.Url;
-                        productToUpdate.Description = newProduct.Description;
-                        
-                        context.SaveChanges();
-                    }
+                    productToUpdate.Name = modifiedProduct.Name;
+                    productToUpdate.CategoryId = modifiedProduct.CategoryId;
+                    productToUpdate.Price = modifiedProduct.Price;
+                    productToUpdate.BrewerName = modifiedProduct.BrewerName;
+                    productToUpdate.CountryName = modifiedProduct.CountryName;
+                    productToUpdate.AlcoholPercentage = modifiedProduct.AlcoholPercentage;
+                    productToUpdate.Content = modifiedProduct.Content;
+                    productToUpdate.Url = modifiedProduct.Url;
+                    productToUpdate.Description = modifiedProduct.Description;
+                    context.SaveChanges();
                 }
-                else {
-                    RemoveProduct(oldId);
-                    AddProduct(newProduct);
-                }
-
             }
-            catch (System.Exception)
+            else
             {
-                
-                throw;
+                // If the id has been changed then we should add a new product
+                RemoveProduct(oldId);
+                AddProduct(modifiedProduct);
             }
-            // throw new NotImplementedException();
         }
 
         public IEnumerable<Product> GetRandomProducts(int count)
         {
-            return context.Beers
-            .OrderBy(x => Guid.NewGuid()).Take(count);
+            return context.Beers.OrderBy(x => Guid.NewGuid()).Take(count);
         }
 
-        public Page<Beer> Pagination (int page_index, int page_size)
+        public Page<Beer> Pagination(int page_index, int page_size)
         {
             Page<Beer> paginationResult = context.Beers.GetPages(page_index, page_size, m => m.Name);
-
             return paginationResult;
+        }
+
+        public ProductOverviewModel GetOverviewModel(ProductOrder order)
+        {
+            Product product = GetProductByGuid(order.ProductId);
+            return new ProductOverviewModel
+            {
+                Name = product.Name,
+                Id = product.Id,
+                Url = product.Url,
+                Count = order.Count
+            };
         }
     }
 }
