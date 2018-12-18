@@ -127,7 +127,7 @@ class Overview extends Component {
 									
 									<Divider hidden />
 									<Header as="h2">Bestel gegevens</Header>
-									<p> Hier komt een Lijstje met je producten</p>
+									<p> Hier komt een lijstje met je producten</p>
 								</Grid.Column>
 							</Grid.Row>
 						</Grid>

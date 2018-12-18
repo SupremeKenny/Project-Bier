@@ -54,7 +54,6 @@ class ShoppingCart extends Component {
     };
   }
 
-  // TODO handle not ok response and catch error
   handleDiscount = evt => {
     fetch("/order/SearchDiscount?input=" + evt.target.value).then(results => {
       if (!results.ok) {
@@ -110,14 +109,10 @@ class ShoppingCart extends Component {
                     </Grid.Column>
                     <Grid.Column width={4}>{product.name}</Grid.Column>
                     <Grid.Column width={2}>Prijs: €{product.price}</Grid.Column>
-                    <Grid.Column width={4}>
-                      <div className="ui right labeled input small">
-                        <input
-                          type="text"
-                          id="txtNum"
-                          value={product.count}
-                          readOnly
-                        />
+                    <Grid.Column width={2}>Aantal: {product.count}</Grid.Column>
+                    <Grid.Column width={2}>
+                      
+                        
                         <div className="ui mini vertical buttons">
                           <button
                             className="ui icon button"
@@ -146,7 +141,6 @@ class ShoppingCart extends Component {
                             <i className="down chevron icon" />
                           </button>
                         </div>
-                      </div>
                     </Grid.Column>
                     <Grid.Column width={2}>
                       <Button

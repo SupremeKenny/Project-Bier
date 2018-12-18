@@ -328,7 +328,7 @@ export default class PersonalInfoOverview extends Component {
 					</Container>
 
 					<Button floated="right" animated positive onClick={this.onSubmit}>
-						<Button.Content visible>Gegegevens aanpassen</Button.Content>
+						<Button.Content visible>Gegevens aanpassen</Button.Content>
 						<Button.Content hidden>
 							<Icon name="check" />
 						</Button.Content>
@@ -340,7 +340,7 @@ export default class PersonalInfoOverview extends Component {
 				<Message
 					positive
 					style={{ marginTop: "1em" }}
-					header="U gegevens zijn aangepast"
+					header="Uw gegevens zijn aangepast"
 					content="Dankuwel voor het gebruiken van BeerBuddy. Uw aanpassing is verwerkt."
 				/>
 			);

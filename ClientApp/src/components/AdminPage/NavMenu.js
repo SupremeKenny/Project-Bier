@@ -4,7 +4,7 @@ import { Menu, Sidebar } from "semantic-ui-react";
 
 export const NavMenu = () => {
 	return (
-		<Sidebar as={Menu} inverted vertical visible={true} width="wide" textAlign="left">
+		<Menu inverted vertical>
 			<Menu.Item name="Home">
 				<Link to="/admin">Home</Link>
 			</Menu.Item>
@@ -36,20 +36,36 @@ export const NavMenu = () => {
 				</Menu.Menu>
 			</Menu.Item>
 			<Menu.Item>
-				Kortingscodes
-				<Menu.Menu>
-					<Menu.Item name="allUsers">
-						<Link to="/admin-allDiscounts">Alle Kortingscodes</Link>
-					</Menu.Item>
-					<Menu.Item name="addUser">
-						<Link to="/admin-addDiscount">Toevoegen</Link>
-					</Menu.Item>
-				</Menu.Menu>
-			</Menu.Item>
+                Kortingscodes
+                <Menu.Menu>
+                    <Menu.Item name='addDiscount'>
+                        <Link to="/admin-addDiscount">Toevoegen</Link>
+                    </Menu.Item>
+                    <Menu.Item name='AllDiscount'>
+                        <Link to="/admin-allDiscounts">Alle Kortingscodes</Link>
+                    </Menu.Item>
+
+                </Menu.Menu>
+            </Menu.Item>
+
+            <Menu.Item>
+                Statistieken
+                <Menu.Menu>
+                    <Menu.Item name='turnover'>
+                        <Link to="/admin-turnover">Omzet</Link>
+                    </Menu.Item>
+                    <Menu.Item name='popularbeers'>
+                        <Link to="/admin-popularbeers">Populaire biertjes</Link>
+                    </Menu.Item>
+                    <Menu.Item name='populardiscounts'>
+                        <Link to="/admin-populardiscounts">Populaire Kortingscodes</Link>
+                    </Menu.Item>
+                </Menu.Menu>
+            </Menu.Item>
 
 			<Menu.Item name="accountSettings">
 				<Link to="/admin-accountSettings">Account Settings</Link>
 			</Menu.Item>
-		</Sidebar>
+		</Menu>
 	);
 };
