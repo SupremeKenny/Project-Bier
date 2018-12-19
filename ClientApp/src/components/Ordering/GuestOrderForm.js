@@ -230,7 +230,7 @@ class InputInfo extends Component {
           error
           style={{ marginTop: "1em" }}
           header="Vul het formulier volledig in,"
-          content="Om de bestelling correct te verwerken moet uw alle informatie in het formulier invullen."
+          content="Om de bestelling correct te verwerken, moet uw alle informatie in het formulier invullen."
         />
       );
     } else errorForm = "";

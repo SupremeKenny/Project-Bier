@@ -21,7 +21,7 @@ export const SearchProduct = () => {
               <Grid.Column>
                 <Header icon>
                   <Icon name='beer' />
-                  Nieuw Biertje toevoegen
+                  Nieuw biertje toevoegen
                 </Header>
                 <p>
                   <Link to="/admin-addProduct">
