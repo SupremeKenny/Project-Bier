@@ -55,6 +55,7 @@ namespace Project_Bier.Repository
             var userOrders = 
                 from order in context.Order
                 where order.AssociatedUserGuid == id
+                orderby order.OrderCreated descending
                 select new OrderOverviewModel
                 {
                     OrderNumber = order.Guid.ToString(),
@@ -62,7 +63,7 @@ namespace Project_Bier.Repository
                     OrderedProducts = order.OrderedProducts.ToList(),
                     Date = order.OrderCreated,
                     OrderStatus = order.OrderStatus
-                };
+                }; 
 
             return userOrders.ToList();
         }
