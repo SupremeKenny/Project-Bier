@@ -158,7 +158,7 @@ class ShoppingCart extends Component {
                     </Grid.Column>
                     <Grid.Column width={2}>
                       Totaal: €
-                      {Math.round(product.count * product.price * 100) / 100}
+                      {parseFloat(Math.round(product.count * product.price * 100) / 100).toFixed(2)}
                     </Grid.Column>
                   </Grid.Row>
                 ))}
@@ -182,19 +182,19 @@ class ShoppingCart extends Component {
               <h3>
                 <h3>
                   SubTotaal: €{" "}
-                  {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
+                  {parseFloat(Math.round(this.props.shoppingcart.totalPrice * 100) / 100).toFixed(2)}
                 </h3>
                 {this.state.discount.procent === true ? (
                   <div>
                     <h3>Korting: {this.state.discount.amount} % </h3>
                     <h3>
                       Totaal: €{" "}
-                      {Math.round(
+                      {parseFloat(Math.round(
                         (this.props.shoppingcart.totalPrice -
                           (this.props.shoppingcart.totalPrice / 100) *
                             this.state.discount.amount) *
                           100
-                      ) / 100}
+                      ) / 100).toFixed(2)}
                     </h3>
                   </div>
                 ) : (
@@ -204,13 +204,13 @@ class ShoppingCart extends Component {
 
                     <h3>
                       Totaal: €{" "}
-                      {this.handleTotal(
+                      {parseFloat(this.handleTotal(
                         Math.round(
                           (this.props.shoppingcart.totalPrice -
                             this.state.discount.amount) *
                             100
                         ) / 100
-                      )}
+                      )).toFixed(2)}
                     </h3>
                   </div>
                 )}
@@ -218,7 +218,7 @@ class ShoppingCart extends Component {
             ) : (
               <h3>
                 Totaal: €{" "}
-                {Math.round(this.props.shoppingcart.totalPrice * 100) / 100}
+                {parseFloat(Math.round(this.props.shoppingcart.totalPrice * 100) / 100).toFixed(2)}
               </h3>
             )}
           </Container>
