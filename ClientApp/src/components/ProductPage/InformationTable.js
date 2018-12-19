@@ -20,7 +20,7 @@ export const ProductInfoTable = props => {
                 <Header.Content>Flesinhoud</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>{props.content}</Table.Cell>
+            <Table.Cell>{props.content} cl</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
@@ -28,7 +28,7 @@ export const ProductInfoTable = props => {
                 <Header.Content>Alcoholpercentage</Header.Content>
               </Header>
             </Table.Cell>
-            <Table.Cell>{props.percentage}</Table.Cell>
+            <Table.Cell>{props.percentage} %</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>

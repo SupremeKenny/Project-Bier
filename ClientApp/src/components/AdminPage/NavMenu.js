@@ -12,14 +12,14 @@ export const NavMenu = () => {
 			<Menu.Item>
 				Producten
 				<Menu.Menu>
-					<Menu.Item name="allProducts">
-						<Link to="/admin-allProducts">Alle Producten</Link>
-					</Menu.Item>
 					<Menu.Item name="searchProduct">
 						<Link to="/admin-searchProduct">Zoeken</Link>
 					</Menu.Item>
 					<Menu.Item name="addProduct">
 						<Link to="/admin-addProduct">Toevoegen</Link>
+					</Menu.Item>
+					<Menu.Item name="allProducts">
+						<Link to="/admin-allProducts">Alle Producten</Link>
 					</Menu.Item>
 				</Menu.Menu>
 			</Menu.Item>

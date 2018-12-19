@@ -1,5 +1,17 @@
 import React from "react";
-import { Header, Segment, Form, TextArea, Select, Container, Loader, Divider, Button, Icon } from "semantic-ui-react";
+import { 
+	Header, 
+	Segment, 
+	Form, 
+	TextArea, 
+	Select, 
+	Container, 
+	Loader,
+	Dimmer,
+	Divider, 
+	Button, 
+	Icon 
+} from "semantic-ui-react";
 
 export class EditProducts extends React.Component {
 	constructor() {
@@ -19,7 +31,8 @@ export class EditProducts extends React.Component {
 			product: {},
 			loaded: false,
 
-			shouldDisplayMessage: false,
+			// shouldDisplayMessage: false,
+			check: false
 		};
 	}
 
@@ -45,6 +58,14 @@ export class EditProducts extends React.Component {
 	}
 
 	handleChange = (e, { name, value }) => this.setState({ [name]: value });
+	toggle = () => this.setState({ check: !this.state.check })
+    validate = () => {
+        if (this.state.check){
+			this.setState({loaded: false})
+            this.handleSubmit()
+        }
+        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+    }
 
 	handleSubmit = () => {
 		let bodyData = JSON.stringify({
@@ -61,7 +82,7 @@ export class EditProducts extends React.Component {
 		});
 
 		if (this.state.id !== "" && this.state.name !== "" && this.state.categoryId !== "" && this.state.price !== "") {
-			console.log("Uitgevoerd"),
+			console.log("Uitgevoerd")
 				fetch("admin/Update/" + this.props.match.params.id, {
 					headers: {
 						Accept: "application/json",
@@ -69,31 +90,43 @@ export class EditProducts extends React.Component {
 					},
 					method: "Put",
 					body: bodyData,
+				}).then(response =>{
+					if (response.ok) {
+						alert("Product is succesvol aangepast.");
+					} 
+					else alert("Error! Product is niet aangepast.")
+					this.setState({ check: false , loaded: true});
+					
 				});
 		} else console.log("Verplichte velden leeg");
 	};
 
 	render() {
-		const {
-			id,
-			name,
-			categoryId,
-			price,
-			brewerName,
-			countryName,
-			alcoholPercentage,
-			content,
-			url,
-			description,
-		} = this.state;
+		// const {
+		// 	id,
+		// 	name,
+		// 	categoryId,
+		// 	price,
+		// 	brewerName,
+		// 	countryName,
+		// 	alcoholPercentage,
+		// 	content,
+		// 	url,
+		// 	description,
+		// 	check
+		// } = this.state;
 
 		if (!this.state.loaded) {
-			return <Loader />;
+			return(
+				<Dimmer active inverted>
+					<Loader size="large">Loading</Loader>
+				</Dimmer>
+			);
 		} else
 			return (
 				<Container>
 					<div>
-                    <Button animated floated="right" animated href="/admin-AllProducts" color="blue">
+                    <Button animated floated="right" href="/admin-AllProducts" color="blue">
 							<Button.Content visible>Terug naar overzicht</Button.Content>
 							<Button.Content hidden>
 								<Icon name="arrow left" />
@@ -104,7 +137,7 @@ export class EditProducts extends React.Component {
 					</div>
 					<Divider />
 					<Segment>
-						<Form onSubmit={this.handleSubmit} id="myForm">
+						<Form onSubmit={this.validate} id="myForm">
 							<Form.Group unstackable widths={2}>
 								<Form.Input
 									label="Product ID (url)"
@@ -174,6 +207,9 @@ export class EditProducts extends React.Component {
 									name="alcoholPercentage"
 									value={this.state.alcoholPercentage}
 									onChange={this.handleChange}
+									type='number'
+                                	step="0.01"
+                                	min="0.00"
 									required
 								/>
 								<Form.Input
@@ -206,12 +242,18 @@ export class EditProducts extends React.Component {
 								required
 							/>
 
-							<Form.Checkbox label="Alle gegevens zijn gecontroleerd" />
-							<Form.Button content="Aanpassen" color="teal" />
+							<Form.Checkbox 
+                            label='Alle gegevens zijn gecontroleerd'
+                            value = {this.check}
+                            onChange = {this.toggle}
+                            required
+							toggle
+                            />
+							<Form.Button content="Aanpassen" color="blue" />
 						</Form>
 					</Segment>
 
-					<Segment>
+					{/* <Segment>
 						<div>
 							<Header as="h3" content="JSON Request body" />
 							<pre>
@@ -227,13 +269,14 @@ export class EditProducts extends React.Component {
 										content,
 										url,
 										description,
+										check
 									},
 									null,
 									2,
 								)}
 							</pre>
 						</div>
-					</Segment>
+					</Segment> */}
 				</Container>
 			);
 	}
