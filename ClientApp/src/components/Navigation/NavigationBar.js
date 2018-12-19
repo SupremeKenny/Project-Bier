@@ -21,7 +21,7 @@ export const NavigationBar = props => {
                 <Link to="/">
                     <Menu.Item link style={menuFontColor}>
                         Hoofdpagina
-                </Menu.Item>
+                    </Menu.Item>
                 </Link>
 
                 <Dropdown item text='Categorieën' style={menuFontColor} >
@@ -95,6 +95,11 @@ export const NavigationBar = props => {
                         </Grid>
                     </Dropdown.Menu>
                 </Dropdown>
+                <Link to="/admin">
+                    <Menu.Item link style={menuFontColor}>
+                        Admin
+                    </Menu.Item>
+                </Link>
             </Container>
         </Menu>
     );
