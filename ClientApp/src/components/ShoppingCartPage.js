@@ -90,7 +90,7 @@ class ShoppingCart extends Component {
           <Divider hidden />
           <BreadcrumbTop />
           <Divider />
-          <h1>Mijn Winkelwagen</h1>
+          <h1>Winkelwagentje</h1>
           <Divider hidden />
           <Divider />
 
@@ -164,7 +164,7 @@ class ShoppingCart extends Component {
                 ))}
               </Grid>
             ) : (
-              <div>Je winkelwagen is leeg</div>
+              <div>Je winkelwagentje is leeg</div>
             )}
           </div>
           <Divider />
