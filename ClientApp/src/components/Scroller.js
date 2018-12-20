@@ -7,7 +7,7 @@ export default class Scroller extends React.Component {
 		return (
 			<ScrollUpButton ContainerClassName='AnyClassForContainer' TransitionClassName='AnyClassForTransition'  ShowAtPosition={1200}>
 				<Button animated color='blue'>
-					<Button.Content visible>Terugn aar boven</Button.Content>
+					<Button.Content visible>Terug naar boven</Button.Content>
 					<Button.Content hidden>
 						<Icon name='angle double up' />
 					</Button.Content>
