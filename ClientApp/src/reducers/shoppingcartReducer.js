@@ -39,6 +39,7 @@ const shoppingcart = (state = loadState(), action) => {
 			count: state.count + 1,
 			products: state.products,
 			totalPrice: state.totalPrice + parseFloat(action.price),
+			discount: state.discount
 		});
 
 	case 'DECREMENT_PRODUCT_CART':
@@ -70,6 +71,7 @@ const shoppingcart = (state = loadState(), action) => {
 			count: state.count - 1,
 			products: state.products,
 			totalPrice: state.totalPrice - parseFloat(action.price),
+			discount: state.discount
 		});
 
 	case 'DELETE_PRODUCT_CART':
@@ -92,6 +94,7 @@ const shoppingcart = (state = loadState(), action) => {
 			count: state.count - parseInt(action.count),
 			products: state.products,
 			totalPrice: state.totalPrice - parseFloat(action.price) * parseInt(action.count),
+			discount: state.discount
 		});
 	case 'CLEAR_CART':
 		return (state = { count: 0, totalPrice: 0, products: [], discount: undefined });
