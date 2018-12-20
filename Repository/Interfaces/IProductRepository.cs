@@ -27,6 +27,8 @@ namespace Project_Bier.Repository
 
         IEnumerable<Product> GetProductsByCategory(string category);
 
+        Category GetCategory(string category);
+
         /// <summary>
         /// Selects a collection of Products based on the index
         /// </summary>
@@ -34,7 +36,7 @@ namespace Project_Bier.Repository
         /// <returns></returns>
         ItemCollection<Product> GetProductCollectionByCategory(string category, int index);
 
-        IEnumerable<Product>  ListAll();
+        IEnumerable<Product> ListAll();
 
         IEnumerable<Product> GetRandomProducts(int count);
 
@@ -45,7 +47,7 @@ namespace Project_Bier.Repository
         /// <returns></returns>
         ProductOverviewModel GetOverviewModel(ProductOrder order);
 
-        Page<Beer> Pagination (int page_index, int page_size);
+        Page<Beer> Pagination(int page_index, int page_size);
 
     }
 }

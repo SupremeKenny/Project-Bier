@@ -65,7 +65,7 @@ export default class App extends Component {
 						<AppRoute path='/betalen/:id' component={Payment} layout={Layout} />
 						<AppRoute path='/confirmation' layout={Layout} component={Confirmation} />
 						<AppRoute path='/overzicht' component={Overview} layout={Layout} />
-						<AppRoute path='/category/:id' layout={Layout} component={CategoryPage} />
+						<AppRoute path='/category/:id' layout={Layout} component={CategoryPage} showScroll={true}/>
 						<AppRoute path='/zoeken/:query' layout={Layout} component={SearchPage} />
 						<AppRoute path='/account/inloggen' layout={Layout} component={LoginPage} />
 						<AppRoute path='/account/registreren' layout={Layout} component={Registration} />

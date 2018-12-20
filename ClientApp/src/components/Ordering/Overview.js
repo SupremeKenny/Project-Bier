@@ -128,6 +128,7 @@ class Overview extends Component {
 									<Divider hidden />
 									<Header as="h2">Bestel gegevens</Header>
 									<p> Hier komt een lijstje met je producten</p>
+									{/* TODO @Wesley product list toevoegen*/}
 								</Grid.Column>
 							</Grid.Row>
 						</Grid>

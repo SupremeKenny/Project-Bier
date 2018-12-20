@@ -123,5 +123,10 @@ namespace Project_Bier.Repository
                 Count = order.Count
             };
         }
+
+        public Category GetCategory(string category)
+        {
+             return context.Categories.FirstOrDefault(p => p.CategoryId == category);
+        }
     }
 }

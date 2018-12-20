@@ -254,7 +254,7 @@ class EmptyShoppingCart extends Component {
   }
 
   getExampleProducts() {
-    fetch("/product/FetchProducts/4")
+    fetch("/product/GetProducts?count=4")
       .then(results => {
         if (results.ok) {
           results.json().then(data => {
