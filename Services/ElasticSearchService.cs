@@ -16,7 +16,7 @@ namespace Project_Bier.Services
 
         public ElasticSearchService()
         {
-            ConnectionSettings settings = new ConnectionSettings(new Uri("http://localhost:9200")).DefaultIndex("products");
+            ConnectionSettings settings = new ConnectionSettings(new Uri("http://localhost:9200")).DefaultIndex("beer");
             this.client = new ElasticClient(settings);
         }
 
