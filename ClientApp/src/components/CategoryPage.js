@@ -19,10 +19,10 @@ const BreadcrumbTop = props => {
 	return (
 		<div>
 			<Breadcrumb>
-				<Link to='/'>
+				<Link to="/">
 					<Breadcrumb.Section>Hoofdpagina</Breadcrumb.Section>{' '}
 				</Link>
-				<Breadcrumb.Divider icon='right angle' />
+				<Breadcrumb.Divider icon="right angle" />
 				<Link to={'/category/' + props.url}>
 					<Breadcrumb.Section>{props.url}</Breadcrumb.Section>
 				</Link>
@@ -128,11 +128,10 @@ export class CategoryPage extends React.Component {
 	render() {
 		return (
 			<div>
-			
 				<Container style={{ paddingTop: '2em' }}>
 					<BreadcrumbTop url={this.props.match.params.id} />
 					<Segment basic loading={!this.state.loadedDescription}>
-						<Header as='h1' style={headerSX} content={this.props.match.params.id} />
+						<Header as="h1" style={headerSX} content={this.props.match.params.id} />
 						<p style={{ fontSize: 18 }}>{this.state.description}</p>
 					</Segment>
 					<Divider />

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { StepOrder } from "./StepOrder.js";
-import { Container, Divider, Grid, Header, Card, Button, Icon, Segment } from "semantic-ui-react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { StepOrder } from './StepOrder.js';
+import { Container, Divider, Grid, Header, Card, Button, Icon, Segment } from 'semantic-ui-react';
 
 class Overview extends Component {
 	constructor(props) {
@@ -9,18 +9,16 @@ class Overview extends Component {
 		this.generateGuestOrder = this.generateGuestOrder.bind(this);
 		this.generateOrder = this.generateOrder.bind(this);
 		this.fetchAddressFromServer = this.fetchAddressFromServer.bind(this);
-		//this.onSubmit = this.onSubmit.bind(this);
 
 		this.state = {
 			userInfo: {
-				city: "",
-				province: "",
-				houseNumber: "",
-				street: "",
-				name: "",
-				email: "",
-				zip: "",
-				name: "",
+				city: '',
+				province: '',
+				houseNumber: '',
+				street: '',
+				name: '',
+				email: '',
+				zip: '',
 			},
 			loading: true,
 			redirectToLogin: false,
@@ -29,17 +27,8 @@ class Overview extends Component {
 	}
 
 	componentDidMount() {
-		// TODO fix expiry date issue
-		// It is not used at the moment
-		let currentTime = new Date().getTime() / 1000;
-		let loginExpiryDate = new Date(this.props.reduxState.expiry);
-
-		let expired = currentTime > loginExpiryDate;
-
 		if (this.props.reduxState.login.loggedIn) {
 			this.fetchAddressFromServer(this.props.reduxState.login.email);
-		} else if (expired) {
-			this.setState({ ...this.state, loading: false, redirectToLogin: true });
 		} else {
 			var userInfo = {
 				city: this.props.reduxState.guest.info.city,
@@ -54,18 +43,17 @@ class Overview extends Component {
 		}
 	}
 
-	fetchAddressFromServer(email) {
-		fetch("account/getaccountinformation", {
-			method: "GET",
+	fetchAddressFromServer = () => {
+		fetch('account/getaccountinformation', {
+			method: 'GET',
 			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + this.props.reduxState.login.token,
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + this.props.reduxState.login.token,
 			},
 		}).then(results => {
 			if (results.ok) {
 				results.json().then(data => {
-					console.log(data);
 					this.setState({
 						...this.state,
 						userLoggedIn: true,
@@ -75,7 +63,7 @@ class Overview extends Component {
 							province: data.address.province,
 							houseNumber: data.address.streetNumber,
 							street: data.address.streetName,
-							name: data.name + " " + data.lastName,
+							name: data.name + ' ' + data.lastName,
 							email: data.email,
 							zip: data.address.postalCode,
 						},
@@ -83,7 +71,7 @@ class Overview extends Component {
 				});
 			}
 		});
-	}
+	};
 
 	onSubmit = e => {
 		if (this.state.userLoggedIn) {
@@ -110,21 +98,21 @@ class Overview extends Component {
 								</Grid.Column>
 								<Grid.Column>
 									<Header as="h2">Persoonsgegevens</Header>
-								
-										<Segment>
-											{this.state.userInfo.name}
-											<br />
-											{this.state.userInfo.email}
-										</Segment>
-									
-										<Segment>
-											{this.state.userInfo.street + " " + this.state.userInfo.houseNumber}
-											<br />
-											{this.state.userInfo.zip + ", " + this.state.userInfo.city}
-											<br />
-											{this.state.userInfo.province + ", Nederland"}
-										</Segment>
-									
+
+									<Segment>
+										{this.state.userInfo.name}
+										<br />
+										{this.state.userInfo.email}
+									</Segment>
+
+									<Segment>
+										{this.state.userInfo.street + ' ' + this.state.userInfo.houseNumber}
+										<br />
+										{this.state.userInfo.zip + ', ' + this.state.userInfo.city}
+										<br />
+										{this.state.userInfo.province + ', Nederland'}
+									</Segment>
+
 									<Divider hidden />
 									<Header as="h2">Bestel gegevens</Header>
 									<p> Hier komt een lijstje met je producten</p>
@@ -147,45 +135,63 @@ class Overview extends Component {
 	// TODO: Add Phone Number
 	// FIXME: last name is undefined
 	generateGuestOrder() {
-		fetch("order/addorderguest/", {
-			method: "POST",
+		let coupon = '';
+		if (this.props.reduxState.shoppingcart.discount.validated) {
+			coupon = this.props.reduxState.shoppingcart.discount.code;
+		}
+		fetch('order/addorderguest/', {
+			method: 'POST',
 			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				Coupon: "",
+				Coupon: coupon,
 				PostalCode: this.state.userInfo.zip,
 				StreetNumber: this.state.userInfo.houseNumber,
 				StreetName: this.state.userInfo.street,
 				CityName: this.state.userInfo.city,
-				Country: "Nederland",
+				Country: 'Nederland',
 				FirstName: this.state.userInfo.name,
 				LastName: this.state.userInfo.surname,
 				Email: this.state.userInfo.email,
 				Products: this.props.reduxState.shoppingcart.products,
 			}),
 		}).then(results => {
-			results.json().then(data => (window.location.href = "/betalen/" + data));
+			results.json().then(data => (window.location.href = '/betalen/' + data));
 		});
 	}
 
 	// TODO Check if result is okay
 	// TODO Catch errors
 	generateOrder() {
-		fetch("order/addorder/", {
-			method: "POST",
+		let coupon = '';
+		if (this.props.reduxState.shoppingcart.discount.validated) {
+			coupon = this.props.reduxState.shoppingcart.discount.code;
+		}
+
+		fetch('order/addorder/', {
+			method: 'POST',
 			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + this.props.reduxState.login.token,
 			},
 			body: JSON.stringify({
-				Coupon: "",
 				Products: this.props.reduxState.shoppingcart.products,
-				Email: this.state.userInfo.email,
+				Coupon: coupon,
 			}),
 		}).then(results => {
-			results.json().then(data => (window.location.href = "/betalen/" + data));
+			if (results.ok) {
+				results
+					.json()
+					.then(data => (window.location.href = '/betalen/' + data))
+					.catch(error => {
+						// TODO add error handling
+					});
+			} else {
+				// TODO add error handling
+			}
 		});
 	}
 }
