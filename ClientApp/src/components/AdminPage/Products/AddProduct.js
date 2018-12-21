@@ -6,23 +6,60 @@ import {
     TextArea,
     Select,
     Container,
+    Button,
+    Icon,
+    Dimmer,
+    Loader
 } from 'semantic-ui-react';
 
 export class AddProducts extends React.Component {
-    state = {
-        id: '',
-        name: '',
-        categoryId: '',
-        price: '',
-        brewerName: '',
-        countryName: '',
-        alcoholPercentage: '',
-        content: '',
-        url: '',
-        description: ''
+    constructor () {
+        super();
+        this.state = {
+            id: '',
+            name: '',
+            categoryId: '',
+            price: '',
+            brewerName: '',
+            countryName: '',
+            alcoholPercentage: '',
+            content: '',
+            url: '',
+            description: '',
+            check: false,
+            loaded: true
+        }
     }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    toggle = () => this.setState({ check: !this.state.check })
+    validate = () => {
+        if (this.state.check){
+            this.setState({loaded: false})
+            setTimeout (() => {
+                this.handleSubmit()
+            },200)
+            
+        }
+        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+    }
+
+    handleReset = () => {
+        this.setState ({
+            id: '',
+            name: '',
+            categoryId: '',
+            price: '',
+            brewerName: '',
+            countryName: '',
+            alcoholPercentage: '',
+            content: '',
+            url: '',
+            description: '',
+            check: false,
+            loaded: true
+        })
+    }
 
     handleSubmit = () => {
         let bodyData = JSON.stringify({
@@ -32,16 +69,15 @@ export class AddProducts extends React.Component {
             "Price":                this.state.price,
             "BrewerName":           this.state.brewerName,
             "CountryName":          this.state.countryName,
-            "AlcoholPercentage":    this.state.alcoholPercentage + "%",
+            "AlcoholPercentage":    this.state.alcoholPercentage,
             "Content":              this.state.content,
             "Url":                  this.state.url,
             "Description":          this.state.description,
-            // "Available":            true
+            "Available":            true
         })
-
         // var validate = this.state.id
         // console.log(validate)
-        if (this.state.id != "" && this.state.name != "" && this.state.categoryId != "" && this.state.price != "") {
+        if (this.state.id !== "" && this.state.name !== "" && this.state.categoryId !== "" && this.state.price !== "") {
             console.log("Uitgevoerd"),
             fetch('admin/Create/', {
                 headers:{
@@ -50,6 +86,15 @@ export class AddProducts extends React.Component {
                 },
                 method: 'POST',
                 body: bodyData
+            }).then (response => {
+                if (response.ok) {
+                    alert("Product is succesvol toegevoegd.");
+                    this.handleReset ()
+                } 
+                else {
+                    this.setState({loaded: true})
+                    alert("Error! Product is niet toegevoegd.")
+                }
             })
         }
         else console.log("Verplichte velden leeg");
@@ -57,60 +102,73 @@ export class AddProducts extends React.Component {
 
     render() {
         // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        const {
-            id,
-            name,
-            categoryId,
-            price,
-            brewerName,
-            countryName,
-            alcoholPercentage,
-            content,
-            url,
-            description
-        } = this.state;
+        // const {
+        //     id,
+        //     name,
+        //     categoryId,
+        //     price,
+        //     brewerName,
+        //     countryName,
+        //     alcoholPercentage,
+        //     content,
+        //     url,
+        //     description,
+        //     check
+        // } = this.state;
+
+        if (!this.state.loaded) {
+			return(
+				<Dimmer active inverted>
+					<Loader size="large">Loading</Loader>
+				</Dimmer>
+			);
+		} else
 
         return (
             <Container>
                 <Header as='h1'>Product toevoegen</Header>
                 <Segment>
-                    <Form onSubmit={this.handleSubmit} id="myForm">
+                    <Form onSubmit={this.validate} id="myForm">
                         <Form.Group unstackable widths={2}>
                             <Form.Input
-                                label='Id *'
+                                label="Product ID (url)"
                                 placeholder='Id'
                                 name='id'
-                                value={this.id}
+                                value={this.state.id}
                                 onChange={this.handleChange}
+                                required
                             />
                             <Form.Input
-                                label='Naam *'
+                                label='Naam'
                                 placeholder='Name'
                                 name='name'
-                                value={this.name}
+                                value={this.state.name}
                                 onChange={this.handleChange}
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group widths={2}>
                             <Form.Field
                                 control={Select}
-                                label='Categorie *'
+                                label='Categorie'
                                 placeholder='CategoryId'
                                 options={CategoryId}
                                 name='categoryId'
-                                value={this.categoryId}
+                                value={this.state.categoryId}
                                 onChange={this.handleChange}
+                                required
                             />
                             <Form.Input
-                                label='Prijs *'
+                                label='Prijs'
                                 placeholder='Price'
                                 name='price'
-                                value={this.price}
+                                value={this.state.price}
                                 onChange={this.handleChange}
                                 type='number'
                                 step="0.01"
                                 min="0.00"
+                                required
                             />
                         </Form.Group>
 
@@ -119,45 +177,50 @@ export class AddProducts extends React.Component {
                                 label='Brouwer'
                                 placeholder='BrewerName'
                                 name='brewerName'
-                                value={this.brewerName}
+                                value={this.state.brewerName}
                                 onChange={this.handleChange}
+                                required
                             />
                             <Form.Input
                                 label='Land van herkomst'
                                 placeholder='CountryName'
                                 name='countryName'
-                                value={this.countryName}
+                                value={this.state.countryName}
                                 onChange={this.handleChange}
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group widths={2}>
                             <Form.Input
-                                label='Alcohol %'
+                                label='Alcoholpercentage'
                                 placeholder='AlcoholPercentage'
                                 name='alcoholPercentage'
-                                value={this.alcoholPercentage}
+                                value={this.state.alcoholPercentage}
                                 onChange={this.handleChange}
                                 type='number'
-                                step="0.05"
+                                step="0.01"
                                 min="0.00"
+                                required
                             />
                             <Form.Input
                                 label='Inhoud'
                                 placeholder='Content'
                                 name='content'
-                                value={this.content}
+                                value={this.state.content}
                                 onChange={this.handleChange}
+                                required
                             />
                         </Form.Group>
 
                         <Form.Input
-                            label='Website Link'
+                            label='Afbeelding Link'
                             placeholder='Url'
                             name='url'
-                            value={this.url}
+                            value={this.state.url}
                             onChange={this.handleChange}
                             type='url'
+                            required
                         />
 
                         <Form.Field
@@ -165,17 +228,30 @@ export class AddProducts extends React.Component {
                             label='Omschrijving'
                             placeholder='Description'
                             name='description'
-                            value={this.description}
+                            value={this.state.description}
                             onChange={this.handleChange}
+                            required
                         />
 
-                        <Form.Checkbox label='Alle gegevens zijn gecontroleerd' />
-                        <Form.Button content='Submit' />
+                        <Form.Checkbox 
+                            label='Alle gegevens zijn gecontroleerd'
+                            value = {this.state.check}
+                            onChange = {this.toggle}
+                            required
+                            toggle
+                            />
+                        <Form.Button  animated color = "green">
+                        <Button.Content hidden content = 'Akkoord'/>
+                        <Button.Content visible>
+                        <Icon name ='add'/> Toevoegen
+                        </Button.Content>
+
+                        </Form.Button>
                     </Form>
                 </Segment>
 
                 {/* Todo: Can delete <pre> if I dont have to display states anymore */}
-                <pre>
+                {/* <pre>
                     {JSON.stringify({
                         id,
                         name,
@@ -187,8 +263,9 @@ export class AddProducts extends React.Component {
                         content,
                         url,
                         description,
+                        check
                     }, null, 2)}
-                </pre>
+                </pre> */}
 
             </Container>
         );

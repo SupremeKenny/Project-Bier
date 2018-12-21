@@ -18,9 +18,9 @@ namespace Project_Bier.Repository
 
         Discount CheckDiscount(String input);
 
-        void UpdateDiscount(Guid guid, Discount newDiscount);
+        void UpdateDiscount(Discount newDiscount, string code);
 
-        void RemoveDiscount(Guid guid);
+        void RemoveDiscount(string code);
 
         IEnumerable<Discount>  ListAll();
 

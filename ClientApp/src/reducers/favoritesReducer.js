@@ -1,64 +1,51 @@
-//Data aanwezig in local storage
-const INITIAL_DATA = {
-    products: localStorage.Favorites ? JSON.parse(localStorage.Favorites) : [],
-};
+import { loadState } from "../localStorage.js";
 
-const favorites = (state = INITIAL_DATA, action) => {
+const favorites = (state = loadState(), action) => {
+    let productInFavorites;
+
     switch (action.type) {
         case "ADD_PRODUCT_FAVORITES":
-            //Check
-            var index = state.products.some(function(item, index) {
+            productInFavorites = state.products.some(item => {
                 return item.id === action.id;
             });
-            //Voeg toe als leeg
-            if (!index) {
+
+            // If not in the state add it to the state
+            if (!productInFavorites) {
                 state.products = [
                     ...state.products,
                     {
                         id: action.id,
                         name: action.name,
                         price: action.price,
-                        url: action.url,
+                        url: action.url
                     }
                 ];
-            //Verwijder als item al aanwezig is
-            } else {
-              state.products = state.products.filter(
-               product => product.id !== action.id)
             }
 
-            //Opslaan
-            localStorage.setItem('Favorites', JSON.stringify(state.products));
-            
-            return (state = { 
+            return (state = {
                 products: state.products,
             });
 
         case "DELETE_PRODUCT_FAVORITES":
-            //Check
-            var index = state.products.some(function(item, index2) {
+            productInFavorites = state.products.some(item => {
                 return item.id === action.id;
             });
-            //Als item niet aanwezig is
-            if (!index) {
-                console.log("Product isn't stored so not deleted.")
-                return state;
-            }
-            //Verwijder item
-            if (index) {
+
+            // If the product is in the state remove it 
+            if (productInFavorites) {
                 state.products = state.products.filter(
                     product => product.id !== action.id
                 );
-            }
-            //Opslaan
-            localStorage.setItem("Favorites", JSON.stringify(state.products));
+            } else return state;
 
             return (state = {
                 products: state.products,
             });
 
         default:
-            return state;
+            if (typeof state === "undefined") {
+                return (state = {products:[]});
+            } else return state;
     }
 };
 

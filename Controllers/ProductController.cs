@@ -7,34 +7,35 @@ using Project_Bier.Repository;
 using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 
+// TODO Document routes
 namespace Project_Bier.Controllers
 {
     [Route("[controller]/[action]")]
-    public class ProductController: Controller
+    public class ProductController : Controller
     {
-        IProductRepository productRepository;
+        IProductRepository ProductRepository { get; }
 
         public ProductController(IProductRepository productRepository)
         {
-            this.productRepository = productRepository;
+            ProductRepository = productRepository;
         }
 
         [HttpGet]
-        public IActionResult Fetch(String id)
+        public IActionResult GetProduct(String id)
         {
-            Product product = productRepository.GetProductByGuid(id);
-            if(product == null) 
+            Product product = ProductRepository.GetProductByGuid(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return Json(new {product = product});
+            return Json(new { product = product });
         }
 
         [HttpGet]
-        public IActionResult FetchCategory(String category, int index)
+        public IActionResult GetCategoryItems(String categoryId, int index)
         {
-            ItemCollection<Product> itemCollection = productRepository.GetProductCollectionByCategory(category, index);
-            if (itemCollection == null) 
+            ItemCollection<Product> itemCollection = ProductRepository.GetProductCollectionByCategory(categoryId, index);
+            if (itemCollection == null)
             {
                 return NotFound();
             }
@@ -42,13 +43,33 @@ namespace Project_Bier.Controllers
         }
 
         [HttpGet]
-        public IActionResult FetchHome()
+        public IActionResult GetCategoryDescription(String categoryId)
         {
-            IEnumerable<Product> products = productRepository.GetHomePageProducts();
-            if(products == null) {
+            Category category = ProductRepository.GetCategory(categoryId);
+            if (category != null)
+            {
+                return Ok(new { category.Description });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Fetches x random products by calliung the productRepository
+        /// </summary>
+        /// <param name="productCount">The number of products to fetch</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetProducts(int count)
+        {
+            IEnumerable<Product> products = ProductRepository.GetRandomProducts(count);
+            if (products == null)
+            {
                 return NotFound();
             }
-            return Json(new{products = products});
+            return Json(new { products = products });
         }
 
     }

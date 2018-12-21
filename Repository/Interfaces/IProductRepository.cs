@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Models;
+using Project_Bier.Models.ViewModels;
 using Project_Bier.Pagination;
 
 namespace Project_Bier.Repository
@@ -22,11 +23,11 @@ namespace Project_Bier.Repository
 
         void RemoveProduct(String guid);
 
-        void AddProducts(Product[] products);
-
         Product GetProductByGuid(String id);
 
         IEnumerable<Product> GetProductsByCategory(string category);
+
+        Category GetCategory(string category);
 
         /// <summary>
         /// Selects a collection of Products based on the index
@@ -35,11 +36,18 @@ namespace Project_Bier.Repository
         /// <returns></returns>
         ItemCollection<Product> GetProductCollectionByCategory(string category, int index);
 
-        IEnumerable<Product>  ListAll();
+        IEnumerable<Product> ListAll();
 
-        IEnumerable<Product> GetHomePageProducts();
+        IEnumerable<Product> GetRandomProducts(int count);
 
-        Page<Beer> Pagination (int page_index, int page_size);
+        /// <summary>
+        /// Returns an overview view model based on a productOrder model
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        ProductOverviewModel GetOverviewModel(ProductOrder order);
+
+        Page<Beer> Pagination(int page_index, int page_size);
 
     }
 }
