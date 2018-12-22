@@ -10,7 +10,8 @@ import {
 	ADD_GUEST,
 	DELETE_GUEST,
 	ADD_DISCOUNT,
-	DELETE_DISCOUNT
+	DELETE_DISCOUNT, 
+	CHANGE_NAME
 } from './actionsTypes';
 
 export const clearCart = () => ({
@@ -58,6 +59,11 @@ export const addFavoritesItem = (id, name, price, url) => ({
 	name,
 	price,
 	url,
+});
+
+export const changeName = name => ({
+	type: CHANGE_NAME,
+	name
 });
 
 export const deleteFavoritesItem = id => ({
