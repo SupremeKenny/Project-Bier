@@ -22,7 +22,6 @@ class InputInfo extends Component {
     
     this.state = {
       name: "",
-      tussen: "",
       surname: "",
       street: "",
       houseNumber: "",
@@ -88,14 +87,9 @@ class InputInfo extends Component {
     }
 
     if (validated) {
-      var lastName = this.state.lastName;
-      if(typeof this.state.tussen !== 'undefined' && this.state.tussen !== ""){
-        lastName = this.state.tussen + " " + lastName;
-      }
-
       var guestInfo = {
         name: this.state.name,
-        surname: lastName,
+        surname: this.state.surname,
         street: this.state.street,
         houseNumber: this.state.houseNumber,
         zip: this.state.zip,
@@ -219,7 +213,6 @@ class InputInfo extends Component {
       city,
       phone,
       email,
-      tussen,
       province
     } = this.state;
 
@@ -270,15 +263,6 @@ class InputInfo extends Component {
                 placeholder="Klaas"
                 onChange={this.handleChange}
                 onBlur={this.handleBlur("name")}
-              />
-
-              <Form.Input
-                fluid
-                width={4}
-                label="Tussenvoegsel"
-                placeholder="van"
-                value={tussen}
-                onChange={this.handleChange}
               />
 
               <Form.Input

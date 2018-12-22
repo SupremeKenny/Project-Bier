@@ -25,7 +25,8 @@ namespace Project_Bier.Controllers
 		IProductRepository ProductRepository { get; }
 		IDiscountRepository DiscountRepository { get; }
 
-		public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, UserManager<WebshopUser> userManager, IDiscountRepository discountRepository)
+		public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, 
+			UserManager<WebshopUser> userManager, IDiscountRepository discountRepository)
 		{
 			OrderRepository = orderRepository;
 			ProductRepository = productRepository;
@@ -97,7 +98,8 @@ namespace Project_Bier.Controllers
 					UserGuid = Guid.NewGuid(),
 					Email = model.Email,
 					FirstName = model.FirstName,
-					LastName = model.LastName
+					LastName = model.LastName,
+					PhoneNumber = model.PhoneNumber
 				};
 
 				ShippingAddress userAddress = new ShippingAddress
