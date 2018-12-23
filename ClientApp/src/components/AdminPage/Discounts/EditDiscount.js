@@ -3,7 +3,6 @@ import {
 	Header, 
 	Segment, 
 	Form, 
-	TextArea, 
 	Select, 
 	Container, 
 	Loader,

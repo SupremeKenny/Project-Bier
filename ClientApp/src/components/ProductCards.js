@@ -85,7 +85,7 @@ class ProductCard extends React.Component {
 					</Card.Header>
 					<Card.Description>
 						<Statistic size='mini'>
-							<Statistic.Value>€ {String(this.props.price).replace('.', ',')}</Statistic.Value>
+							<Statistic.Value>€ {String(this.props.price.toFixed(2)).replace(".", ",")}</Statistic.Value>
 						</Statistic>
 					</Card.Description>
 				</Card.Content>
