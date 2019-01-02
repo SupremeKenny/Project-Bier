@@ -148,7 +148,9 @@ class ShoppingCart extends Component {
 												<Header as="h3" content={product.name} />
 											</Link>
 										</Grid.Column>
-										<Grid.Column width={2}>Prijs: €{String(product.price).replace(".", ",")}</Grid.Column>
+										<Grid.Column width={2}>
+											Prijs: €{String(product.price).replace('.', ',')}
+										</Grid.Column>
 										<Grid.Column width={2}>Aantal: {product.count}</Grid.Column>
 										<Grid.Column width={2}>
 											<div className="ui mini vertical buttons">
@@ -186,9 +188,11 @@ class ShoppingCart extends Component {
 										</Grid.Column>
 										<Grid.Column width={2}>
 											Totaal: €
-											{String(parseFloat(Math.round(product.count * product.price * 100) / 100).toFixed(
-												2,
-											)).replace(".", ",")}
+											{String(
+												parseFloat(
+													Math.round(product.count * product.price * 100) / 100,
+												).toFixed(2),
+											).replace('.', ',')}
 										</Grid.Column>
 									</Grid.Row>
 								))}
@@ -216,39 +220,49 @@ class ShoppingCart extends Component {
 									<div>
 										<h4>
 											Subtotaal: €{' '}
-											{String(parseFloat(
-												Math.round(this.props.shoppingcart.totalPrice * 100) / 100,
-											).toFixed(2)).replace(".", ",")}
+											{String(
+												parseFloat(
+													Math.round(this.props.shoppingcart.totalPrice * 100) / 100,
+												).toFixed(2),
+											).replace('.', ',')}
 										</h4>
 										{this.state.discount.procent === true ? (
 											<div>
-												<h4>Korting: {String(this.state.discount.amount).replace(".", ",")}%</h4>
+												<h4>
+													Korting: {String(this.state.discount.amount).replace('.', ',')}%
+												</h4>
 												<h3>
 													Totaal: €{' '}
-													{String(parseFloat(
-														Math.round(
-															(this.props.shoppingcart.totalPrice -
-																(this.props.shoppingcart.totalPrice / 100) *
-																	this.state.discount.amount) *
-																100,
-														) / 100,
-													).toFixed(2)).replace(".", ",")}
+													{String(
+														parseFloat(
+															Math.round(
+																(this.props.shoppingcart.totalPrice -
+																	(this.props.shoppingcart.totalPrice / 100) *
+																		this.state.discount.amount) *
+																	100,
+															) / 100,
+														).toFixed(2),
+													).replace('.', ',')}
 												</h3>
 											</div>
 										) : (
 											<div>
-												<h4>Korting: € {String(this.state.discount.amount).replace(".", ",")}</h4>
+												<h4>
+													Korting: € {String(this.state.discount.amount).replace('.', ',')}
+												</h4>
 												<h3>
 													Totaal: €{' '}
-													{String(parseFloat(
-														this.handleTotal(
-															Math.round(
-																(this.props.shoppingcart.totalPrice -
-																	this.state.discount.amount) *
-																	100,
-															) / 100,
-														),
-													).toFixed(2)).replace(".", ",")}
+													{String(
+														parseFloat(
+															this.handleTotal(
+																Math.round(
+																	(this.props.shoppingcart.totalPrice -
+																		this.state.discount.amount) *
+																		100,
+																) / 100,
+															),
+														).toFixed(2),
+													).replace('.', ',')}
 												</h3>
 											</div>
 										)}
@@ -256,7 +270,11 @@ class ShoppingCart extends Component {
 								) : (
 									<h3>
 										Totaal: €{' '}
-										{String(parseFloat(Math.round(this.props.shoppingcart.totalPrice * 100) / 100).toFixed(2)).replace(".", ",")}
+										{String(
+											parseFloat(
+												Math.round(this.props.shoppingcart.totalPrice * 100) / 100,
+											).toFixed(2),
+										).replace('.', ',')}
 									</h3>
 								)}
 							</Grid.Column>
