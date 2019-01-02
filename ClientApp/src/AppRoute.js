@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-export const AppRoute = ({ component: Component, layout: Layout, ...rest }) => {
+export const AppRoute = ({ component: Component, layout: Layout, ...rest , showScroll: showScroll}) => {
 	if (Layout === undefined || Component === undefined) {
 		return (
 			<Route
@@ -38,8 +38,8 @@ export const AppRoute = ({ component: Component, layout: Layout, ...rest }) => {
 		<Route
 			{...rest}
 			render={props => (
-				<Layout>
-					<Component {...props} />
+				<Layout showScroll={showScroll}>
+					<Component {...props}/>
 				</Layout>
 			)}
 		/>

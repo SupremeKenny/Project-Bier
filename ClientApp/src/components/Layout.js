@@ -7,8 +7,8 @@ import { Footer } from './Navigation/Footer.js';
 import UserDropdown from './User/UserDropdown.js';
 import { logoutUser } from '../actions/actionCreator';
 import { bindActionCreators } from 'redux';
-
-import { Button, Container, Input, Image, Menu, Label } from 'semantic-ui-react';
+import Scroller from './Scroller.js';
+import { Button, Container, Input, Image, Menu, Label, Icon } from 'semantic-ui-react';
 
 const LoginButton = () => {
 	return (
@@ -18,7 +18,7 @@ const LoginButton = () => {
 	);
 };
 
-class DesktopContainer extends Component {
+class Layout extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -44,12 +44,18 @@ class DesktopContainer extends Component {
 			loginComponent = <UserDropdown />;
 		}
 
+		let scroller;
+		if (this.props.showScroll) {
+			scroller = <Scroller />;
+		}
+
 		if (this.state.shouldSearch === true) {
 			this.setState({ ...this.state, shouldSearch: false });
 			return <Redirect push to={'/zoeken/' + this.state.query} />;
 		} else {
 			return (
 				<div className='body'>
+					{scroller}
 					<div>
 						<Menu
 							fixed='top'
@@ -123,12 +129,6 @@ class DesktopContainer extends Component {
 	}
 }
 
-export class Layout extends React.Component {
-	render() {
-		return <DesktopContainer>{this.props.children}</DesktopContainer>;
-	}
-}
-
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators(
 		{
@@ -147,4 +147,4 @@ const mapStateToProps = state => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps,
-)(DesktopContainer);
+)(Layout);

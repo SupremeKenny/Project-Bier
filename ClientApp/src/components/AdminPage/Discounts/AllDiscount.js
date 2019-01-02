@@ -76,7 +76,7 @@ export class AllDiscounts extends React.Component {
 					{
 						...this.state,
 						displayMessage: true,
-						message: "Code: " + id + " is succesvol verwijderd!",
+						message: "Kortingscode " + id + " is succesvol verwijderd!",
 						discounts: discounts,
 						loaded: true,
 					},

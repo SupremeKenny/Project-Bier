@@ -74,7 +74,7 @@ export class HomePage extends React.Component {
   }
 
   getHomepageProducts() {
-    fetch("/product/FetchProducts/8")
+    fetch("/product/GetProducts?count=8")
       .then(results => {
         if (results.ok) {
           results.json().then(data => {

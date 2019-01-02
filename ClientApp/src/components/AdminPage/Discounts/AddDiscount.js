@@ -5,6 +5,10 @@ import {
     Form,
     Select,
     Container,
+    Button,
+    Icon,
+    Dimmer,
+    Loader
 } from 'semantic-ui-react';
 
 export class AddDiscount extends React.Component {
@@ -12,11 +16,33 @@ export class AddDiscount extends React.Component {
         code: '',
         procent: '',
         amount: '',
+        check: false,
+        loaded: true
     }
 
     
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    toggle = () => this.setState({ check: !this.state.check })
+    validate = () => {
+        if (this.state.check){
+            this.setState({loaded: false})
+            setTimeout (() => {
+                this.handleSubmit()
+            },200)
+            
+        }
+        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+    }
+    handleReset = () => {
+        this.setState ({
+            code: '',
+            procent: '',
+            amount: '',
+            check: false,
+            loaded: true
+        })
+    }
 
     handleSubmit = () => {
         let bodyData = null;
@@ -34,11 +60,6 @@ export class AddDiscount extends React.Component {
             })
         }
 
-        
-        console.log(bodyData);
-
-        // var validate = this.state.id
-        // console.log(validate)
         if ( this.state.code !== "" && this.state.procent !== "" && this.state.amount !== "") {
             console.log("Uitgevoerd"),
             fetch('admin/creatediscount/', {
@@ -48,24 +69,35 @@ export class AddDiscount extends React.Component {
                 },
                 method: 'POST',
                 body: bodyData
+            }).then (response => {
+                if (response.ok) {
+                    alert("Product is succesvol toegevoegd.");
+                    this.handleReset()
+                } 
+                else {
+                    this.setState({loaded: true})
+                    alert("Error! Product is niet toegevoegd.")
+                }
             })
         }
         else console.log("Verplichte velden leeg");
     }
 
     render() {
-        // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        const {
-            code,
-            procent,
-            amount,
-        } = this.state;
+        
+        if (!this.state.loaded) {
+			return(
+				<Dimmer active inverted>
+					<Loader size="large">Loading</Loader>
+				</Dimmer>
+			);
+		} else
 
         return (
             <Container>
                 <Header as='h1'>Kortingscode toevoegen</Header>
                 <Segment>
-                    <Form onSubmit={this.handleSubmit} id="myForm">
+                    <Form onSubmit={this.validate} id="myForm">
                         <Form.Group unstackable widths={2}>
                             <Form.Input
                                 label='Code *'
@@ -99,20 +131,23 @@ export class AddDiscount extends React.Component {
                             />
                         </Form.Group>
 
-                        <Form.Checkbox label='Alle gegevens zijn gecontroleerd' />
-                        <Form.Button content='Submit' />
+                        <Form.Checkbox 
+                            label='Alle gegevens zijn gecontroleerd'
+                            value = {this.state.check}
+                            onChange = {this.toggle}
+                            required
+                            toggle
+                            />
+
+                        <Form.Button  animated color = "green">
+                            <Button.Content hidden content = 'Akkoord'/>
+                            <Button.Content visible>
+                            <Icon name ='add'/> Toevoegen
+                            </Button.Content>
+                        </Form.Button>
+
                     </Form>
                 </Segment>
-
-                {/* Todo: Can delete <pre> if I dont have to display states anymore */}
-                <pre>
-                    {JSON.stringify({
-                        code,
-                        procent,
-                        amount,
-                    }, null, 2)}
-                </pre>
-
             </Container>
         );
     }

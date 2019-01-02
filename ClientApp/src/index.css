@@ -160,3 +160,16 @@
   filter: grayscale(0%);
   transform: scale(1.2);
 }
+
+.AnyClassForContainer {
+  position: fixed;
+  right: -160px;
+  bottom: 10px;
+  transition: right 0.25s;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.AnyClassForTransition {
+  right: 20px;
+}

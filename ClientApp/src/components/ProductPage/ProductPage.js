@@ -32,7 +32,7 @@ class ProductPage extends Component {
   // TODO check if the fetch is okay and catch errors
   componentWillMount() {
     fetch(
-      "product/fetch?id=" + this.props.match.params.id
+      "product/GetProduct?id=" + this.props.match.params.id
     ).then(results => {
       results.json().then(data => {
         this.setState({ product: data.product, loaded: true });

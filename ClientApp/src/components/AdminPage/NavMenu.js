@@ -12,14 +12,15 @@ export const NavMenu = () => {
 			<Menu.Item>
 				Producten
 				<Menu.Menu>
-					<Menu.Item name="allProducts">
-						<Link to="/admin-allProducts">Alle Producten</Link>
-					</Menu.Item>
-					<Menu.Item name="searchProduct">
+					{/* TODO: Zoek functie wel of niet implementeren */}
+					{/* <Menu.Item name="searchProduct">
 						<Link to="/admin-searchProduct">Zoeken</Link>
-					</Menu.Item>
+					</Menu.Item> */}
 					<Menu.Item name="addProduct">
 						<Link to="/admin-addProduct">Toevoegen</Link>
+					</Menu.Item>
+					<Menu.Item name="allProducts">
+						<Link to="/admin-allProducts">Alle producten</Link>
 					</Menu.Item>
 				</Menu.Menu>
 			</Menu.Item>
@@ -31,7 +32,7 @@ export const NavMenu = () => {
 						<Link to="/admin-addUser">Toevoegen</Link>
 					</Menu.Item>
 					<Menu.Item name="allUsers">
-						<Link to="/admin-allUsers">Alle Gebruikers</Link>
+						<Link to="/admin-allUsers">Alle gebruikers</Link>
 					</Menu.Item>
 				</Menu.Menu>
 			</Menu.Item>
@@ -42,7 +43,7 @@ export const NavMenu = () => {
                         <Link to="/admin-addDiscount">Toevoegen</Link>
                     </Menu.Item>
                     <Menu.Item name='AllDiscount'>
-                        <Link to="/admin-allDiscounts">Alle Kortingscodes</Link>
+                        <Link to="/admin-allDiscounts">Alle kortingscodes</Link>
                     </Menu.Item>
 
                 </Menu.Menu>
@@ -58,13 +59,13 @@ export const NavMenu = () => {
                         <Link to="/admin-popularbeers">Populaire biertjes</Link>
                     </Menu.Item>
                     <Menu.Item name='populardiscounts'>
-                        <Link to="/admin-populardiscounts">Populaire Kortingscodes</Link>
+                        <Link to="/admin-populardiscounts">Populaire kortingscodes</Link>
                     </Menu.Item>
                 </Menu.Menu>
             </Menu.Item>
 
 			<Menu.Item name="accountSettings">
-				<Link to="/admin-accountSettings">Account Settings</Link>
+				<Link to="/admin-accountSettings">Account settings</Link>
 			</Menu.Item>
 		</Menu>
 	);

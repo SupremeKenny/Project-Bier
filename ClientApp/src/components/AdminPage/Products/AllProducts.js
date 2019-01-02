@@ -61,7 +61,7 @@ export class AllProducts extends React.Component {
 					console.log("Empty page");
 					this.fetchData(currentPage - 1);
 				} else {
-					console.log("Total Pages: " + data.totalPages + " | Product Count: " + data.count);
+					// console.log("Total Pages: " + data.totalPages + " | Product Count: " + data.count);
 					this.setState({
 						totalPages: data.totalPages,
 						products: data.items,
@@ -134,7 +134,7 @@ export class AllProducts extends React.Component {
 									activePage={activePage}
 									totalPages={totalPages}
 									onPageChange={this.handlePaginationChange}
-									size="big"
+									size="small"
 									boundaryRange={0}
 									siblingRange={1}
 								/>

@@ -1,5 +1,16 @@
 import React from "react";
-import { Header, Segment, Form, Select, Container, Loader } from "semantic-ui-react";
+import { 
+	Header, 
+	Segment, 
+	Form, 
+	Select, 
+	Container, 
+	Loader,
+	Dimmer,
+	Divider, 
+	Button, 
+	Icon 
+} from "semantic-ui-react";
 
 export class EditDiscount extends React.Component {
 	state = {
@@ -8,6 +19,7 @@ export class EditDiscount extends React.Component {
 		amount: "",
 
 		loaded: false,
+		check: false
 	};
 
 	componentWillMount() {
@@ -33,6 +45,15 @@ export class EditDiscount extends React.Component {
 	}
 
 	handleChange = (e, { name, value }) => this.setState({ [name]: value });
+	toggle = () => this.setState({ check: !this.state.check })
+    validate = () => {
+        if (this.state.check){
+			this.setState({loaded: false})
+            this.handleSubmit()
+        }
+        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+    }
+
 
 	handleSubmit = () => {
 		let bodyData = null;
@@ -61,22 +82,40 @@ export class EditDiscount extends React.Component {
 					},
 					method: "PUT",
 					body: bodyData,
+				}).then(response =>{
+					if (response.ok) {
+						alert("Kortingscode is succesvol aangepast.");
+					} 
+					else alert("Error! Kortingscode is niet aangepast.")
+					this.setState({ check: false , loaded: true});
+					
 				});
 		} else console.log("Verplichte velden leeg");
 	};
 
 	render() {
-		// Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-		const { code, procent, amount } = this.state;
-
 		if (!this.state.loaded) {
-			return <Loader />;
+			return(
+				<Dimmer active inverted>
+					<Loader size="large">Loading</Loader>
+				</Dimmer>
+			);
 		} else
 			return (
 				<Container>
-					<Header as="h1">Kortingscode aanpassen</Header>
+					<div>
+                    <Button animated floated="right" href="/admin-AllDiscounts" color="blue">
+							<Button.Content visible>Terug naar overzicht</Button.Content>
+							<Button.Content hidden>
+								<Icon name="arrow left" />
+							</Button.Content>
+						</Button>
+						<Header as="h1">Kortingscode Aanpassen</Header>
+						
+					</div>
+					<Divider />					
 					<Segment>
-						<Form onSubmit={this.handleSubmit} id="myForm">
+						<Form onSubmit={this.validate} id="myForm">
 							<Form.Group unstackable widths={2}>
 								<Form.Input
 									label="Code *"
@@ -109,23 +148,16 @@ export class EditDiscount extends React.Component {
 								/>
 							</Form.Group>
 
-							<Form.Checkbox label="Alle gegevens zijn gecontroleerd" />
-							<Form.Button content="Submit" />
+							<Form.Checkbox 
+								label='Alle gegevens zijn gecontroleerd'
+								value = {this.check}
+								onChange = {this.toggle}
+								required
+								toggle
+                            />
+							<Form.Button content="Aanpassen" color="blue" />
 						</Form>
 					</Segment>
-
-					{/* Todo: Can delete <pre> if I dont have to display states anymore */}
-					<pre>
-						{JSON.stringify(
-							{
-								code,
-								procent,
-								amount,
-							},
-							null,
-							2,
-						)}
-					</pre>
 				</Container>
 			);
 	}

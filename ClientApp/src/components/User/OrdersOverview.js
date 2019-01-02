@@ -64,7 +64,7 @@ const OrderView = props => (
 			<b>{'Bestelling op ' + getDateString(props.data.date)}</b>
 		</div>
 		<p style={{ fontSize: 10, color: '#bdc3c7' }}>{'#' + props.data.orderNumber}</p>
-		<p>{'Totale prijs: € ' + props.data.finalPrice}</p>
+		<p>{'Totale prijs: € ' + String(props.data.finalPrice).replace(".", ",")}</p>
 
 		<Label color={status[props.data.orderStatus].color} size='large'>
 			{status[props.data.orderStatus].text}

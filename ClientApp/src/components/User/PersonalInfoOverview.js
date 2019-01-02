@@ -8,8 +8,11 @@ import {
 } from "../../fieldValidators.js";
 import { fetchPostcodeApi } from "../../postcodeapi.js";
 import { Container, Button, Divider, Form, Message, Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { changeName } from "../../actions/actionCreator";
+import { bindActionCreators } from "redux";
 
-export default class PersonalInfoOverview extends Component {
+class PersonalInfoOverview extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -77,6 +80,8 @@ export default class PersonalInfoOverview extends Component {
 			.then(results => {
 				if (results.ok) {
 					this.setState({ ...this.state, formCompleted: true });
+					this.props.changeName(this.state.name);
+					setTimeout(() => {window.location.reload();}, 1500)
 				} else {
 					this.setState({
 						...this.state,
@@ -347,3 +352,18 @@ export default class PersonalInfoOverview extends Component {
 		}
 	}
 }
+
+
+  const mapDispatchToProps = dispatch => {
+	return bindActionCreators(
+	  {
+		changeName
+	  },
+	  dispatch
+	);
+  };
+  
+  export default connect(
+	null,
+	mapDispatchToProps
+  )(PersonalInfoOverview);
