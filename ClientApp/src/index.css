@@ -173,3 +173,7 @@
 .AnyClassForTransition {
   right: 20px;
 }
+
+.productImage{
+	max-width: 150px !important;
+}
