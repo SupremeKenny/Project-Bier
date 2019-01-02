@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StepOrder } from './StepOrder.js';
-import { Container, Divider, Grid, Header, Card, Button, Icon, Segment } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import {
+	Container,
+	Divider,
+	Grid,
+	Header,
+	Button,
+	Icon,
+	Segment,
+	Loader,
+} from 'semantic-ui-react';
 
 class Overview extends Component {
 	constructor(props) {
 		super(props);
-	
+
 		this.state = {
 			userInfo: {
 				city: '',
@@ -18,27 +28,34 @@ class Overview extends Component {
 				zip: '',
 			},
 			loading: true,
-			redirectToLogin: false,
-			userLoggedIn: false,
+			guestInfoAvailable: false,
 		};
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		if (this.props.reduxState.login.loggedIn) {
 			this.fetchAddressFromServer(this.props.reduxState.login.email);
 		} else {
-			var userInfo = {
-				city: this.props.reduxState.guest.info.city,
-				province: this.props.reduxState.guest.info.province,
-				houseNumber: this.props.reduxState.guest.info.houseNumber,
-				street: this.props.reduxState.guest.info.street,
-				name: this.props.reduxState.guest.info.name + ' ' + this.props.reduxState.guest.info.surname,
-				surname: this.props.reduxState.guest.info.surname,
-				email: this.props.reduxState.guest.info.email,
-				zip: this.props.reduxState.guest.info.zip,
-				phone: this.props.reduxState.guest.info.phone,
-			};
-			this.setState({ loading: false, userInfo: userInfo });
+			if (Object.keys(this.props.reduxState.guest).length !== 0) {
+				let guestInfo = this.props.reduxState.guest.info;
+				let userInfo = {
+					city: guestInfo.city,
+					province: guestInfo.province,
+					houseNumber: guestInfo.houseNumber,
+					street: guestInfo.street,
+					name: guestInfo.name + ' ' + guestInfo.surname,
+					surname: guestInfo.surname,
+					email: guestInfo.email,
+					zip: guestInfo.zip,
+					phone: guestInfo.phone,
+					guestInfoAvailable: true,
+				};
+				this.setState({ loading: false, userInfo: userInfo });
+			} else {
+				this.setState({
+					guestInfoAvailable: false,
+				});
+			}
 		}
 	}
 
@@ -51,6 +68,7 @@ class Overview extends Component {
 		} else return '';
 	};
 
+	// TODO Error handling
 	generateGuestOrder = () => {
 		fetch('order/addorderguest/', {
 			method: 'POST',
@@ -75,6 +93,8 @@ class Overview extends Component {
 			results.json().then(data => (window.location.href = '/betalen/' + data));
 		});
 	};
+
+	// TODO Error handling
 	generateOrder = () => {
 		fetch('order/addorder/', {
 			method: 'POST',
@@ -92,15 +112,13 @@ class Overview extends Component {
 				results
 					.json()
 					.then(data => (window.location.href = '/betalen/' + data))
-					.catch(error => {
-						// TODO add error handling
-					});
+					.catch(error => {});
 			} else {
-				// TODO add error handling
 			}
 		});
 	};
 
+	// TODO Error handling
 	fetchAddressFromServer = () => {
 		fetch('account/getaccountinformation', {
 			method: 'GET',
@@ -114,7 +132,6 @@ class Overview extends Component {
 				results.json().then(data => {
 					this.setState({
 						...this.state,
-						userLoggedIn: true,
 						loading: false,
 						userInfo: {
 							city: data.address.cityName,
@@ -131,26 +148,32 @@ class Overview extends Component {
 		});
 	};
 
-	onSubmit = e => {
-		if (this.state.userLoggedIn) {
+	onSubmit = () => {
+		if (this.props.reduxState.login.loggedIn) {
 			this.generateOrder();
 		} else this.generateGuestOrder();
 	};
 
 	render() {
-		let backButton;
-		if(!this.props.reduxState.login.loggedIn){
-			backButton = (<Button floated="left" animated href="/bestellengast">
-			<Button.Content visible>Informatie aanpassen</Button.Content>
-			<Button.Content hidden>
-				<Icon name="arrow left" />
-			</Button.Content>
-		</Button>);
+		if (!this.props.reduxState.login.loggedIn && !this.state.asGuest) {
+			return <Redirect push to="/checkout" />;
 		}
-		// TODO add loader
+
+		let backButton;
+		if (!this.props.reduxState.login.loggedIn) {
+			backButton = (
+				<Button floated="left" animated href="/bestellengast">
+					<Button.Content visible>Informatie aanpassen</Button.Content>
+					<Button.Content hidden>
+						<Icon name="arrow left" />
+					</Button.Content>
+				</Button>
+			);
+		}
+
 		// TODO add product overview
 		if (this.state.loading) {
-			return <p>Loading...</p>;
+			return <Loader active inline="centered" style={{ marginTop: '10em' }} />;
 		} else
 			return (
 				<div>
@@ -173,7 +196,9 @@ class Overview extends Component {
 									</Segment>
 
 									<Segment>
-										{this.state.userInfo.street + ' ' + this.state.userInfo.houseNumber}
+										{this.state.userInfo.street +
+											' ' +
+											this.state.userInfo.houseNumber}
 										<br />
 										{this.state.userInfo.zip + ', ' + this.state.userInfo.city}
 										<br />

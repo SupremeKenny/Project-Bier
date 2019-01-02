@@ -11,7 +11,15 @@ import {
 	validateNum,
 } from '../../fieldValidators.js';
 import { fetchPostcodeApi } from '../../postcodeapi.js';
-import { Container, Button, Divider, Form, Header, Message, Icon } from 'semantic-ui-react';
+import {
+	Container,
+	Button,
+	Divider,
+	Form,
+	Header,
+	Message,
+	Icon,
+} from 'semantic-ui-react';
 
 class GuestOrder extends Component {
 	constructor() {
@@ -188,9 +196,15 @@ class GuestOrder extends Component {
 		// Both fields should have been focused
 		if (this.state.focused['zip'] && this.state.focused['houseNumber']) {
 			// Both fields should be correct
-			if (this.state.validationState['zip'] && this.state.validationState['houseNumber']) {
+			if (
+				this.state.validationState['zip'] &&
+				this.state.validationState['houseNumber']
+			) {
 				// The address must not have changed and not be correct and fetched already
-				if (this.state.addressCorrect === false && this.state.isFetching === false) {
+				if (
+					this.state.addressCorrect === false &&
+					this.state.isFetching === false
+				) {
 					this.setState({ ...this.state, isFetching: true }, () => {
 						this.fetchAddressData();
 					});
@@ -202,10 +216,14 @@ class GuestOrder extends Component {
 	validateForm(callback) {
 		let fields = {
 			name: this.state.name.length > 0 && validateName(this.state.name),
-			surname: this.state.surname.length > 0 && validateName(this.state.surname),
-			houseNumber: this.state.houseNumber.length > 0 && validateNum(this.state.houseNumber),
+			surname:
+				this.state.surname.length > 0 && validateName(this.state.surname),
+			houseNumber:
+				this.state.houseNumber.length > 0 &&
+				validateNum(this.state.houseNumber),
 			zip: validateZipCode(this.state.zip),
-			phone: this.state.phone.length > 0 && validatePhoneNumber(this.state.phone),
+			phone:
+				this.state.phone.length > 0 && validatePhoneNumber(this.state.phone),
 			email: validateEmail(this.state.email),
 		};
 		this.setState({ ...this.state, validationState: fields }, callback);
@@ -243,7 +261,17 @@ class GuestOrder extends Component {
 	};
 
 	render() {
-		const { name, surname, street, houseNumber, zip, city, phone, email, province } = this.state;
+		const {
+			name,
+			surname,
+			street,
+			houseNumber,
+			zip,
+			city,
+			phone,
+			email,
+			province,
+		} = this.state;
 
 		let errorForm;
 		if (this.state.displayErrorForm) {
@@ -335,7 +363,12 @@ class GuestOrder extends Component {
 								maxLength={5}
 							/>
 
-							<Form.Input label="Toevoeging" placeholder="a" maxLength={3} width={2} />
+							<Form.Input
+								label="Toevoeging"
+								placeholder="a"
+								maxLength={3}
+								width={2}
+							/>
 						</Form.Group>
 
 						{additionalFields}
