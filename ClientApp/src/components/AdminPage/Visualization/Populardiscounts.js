@@ -1,10 +1,13 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import {
     Header,
     Segment,
     Container,
     Dimmer,
-    Loader
+    Loader, 
+    List,
+    Grid,
 } from 'semantic-ui-react';
 
 export class Populardiscounts extends React.Component {
@@ -42,15 +45,34 @@ export class Populardiscounts extends React.Component {
         return (
             <Container>
                 <Header as='h1'>Meest gebruikte kortingscodes</Header>
+                
                 <Segment>
-                    
-                    {
-                        Object.keys(this.state.populardiscounts).map((key, index) => ( 
-                            <p key={index}> {key} is {this.state.populardiscounts[key]} keer gebruikt.</p> 
-                            ))
-                    }
-                   
-                </Segment>
+            <Grid columns={1}>
+              <Grid.Column>
+                <List divided verticalAlign="bottom" size={"medium"}>
+                    {Object.keys(this.state.populardiscounts).map((key, index) => (
+                    <List.Item key={index}>
+                      <List.Content floated="right">
+                        
+                          
+                      </List.Content>
+
+                      <List.Content verticalAlign="bottom">
+                        <Header as="h4">
+                        
+                          {/* <Link to={"/product/" + key}> */}
+                          <Link to={"/admin-editdiscount/" + key}>
+                          {key}
+                          </Link>
+                        </Header>
+                        {this.state.populardiscounts[key]} keer verkocht
+                      </List.Content>
+                    </List.Item>
+                  ))}
+                </List>
+              </Grid.Column>
+            </Grid>
+          </Segment>
 
                 
 

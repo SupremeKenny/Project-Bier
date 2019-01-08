@@ -37,14 +37,24 @@ namespace Project_Bier.Controllers
             decimal turnover1weekago = OrderRepository.TurnOverxWeeksago(1);
             decimal turnover2weekago = OrderRepository.TurnOverxWeeksago(2);
             decimal turnover3weekago = OrderRepository.TurnOverxWeeksago(3);
+
+            decimal ordercountlastweek = OrderRepository.OrderCountLastWeek();
+            decimal ordercount1weekago = OrderRepository.OrderCountxWeeksago(1);
+            decimal ordercount2weekago = OrderRepository.OrderCountxWeeksago(2);
+            decimal ordercount3weekago = OrderRepository.OrderCountxWeeksago(3);
         
 
             return new OkObjectResult(
                 new {
-                    turnoverlastweek= turnoverlastweek,
+                    turnoverlastweek = turnoverlastweek,
                     turnover1weekago = turnover1weekago,
                     turnover2weekago = turnover2weekago,
-                    turnover3weekago = turnover3weekago
+                    turnover3weekago = turnover3weekago,
+                    
+                    ordercountlastweek = ordercountlastweek,
+                    ordercount1weekago = ordercount1weekago,
+                    ordercount2weekago = ordercount2weekago,
+                    ordercount3weekago = ordercount3weekago,
                     });
         }
 
