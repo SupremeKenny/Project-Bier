@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StepOrder } from './StepOrder.js';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import {
 	Container,
 	Divider,
@@ -10,7 +10,8 @@ import {
 	Button,
 	Icon,
 	Segment,
-	Loader,
+	Card,
+	Image,
 } from 'semantic-ui-react';
 
 class Overview extends Component {
@@ -189,7 +190,7 @@ class Overview extends Component {
 						<Grid columns="equal">
 							<Grid.Row columns="equal">
 								<Grid.Column>
-									<Header as="h2">Bestel gegevens</Header>
+									<Header as="h2">Producten</Header>
 
 									<OrderView data={this.props.shoppingcart} />
 								</Grid.Column>
