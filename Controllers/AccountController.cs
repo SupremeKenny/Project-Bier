@@ -175,9 +175,9 @@ namespace Project_Bier.Controllers
                 member.MergeFields.Add("LNAME", lastName);
                 await manager.Members.AddOrUpdateAsync(listId, member);
             }
-            catch (Exception e)
+            catch (System.Exception)
             {
-                throw e;
+								//TODO: do something with the exception
             }
         }
 
@@ -188,7 +188,6 @@ namespace Project_Bier.Controllers
 
         public Task<IActionResult> ForgotPassword()
         {
-            // TODO send mail with password reset link
             throw new NotImplementedException();
         }
 
