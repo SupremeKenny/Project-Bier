@@ -48,9 +48,9 @@ class Overview extends Component {
 					email: guestInfo.email,
 					zip: guestInfo.zip,
 					phone: guestInfo.phone,
-					guestInfoAvailable: true,
+					
 				};
-				this.setState({ loading: false, userInfo: userInfo });
+				this.setState({ loading: false, userInfo: userInfo, guestInfoAvailable: true, });
 			} else {
 				this.setState({
 					guestInfoAvailable: false,
@@ -155,7 +155,7 @@ class Overview extends Component {
 	};
 
 	render() {
-		if (!this.props.reduxState.login.loggedIn && !this.state.asGuest) {
+		if (!this.props.reduxState.login.loggedIn && !this.state.guestInfoAvailable) {
 			return <Redirect push to="/checkout" />;
 		}
 
