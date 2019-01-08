@@ -107,7 +107,9 @@ class Overview extends Component {
             <Grid columns="equal">
               <Grid.Row columns="equal">
                 <Grid.Column>
-                  <p>Hier komt een mooie kaart</p>
+                  <Header as="h2">Bestel gegevens</Header>
+
+                  <OrderView data={this.props.shoppingcart} />
                 </Grid.Column>
                 <Grid.Column>
                   <Header as="h2">Persoonsgegevens</Header>
@@ -127,9 +129,7 @@ class Overview extends Component {
                   </Segment>
 
                   <Divider hidden />
-                  <Header as="h2">Bestel gegevens</Header>
-
-                  <OrderView data={this.props.shoppingcart} />
+                 
 			           
                 </Grid.Column>
               </Grid.Row>
@@ -230,7 +230,6 @@ const OrderView = props => (
 				))}
 			</Grid.Row>
 		</Grid>
-		<Divider />
 	</Container>
 );
 
