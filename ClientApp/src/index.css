@@ -167,8 +167,13 @@
   bottom: 10px;
   transition: right 0.25s;
   cursor: pointer;
+  z-index: 100;
 }
 
 .AnyClassForTransition {
   right: 20px;
+}
+
+.productImage{
+	max-width: 150px !important;
 }

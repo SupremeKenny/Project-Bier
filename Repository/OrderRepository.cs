@@ -102,6 +102,25 @@ namespace Project_Bier.Repository
             return totalpricelastweek;
         }
 
+
+        public decimal OrderCountLastWeek()
+        {
+            IEnumerable<Order> allItems = context.Order
+                        .Where(s => s.OrderCreated.AddDays(7) > DateTime.Now);
+            decimal totalpricelastweek = allItems.Count();
+
+            return totalpricelastweek;
+        }
+        public decimal OrderCountxWeeksago(int weeks)
+        {
+            IEnumerable<Order> allItems = context.Order
+                        .Where(s => s.OrderCreated.AddDays(7 + 7*weeks) > DateTime.Now)
+                        .Where(s => s.OrderCreated.AddDays(7*weeks) < DateTime.Now);
+            decimal totalpricelastweek = allItems.Count();
+
+            return totalpricelastweek;
+        }
+
         public Dictionary<string, int> popularbeers()
         {
             IEnumerable<ProductOrder> allItems = context.ProductOrder;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StepOrder } from './StepOrder.js';
-import { Container, Divider, Grid, Header, Card, Button, Icon, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Container, Divider, Grid, Header, Card, Button, Icon, Segment, Image } from 'semantic-ui-react';
 
 class Overview extends Component {
   constructor(props) {
@@ -20,12 +21,13 @@ class Overview extends Component {
         email: '',
         zip: ''
       },
+      products: {},
       loading: true,
       redirectToLogin: false,
       userLoggedIn: false
     };
   }
-
+  
   componentDidMount() {
     if (this.props.reduxState.login.loggedIn) {
       this.fetchAddressFromServer(this.props.reduxState.login.email);
@@ -105,7 +107,9 @@ class Overview extends Component {
             <Grid columns="equal">
               <Grid.Row columns="equal">
                 <Grid.Column>
-                  <p>Hier komt een mooie kaart</p>
+                  <Header as="h2">Bestel gegevens</Header>
+
+                  <OrderView data={this.props.shoppingcart} />
                 </Grid.Column>
                 <Grid.Column>
                   <Header as="h2">Persoonsgegevens</Header>
@@ -125,9 +129,8 @@ class Overview extends Component {
                   </Segment>
 
                   <Divider hidden />
-                  <Header as="h2">Bestel gegevens</Header>
-                  <p> Hier komt een lijstje met je producten</p>
-                  {/* TODO @Wesley product list toevoegen*/}
+                 
+			           
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -141,6 +144,8 @@ class Overview extends Component {
         </div>
       );
   }
+
+  
 
   // TODO: Add Coupon
   // TODO: Add Phone Number
@@ -199,9 +204,40 @@ class Overview extends Component {
   }
 }
 
+const MiniProductCard = props => (
+	<Card className='product-card'>
+		<Link to={'/product/' + props.data.id}>
+			<Image src={props.data.url} mini centered={true} style={{ maxHeight: 100, padding: 20 }} />
+		</Link>
+
+		<Card.Content fluid='true' style={{ minHeight: 90 }}>
+			<Card.Description>
+				<Link to={'/product/' + props.data.id}>{props.data.name} </Link>
+			</Card.Description>
+			<Card.Meta>{props.data.count} X</Card.Meta>
+		</Card.Content>
+	</Card>
+);
+
+const OrderView = props => (
+	<Container style={{ marginTop: '2em', marginBottom: 0, paddingBottom: 0 }}>
+		<Grid stackable columns={props.data.products.length}>
+			<Grid.Row>
+				{props.data.products.map(p => (
+					<Grid.Column width={5} style={{ paddingBottom: '1em' }}>
+						<MiniProductCard data={p} />
+					</Grid.Column>
+				))}
+			</Grid.Row>
+		</Grid>
+	</Container>
+);
+
+
 const mapStateToProps = state => {
   return {
-    reduxState: state
+    reduxState: state,
+    shoppingcart: state.shoppingcart,
   };
 };
 

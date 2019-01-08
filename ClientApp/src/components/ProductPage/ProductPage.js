@@ -137,7 +137,7 @@ class ProductPage extends Component {
 
             </DescriptionContainer>
 
-            <ImageContainer url={this.state.product.url + "?w=150"} />
+            <ImageContainer url={this.state.product.url} />
           </MiddleContainer>
         </MainContainer>
       );
@@ -156,7 +156,7 @@ const ImageContainer = props => {
   const sx = { float: "right" };
   return (
     <Grid.Column width={6}>
-      <Image src={props.url} style={sx} />
+      <Image src={props.url} style={sx} className="productImage"/>
     </Grid.Column>
   );
 };
