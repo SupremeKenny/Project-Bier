@@ -39,14 +39,81 @@ namespace Project_Bier.Controllers
 		private readonly IAddressRepository addressRepository;
 
 		public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
-				ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository)
+				ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository, ApplicationDatabaseContext applicationDatabase)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
 			this.tokenGenerator = tokenGenerator;
 			this.config = config;
 			this.addressRepository = addressRepository;
+			this.applicationDatabase = applicationDatabase;
 		}
+
+		[HttpGet]
+		public IActionResult GetAllUsers()
+		{
+			// var users = applicationDatabase.Users.ToList();
+
+			// Keep it like this, otherwise you'll get parameters that you wont use as WebshopUser
+			var users = from u in applicationDatabase.Users
+									select new
+									{
+										u.UserGuid,
+										u.Email,
+										u.FirstName,
+										u.LastName,
+										u.PhoneNumber,
+										u.ShippingAddresses,
+										// u.FavoriteLists,
+										// u.DateCreated
+
+									};
+
+			// List<WebshopUser> iets = new List<WebshopUser>();
+
+			// foreach (var element in gebruikers){
+			//     WebshopUser newUser = new WebshopUser {
+			//         UserGuid = element.UserGuid,
+			//         FirstName = element.FirstName,
+			//         LastName = element.LastName,
+			//         ShippingAddresses = element.ShippingAddresses,
+			//         FavoriteLists = element.FavoriteLists,
+			//         DateCreated = element.DateCreated
+			//     };
+			//     iets.Add(newUser);
+			// }
+
+			return Json(users);
+
+		}
+
+		[HttpGet("{page_index}/{page_size}")]
+		public IActionResult FetchAllUsers(int page_index, int page_size)
+		{
+			Page<WebshopUser> projects = applicationDatabase.Users
+			.GetPages(page_index, page_size, u => u.Email);
+			// var projects = ProductRepository.Pagination(page_index, numberOfProducts);
+
+			IEnumerable<object> resultToReturn = projects.Items.Select(user => new
+			{
+				Id = user.Id,
+				Email = user.Email,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Phone = user.PhoneNumber,
+				Address = user.ShippingAddresses
+
+			});
+
+			if (resultToReturn == null)
+			{
+				return NotFound();
+			}
+
+			return new OkObjectResult(new { TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count() });
+			// return Json(resultToReturn);
+		}
+
 
 		[HttpPost]
 		[AllowAnonymous]
@@ -148,6 +215,8 @@ namespace Project_Bier.Controllers
 				member.MergeFields.Add("FNAME", firstName);
 				member.MergeFields.Add("LNAME", lastName);
 				await manager.Members.AddOrUpdateAsync(listId, member);
+
+				manager.AutomationEmailQueues.AddSubscriberAsync();
 			}
 			catch (System.Exception)
 			{

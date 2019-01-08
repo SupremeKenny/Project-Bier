@@ -48,9 +48,12 @@ class Overview extends Component {
 					email: guestInfo.email,
 					zip: guestInfo.zip,
 					phone: guestInfo.phone,
-					
 				};
-				this.setState({ loading: false, userInfo: userInfo, guestInfoAvailable: true, });
+				this.setState({
+					loading: false,
+					userInfo: userInfo,
+					guestInfoAvailable: true,
+				});
 			} else {
 				this.setState({
 					guestInfoAvailable: false,
@@ -155,7 +158,10 @@ class Overview extends Component {
 	};
 
 	render() {
-		if (!this.props.reduxState.login.loggedIn && !this.state.guestInfoAvailable) {
+		if (
+			!this.props.reduxState.login.loggedIn &&
+			!this.state.guestInfoAvailable
+		) {
 			return <Redirect push to="/checkout" />;
 		}
 
@@ -171,9 +177,8 @@ class Overview extends Component {
 			);
 		}
 
-		// TODO add product overview
 		if (this.state.loading) {
-			return <Loader active inline="centered" style={{ marginTop: '10em' }} />;
+			return <p>Loading...</p>;
 		} else
 			return (
 				<div>
@@ -184,7 +189,9 @@ class Overview extends Component {
 						<Grid columns="equal">
 							<Grid.Row columns="equal">
 								<Grid.Column>
-									<p>Hier komt een mooie kaart</p>
+									<Header as="h2">Bestel gegevens</Header>
+
+									<OrderView data={this.props.shoppingcart} />
 								</Grid.Column>
 								<Grid.Column>
 									<Header as="h2">Persoonsgegevens</Header>
@@ -206,14 +213,10 @@ class Overview extends Component {
 									</Segment>
 
 									<Divider hidden />
-									<Header as="h2">Bestel gegevens</Header>
-									<p> Hier komt een lijstje met je producten</p>
-									{/* TODO @Wesley product list toevoegen*/}
 								</Grid.Column>
 							</Grid.Row>
 						</Grid>
 					</Container>
-					{backButton}
 					<Button floated="right" animated positive onClick={this.onSubmit}>
 						<Button.Content visible>Verder naar betalen</Button.Content>
 						<Button.Content hidden>
@@ -225,9 +228,44 @@ class Overview extends Component {
 	}
 }
 
+const MiniProductCard = props => (
+	<Card className="product-card">
+		<Link to={'/product/' + props.data.id}>
+			<Image
+				src={props.data.url}
+				mini
+				centered={true}
+				style={{ maxHeight: 100, padding: 20 }}
+			/>
+		</Link>
+
+		<Card.Content fluid="true" style={{ minHeight: 90 }}>
+			<Card.Description>
+				<Link to={'/product/' + props.data.id}>{props.data.name} </Link>
+			</Card.Description>
+			<Card.Meta>{props.data.count} X</Card.Meta>
+		</Card.Content>
+	</Card>
+);
+
+const OrderView = props => (
+	<Container style={{ marginTop: '2em', marginBottom: 0, paddingBottom: 0 }}>
+		<Grid stackable columns={props.data.products.length}>
+			<Grid.Row>
+				{props.data.products.map(p => (
+					<Grid.Column width={5} style={{ paddingBottom: '1em' }}>
+						<MiniProductCard data={p} />
+					</Grid.Column>
+				))}
+			</Grid.Row>
+		</Grid>
+	</Container>
+);
+
 const mapStateToProps = state => {
 	return {
 		reduxState: state,
+		shoppingcart: state.shoppingcart,
 	};
 };
 
