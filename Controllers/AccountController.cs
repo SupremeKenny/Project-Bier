@@ -9,15 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PostcodeAPI;
-using MailChimp.Net;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 using Project_Bier.Repository;
 using Project_Bier.Services;
-using MailChimp.Net.Interfaces;
-using MailChimp.Net.Models;
+using PostcodeAPI.Wrappers;
 using Project_Bier.Pagination;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+
 
 namespace Project_Bier.Controllers
 {
@@ -29,18 +27,20 @@ namespace Project_Bier.Controllers
         private ITokenGenerator TokenGenerator { get; }
         private IConfiguration Config { get; }
         private IAddressRepository AddressRepository { get; }
-        private ApplicationDatabaseContext ApplicationDatabase { get; }
+        private IUserRepository UserRepository { get; }
+        private IMailService MailService { get; }
 
         public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
             ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository,
-            ApplicationDatabaseContext applicationDatabase)
+            IUserRepository userRepository, IMailService mailService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             TokenGenerator = tokenGenerator;
             Config = config;
             AddressRepository = addressRepository;
-            ApplicationDatabase = applicationDatabase;
+            UserRepository = userRepository;
+            MailService = mailService;
         }
 
         [HttpPost]
@@ -52,7 +52,8 @@ namespace Project_Bier.Controllers
             WebshopUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
-                SignInResult result = await SignInManager.CheckPasswordSignInAsync(user, model.Password, true);
+                Microsoft.AspNetCore.Identity.SignInResult result =
+                    await SignInManager.CheckPasswordSignInAsync(user, model.Password, true);
                 if (result.Succeeded)
                 {
                     string token = await TokenGenerator.GenerateTokenLogin(user);
@@ -107,7 +108,7 @@ namespace Project_Bier.Controllers
             if (registerResult.Succeeded)
             {
                 registerResponse.Success = true;
-                SendWelcomeEmail(model.FirstName, model.LastName, model.Email);
+                MailService.SendWelcomeEmail(model.FirstName, model.LastName, model.Email);
                 return Ok(new {registerResponse});
             }
 
@@ -116,24 +117,6 @@ namespace Project_Bier.Controllers
             registerResponse.Success = false;
             registerResponse.Errors = errors;
             return Ok(new {registerResponse});
-        }
-
-        // TODO: Move listId and API key to configuration file.
-        private async void SendWelcomeEmail(string firstName, string lastName, string email)
-        {
-            try
-            {
-                IMailChimpManager manager = new MailChimpManager("7700594c13a5e9e44132712c2c9fc287-us19");
-                string listId = "99cb60f14c";
-                Member member = new Member {EmailAddress = email, StatusIfNew = Status.Subscribed};
-                member.MergeFields.Add("FNAME", firstName);
-                member.MergeFields.Add("LNAME", lastName);
-                await manager.Members.AddOrUpdateAsync(listId, member);
-            }
-            catch (System.Exception)
-            {
-								//TODO: do something with the exception
-            }
         }
 
         public Task<IActionResult> ChangePassword([FromBody] RegisterViewModel model)
@@ -152,56 +135,45 @@ namespace Project_Bier.Controllers
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             WebshopUser user = await UserManager.FindByIdAsync(userId);
-            if (user != null)
+            if (user == null) return BadRequest();
+            ShippingAddress address = AddressRepository.GetByGuid(user.UserGuid);
+            return Ok(new
             {
-                ShippingAddress address = AddressRepository.GetByGuid(user.UserGuid);
-                return Ok(new
-                {
-                    address, email = user.Email, name = user.FirstName, lastName = user.LastName,
-                    phone = user.PhoneNumber
-                });
-            }
-
-            return BadRequest();
+                address, email = user.Email, name = user.FirstName, lastName = user.LastName,
+                phone = user.PhoneNumber
+            });
         }
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> UpdateAccountInformation([FromBody] UpdateInfoModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest();
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            WebshopUser user = await UserManager.FindByIdAsync(userId);
+
+            if (model.PostalCode != user.ShippingAddresses.FirstOrDefault()?.PostalCode)
             {
-                string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
-                WebshopUser user = await UserManager.FindByIdAsync(userId);
-
-                if (model.PostalCode != user.ShippingAddresses.FirstOrDefault()?.PostalCode)
+                ShippingAddress userAddress = new ShippingAddress
                 {
-                    ShippingAddress userAddress = new ShippingAddress
-                    {
-                        PostalCode = model.PostalCode,
-                        StreetNumber = model.StreetNumber,
-                        StreetName = model.StreetName,
-                        CityName = model.CityName,
-                        Country = model.Country,
-                        Province = model.Province,
-                        AssociatedUser = user.UserGuid
-                    };
-                    AddressRepository.DeleteAddress(user.UserGuid);
-                    user.ShippingAddresses = new List<ShippingAddress>(new[] {userAddress});
-                }
-
-                user.PhoneNumber = model.PhoneNumber;
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-
-                IdentityResult result = await UserManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    return Ok();
-                }
-
-                return BadRequest();
+                    PostalCode = model.PostalCode,
+                    StreetNumber = model.StreetNumber,
+                    StreetName = model.StreetName,
+                    CityName = model.CityName,
+                    Country = model.Country,
+                    Province = model.Province,
+                    AssociatedUser = user.UserGuid
+                };
+                AddressRepository.DeleteAddress(user.UserGuid);
+                user.ShippingAddresses = new List<ShippingAddress>(new[] {userAddress});
             }
+
+            user.PhoneNumber = model.PhoneNumber;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            IdentityResult result = await UserManager.UpdateAsync(user);
+            if (result.Succeeded) return Ok();
 
             return BadRequest();
         }
@@ -212,7 +184,7 @@ namespace Project_Bier.Controllers
             PostcodeApiClient client = new PostcodeApiClient(Config["PostcodeAPI:Key"]);
             try
             {
-                var result = client.GetAddress(model.Zip, Int32.Parse(model.Number));
+                ApiHalResultWrapper result = client.GetAddress(model.Zip, int.Parse(model.Number));
                 PostcodeAPI.Model.Address address = result.Embedded.Addresses[0];
                 AddressResponse response = new AddressResponse
                 {
@@ -229,107 +201,66 @@ namespace Project_Bier.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetLimit()
+        public IActionResult GetPostcodeApiLimit()
         {
             PostcodeApiClient client = new PostcodeApiClient(Config["PostcodeAPI:Key"]);
-            var remaining = client.RequestsRemaining;
+            int? remaining = client.RequestsRemaining;
             return Ok(new {remaining});
         }
 
-        /// <summary>
-        /// The methods are used in the AdminPanel for users
-        /// Read:       To get all users
-        /// Update:     To update account information
-        /// Delete:     To delete an user
-        /// FetchId:    To get userinformation by Id
-        /// </summary>
-
         [HttpGet("{page_index}/{page_size}")]
-        public IActionResult Read(int page_index, int page_size)
+        public IActionResult FetchAllUsers(int page_index, int page_size)
         {
-            Page<WebshopUser> projects = ApplicationDatabase.Users
-            .GetPages(page_index,page_size, u => u.Email, "ShippingAddresses");
+            Page<WebshopUser> userPage = UserRepository.GetUsers(page_index, page_size);
 
-            IEnumerable<object> resultToReturn = projects.Items.Select(user => new
+            IEnumerable<object> userFieldSubset = userPage.Items.Select(user => new
             {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
                 Phone = user.PhoneNumber,
                 Address = user.ShippingAddresses
-                
             });
 
-            if (resultToReturn == null)
-            {
-                return NotFound();
-            }
+            IEnumerable<object> fieldSubset = userFieldSubset.ToList();
+            if (!fieldSubset.Any()) return NotFound();
 
-            return new OkObjectResult(new { TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count() });
+            return new OkObjectResult(new
+                {userPage.TotalPages, Items = fieldSubset, Count = fieldSubset.Count()});
         }
 
-        [HttpPut("{id}/{email}")]
-        public void Update([FromBody] UpdateInfoModel oldUser, string email, string id)
+        [HttpPut("{id}")]
+        public async void Update([FromBody] UpdateInfoModel updatedInfoModel, string id)
         {
-            WebshopUser updateUser = ApplicationDatabase.Users
-            .FirstOrDefault(user => user.Id == id);
-
-            ShippingAddress address = AddressRepository
-            .GetByGuid(updateUser.UserGuid);
-
-            if (updateUser != null)
+            WebshopUser userToUpdate = UserRepository.FindById(id);
+            if (userToUpdate.Email != updatedInfoModel.Email)
             {
-                updateUser.Email = email;
-                updateUser.FirstName = oldUser.FirstName;
-                updateUser.LastName = oldUser.LastName;
-                updateUser.PhoneNumber = oldUser.PhoneNumber;
+                string token = await UserManager.GenerateChangeEmailTokenAsync(userToUpdate, updatedInfoModel.Email);
+                await UserManager.ChangeEmailAsync(userToUpdate, updatedInfoModel.Email, token);
             }
 
-            if (oldUser.PostalCode != address.PostalCode ||
-                oldUser.StreetNumber != address.StreetNumber ||
-                oldUser.StreetName != address.StreetName ||
-                oldUser.CityName != address.CityName )
-                {
-                    ShippingAddress userAddress = new ShippingAddress
-                    {
-                        PostalCode = oldUser.PostalCode,
-                        StreetNumber = oldUser.StreetNumber,
-                        StreetName = oldUser.StreetName,
-                        CityName = oldUser.CityName,
-                        Country = oldUser.Country,
-                        Province = oldUser.Province,
-                        AssociatedUser = updateUser.UserGuid
-                    };
-                    AddressRepository.DeleteAddress(updateUser.UserGuid);
-                    updateUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
-                }
-
-            ApplicationDatabase.SaveChanges();
+            ShippingAddress address = AddressRepository
+                .GetByGuid(userToUpdate.UserGuid);
+            bool addressChanged = UserRepository.UpdateUser(updatedInfoModel, userToUpdate, address);
+            if (addressChanged) AddressRepository.DeleteAddress(userToUpdate.UserGuid);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(String id)
+        public void Delete(string id)
         {
-            WebshopUser deleteUser = ApplicationDatabase.Users.Find(id);
-
-            AddressRepository.DeleteAddress(deleteUser.UserGuid);
-            ApplicationDatabase.Users.Remove(deleteUser);
-            ApplicationDatabase.SaveChanges();
+            WebshopUser userToDelete = UserRepository.FindById(id);
+            AddressRepository.DeleteAddress(userToDelete.UserGuid);
+            UserRepository.DeleteUser(userToDelete);
         }
 
         [HttpGet("{id}")]
-        public IActionResult FetchId(String id)
+        public IActionResult GetUserInformation(string id)
         {
-            WebshopUser user = ApplicationDatabase.Users
-            .FirstOrDefault(u => u.Id == id);
-
-            ShippingAddress address = AddressRepository
-            .GetByGuid(user.UserGuid);
-            
-            user.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { address });
-
-            return Json(new {user = user});
+            WebshopUser user = UserRepository.FindById(id);
+            ShippingAddress address = AddressRepository.GetByGuid(user.UserGuid);
+            user.ShippingAddresses = new List<ShippingAddress>(new[] {address});
+            return Json(new {user});
         }
     }
 }

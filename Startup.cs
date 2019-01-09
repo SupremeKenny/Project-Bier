@@ -33,10 +33,7 @@ namespace Project_Bier
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
 
             services.AddDbContext<ApplicationDatabaseContext>();
 
@@ -78,7 +75,8 @@ namespace Project_Bier
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
-
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMailService, Services.MailChimp>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,18 +104,15 @@ namespace Project_Bier
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                if (env.IsDevelopment()) spa.UseReactDevelopmentServer("start");
             });
         }
 
@@ -127,39 +122,32 @@ namespace Project_Bier
         /// <param name="app"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="applicationLifetime"></param>
-        public void ConfigureElasticSearch(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, string indexName)
+        public void ConfigureElasticSearch(IApplicationBuilder app, ILoggerFactory loggerFactory,
+            IApplicationLifetime applicationLifetime, string indexName)
         {
             // If command line argument "--elastic true" is present configure elastic search Engine process
             applicationLifetime.ApplicationStarted.Register(() =>
             {
                 if (Configuration["elastic"] != null)
-                {
-                    using (var serviceScope = app.ApplicationServices.CreateScope())
+                    using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
                     {
-                        var client = ElasticSearchPopulator.Configure(loggerFactory);
-                        IEnumerable<Product> products = serviceScope.ServiceProvider.GetService<IProductRepository>().ListAll();
+                        ElasticClient client = ElasticSearchPopulator.Configure(loggerFactory);
+                        IEnumerable<Product> products =
+                            serviceScope.ServiceProvider.GetService<IProductRepository>().ListAll();
 
                         // Clean out index if it exists
-                        if (client.IndexExists(indexName).Exists)
-                        {
-                            client.DeleteIndex(indexName);
-                        }
+                        if (client.IndexExists(indexName).Exists) client.DeleteIndex(indexName);
 
                         // Add Suggestion strings to product models
                         foreach (Product product in products)
                         {
-                            String[] suggestions = ElasticSearchPopulator.SuggestionGenerator(product);
-                            product.Suggest = new CompletionField { Input = suggestions };
+                            string[] suggestions = ElasticSearchPopulator.SuggestionGenerator(product);
+                            product.Suggest = new CompletionField {Input = suggestions};
                         }
 
                         // Insert documents 
-                        if (products != null)
-                        {
-                            ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, indexName, products);
-                        }
-
+                        if (products != null) ElasticSearchPopulator.InsertDocuments<Product>(loggerFactory, client, indexName, products);
                     }
-                }
             });
         }
     }

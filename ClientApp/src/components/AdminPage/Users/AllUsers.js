@@ -27,7 +27,7 @@ export class AllUsers extends React.Component {
 
 	componentDidMount() {
 		console.log("CompomnentDidMount");
-		fetch("/account/Read/0/12").then(results => {
+		fetch("/account/FetchAllUsers/0/12").then(results => {
 			results.json().then(data => {
 				console.log(data.items)
 				this.setState({ 
@@ -60,7 +60,7 @@ export class AllUsers extends React.Component {
 	};
 
 	fetchData = currentPage => {
-		fetch("/account/Read/" + (currentPage - 1) + "/12").then(results => {
+		fetch("/account/FetchAllUsers/" + (currentPage - 1) + "/12").then(results => {
 			results.json().then(data => {
 				if (data.count === 0 && data.totalPages >= 1) {
 					console.log("Empty page");
