@@ -21,11 +21,7 @@ export async function fetchPostcodeApi(zip, number) {
 function handleResponse(response) {
 	if (response.ok) {
 		return response.json();
-	} else {
-		return response.json().then(function(error) {
-			throw error;
-		});
-	}
+	} 
 }
 
 function handleNetworkError(error) {

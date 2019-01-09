@@ -95,11 +95,11 @@ export const NavigationBar = props => {
                         </Grid>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Link to="/admin">
+                {/* <Link to="/admin">
                     <Menu.Item link style={menuFontColor}>
                         Admin
                     </Menu.Item>
-                </Link>
+                </Link> */}
             </Container>
         </Menu>
     );
