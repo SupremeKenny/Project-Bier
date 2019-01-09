@@ -247,7 +247,7 @@ namespace Project_Bier.Controllers
         [HttpGet("{page_index}/{page_size}")]
         public IActionResult Read(int page_index, int page_size)
         {
-            Page<WebshopUser> projects = applicationDatabase.Users
+            Page<WebshopUser> projects = ApplicationDatabase.Users
             .GetPages(page_index,page_size, u => u.Email, "ShippingAddresses");
 
             IEnumerable<object> resultToReturn = projects.Items.Select(user => new
@@ -272,10 +272,10 @@ namespace Project_Bier.Controllers
         [HttpPut("{id}/{email}")]
         public void Update([FromBody] UpdateInfoModel oldUser, string email, string id)
         {
-            WebshopUser updateUser = applicationDatabase.Users
+            WebshopUser updateUser = ApplicationDatabase.Users
             .FirstOrDefault(user => user.Id == id);
 
-            ShippingAddress address = addressRepository
+            ShippingAddress address = AddressRepository
             .GetByGuid(updateUser.UserGuid);
 
             if (updateUser != null)
@@ -301,30 +301,30 @@ namespace Project_Bier.Controllers
                         Province = oldUser.Province,
                         AssociatedUser = updateUser.UserGuid
                     };
-                    addressRepository.DeleteAddress(updateUser.UserGuid);
+                    AddressRepository.DeleteAddress(updateUser.UserGuid);
                     updateUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
                 }
 
-            applicationDatabase.SaveChanges();
+            ApplicationDatabase.SaveChanges();
         }
 
         [HttpDelete("{id}")]
         public void Delete(String id)
         {
-            WebshopUser deleteUser = applicationDatabase.Users.Find(id);
+            WebshopUser deleteUser = ApplicationDatabase.Users.Find(id);
 
-            addressRepository.DeleteAddress(deleteUser.UserGuid);
-            applicationDatabase.Users.Remove(deleteUser);
-            applicationDatabase.SaveChanges();
+            AddressRepository.DeleteAddress(deleteUser.UserGuid);
+            ApplicationDatabase.Users.Remove(deleteUser);
+            ApplicationDatabase.SaveChanges();
         }
 
         [HttpGet("{id}")]
         public IActionResult FetchId(String id)
         {
-            WebshopUser user = applicationDatabase.Users
+            WebshopUser user = ApplicationDatabase.Users
             .FirstOrDefault(u => u.Id == id);
 
-            ShippingAddress address = addressRepository
+            ShippingAddress address = AddressRepository
             .GetByGuid(user.UserGuid);
             
             user.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { address });
