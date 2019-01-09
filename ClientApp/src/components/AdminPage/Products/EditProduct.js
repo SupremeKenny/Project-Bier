@@ -39,6 +39,7 @@ export class EditProducts extends React.Component {
 	componentWillMount() {
 		fetch("/admin/fetch/" + this.props.match.params.id).then(results => {
 			results.json().then(data => {
+				console.log (data)
 				this.setState({
 					product: data.product,
 					loaded: true,

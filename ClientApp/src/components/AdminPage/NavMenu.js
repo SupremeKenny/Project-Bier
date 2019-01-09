@@ -28,9 +28,9 @@ export const NavMenu = () => {
 			<Menu.Item>
 				Gebruikers
 				<Menu.Menu>
-					<Menu.Item name="addUser">
+					{/* <Menu.Item name="addUser">
 						<Link to="/admin-addUser">Toevoegen</Link>
-					</Menu.Item>
+					</Menu.Item> */}
 					<Menu.Item name="allUsers">
 						<Link to="/admin-allUsers">Alle gebruikers</Link>
 					</Menu.Item>
@@ -64,9 +64,9 @@ export const NavMenu = () => {
                 </Menu.Menu>
             </Menu.Item>
 
-			<Menu.Item name="accountSettings">
+			{/* <Menu.Item name="accountSettings">
 				<Link to="/admin-accountSettings">Account settings</Link>
-			</Menu.Item>
+			</Menu.Item> */}
 		</Menu>
 	);
 };

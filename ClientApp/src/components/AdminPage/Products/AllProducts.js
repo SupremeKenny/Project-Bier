@@ -29,6 +29,7 @@ export class AllProducts extends React.Component {
 		console.log("CompomnentDidMount");
 		fetch("/admin/FetchAllProducts/0/15").then(results => {
 			results.json().then(data => {
+				console.log (data.items)
 				this.setState({ totalPages: data.totalPages, products: data.items, loaded: true });
 			});
 		});

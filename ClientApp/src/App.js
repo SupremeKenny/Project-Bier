@@ -26,6 +26,7 @@ import { EditProducts } from './components/AdminPage/Products/EditProduct.js';
 import { SearchProduct } from './components/AdminPage/Products/SearchProduct.js';
 import { AllUsers } from './components/AdminPage/Users/AllUsers.js';
 import { AddUser } from './components/AdminPage/Users/AddUser.js';
+import { EditUser } from './components/AdminPage/Users/EditUser.js';
 import { AllDiscounts } from './components/AdminPage/Discounts/AllDiscount';
 import { EditDiscount } from './components/AdminPage/Discounts/EditDiscount';
 import { AddDiscount } from './components/AdminPage/Discounts/AddDiscount';
@@ -81,6 +82,7 @@ export default class App extends Component {
 						<AppRoute path='/admin-accountSettings' layout={AdminPage} component={Home} />
 						<AppRoute path='/admin-editProduct/:id' layout={AdminPage} component={EditProducts} />
 						<AppRoute path='/admin-editDiscount/:id' layout={AdminPage} component={EditDiscount} />
+						<AppRoute path='/admin-editUser/:id' layout={AdminPage} component={EditUser} />
 						<AppRoute path='/admin-allDiscounts' layout={AdminPage} component={AllDiscounts} />
 						<AppRoute path='/admin-addDiscount' layout={AdminPage} component={AddDiscount} />
 						<AppRoute path='/admin-turnover' layout={AdminPage} component={Turnover} />

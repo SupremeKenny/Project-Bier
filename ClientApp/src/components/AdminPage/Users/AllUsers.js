@@ -27,9 +27,14 @@ export class AllUsers extends React.Component {
 
 	componentDidMount() {
 		console.log("CompomnentDidMount");
-		fetch("/admin/FetchAllProducts/0/15").then(results => {
+		fetch("/account/Read/0/12").then(results => {
 			results.json().then(data => {
-				this.setState({ totalPages: data.totalPages, products: data.items, loaded: true });
+				console.log(data.items)
+				this.setState({ 
+					totalPages: data.totalPages,
+					products: data.items, 
+					loaded: true 
+				});
 			});
 		});
 	}
@@ -41,7 +46,7 @@ export class AllUsers extends React.Component {
 
 	handleDeleteProduct = id => {
 		this.setState({ loaded: false });
-		fetch("/admin/Delete/" + id, {
+		fetch("/account/Delete/" + id, {
 			method: "delete",
 		}).then(response => {
 			if (response.ok) {
@@ -55,7 +60,7 @@ export class AllUsers extends React.Component {
 	};
 
 	fetchData = currentPage => {
-		fetch("/admin/FetchAllProducts/" + (currentPage - 1) + "/15").then(results => {
+		fetch("/account/Read/" + (currentPage - 1) + "/12").then(results => {
 			results.json().then(data => {
 				if (data.count === 0 && data.totalPages >= 1) {
 					console.log("Empty page");
@@ -85,7 +90,7 @@ export class AllUsers extends React.Component {
 		} else
 			return (
 				<Container>
-					<Header as="h1">Producten</Header>
+					<Header as="h1">Gebruikers</Header>
 					<Segment>
 						<Grid columns={1}>
 							<Grid.Column>
@@ -120,9 +125,14 @@ export class AllUsers extends React.Component {
 									
 											<List.Content verticalAlign="bottom">
 												<Header as="h4">
-													<Link to={"/admin-editProduct/" + p.id}>{p.name}</Link>
+													<Link to={"/admin-editUser/" + p.id}>{p.email}</Link>
 												</Header>
-												{p.id}
+											</List.Content>
+											{/* <List.Content>
+												<h4>{p.id}</h4>
+											</List.Content> */}
+											<List.Content>
+												<h5>{p.firstName} {p.lastName}</h5>
 											</List.Content>
 										</List.Item>
 									))}

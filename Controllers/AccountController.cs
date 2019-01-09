@@ -35,8 +35,7 @@ namespace Project_Bier.Controllers
         private readonly ITokenGenerator tokenGenerator;
         private readonly IConfiguration config;
         private readonly IAddressRepository addressRepository;
-
-        private readonly ApplicationDatabaseContext applicationDatabase;
+        private ApplicationDatabaseContext applicationDatabase;
 
         public AccountController(UserManager<WebshopUser> userManager, SignInManager<WebshopUser> signInManager,
             ITokenGenerator tokenGenerator, IConfiguration config, IAddressRepository addressRepository, ApplicationDatabaseContext applicationDatabase)
@@ -47,69 +46,6 @@ namespace Project_Bier.Controllers
             this.config = config;
             this.addressRepository = addressRepository;
             this.applicationDatabase = applicationDatabase;
-        }
-
-        [HttpGet]
-        public IActionResult GetAllUsers()
-        {
-            // var users = applicationDatabase.Users.ToList();
-
-            // Keep it like this, otherwise you'll get parameters that you wont use as WebshopUser
-            var users = from u in applicationDatabase.Users select new {
-                u.UserGuid,
-                u.Email, 
-                u.FirstName,
-                u.LastName,
-                u.PhoneNumber,
-                u.ShippingAddresses,
-                // u.FavoriteLists,
-                // u.DateCreated
-                
-                };
-
-            // List<WebshopUser> iets = new List<WebshopUser>();
-
-            // foreach (var element in gebruikers){
-            //     WebshopUser newUser = new WebshopUser {
-            //         UserGuid = element.UserGuid,
-            //         FirstName = element.FirstName,
-            //         LastName = element.LastName,
-            //         ShippingAddresses = element.ShippingAddresses,
-            //         FavoriteLists = element.FavoriteLists,
-            //         DateCreated = element.DateCreated
-            //     };
-            //     iets.Add(newUser);
-            // }
-
-            return Json(users);
-
-        } 
-
-        [HttpGet("{page_index}/{page_size}")]
-        public IActionResult FetchAllUsers(int page_index, int page_size)
-        {
-            Page<WebshopUser> projects = applicationDatabase.Users
-            .GetPages(page_index,page_size, u => u.Email );
-            // var projects = ProductRepository.Pagination(page_index, numberOfProducts);
-
-            IEnumerable<object> resultToReturn = projects.Items.Select(user => new
-            {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Phone = user.PhoneNumber,
-                Address = user.ShippingAddresses
-                
-            });
-
-            if (resultToReturn == null)
-            {
-                return NotFound();
-            }
-
-            return new OkObjectResult(new { TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count() });
-            // return Json(resultToReturn);
         }
 
         [HttpPost]
@@ -304,15 +240,100 @@ namespace Project_Bier.Controllers
             return Ok(new { remaining });
         }
 
-        // [HttpGet]
-        // [AllowAnonymous]
-        // public IActionResult GetAllUsers()
-        // {
-        //     var db = new ApplicationDbContext();
-        //     var Users = db.Users.Include(u => u.Roles);
+        /// <summary>
+        /// The methods are used in the AdminPanel for users
+        /// Read:       To get all users
+        /// Update:     To update account information
+        /// Delete:     To delete an user
+        /// FetchId:    To get userinformation by Id
+        /// </summary>
 
-        //     return Ok();
-        // }
-        
+        [HttpGet("{page_index}/{page_size}")]
+        public IActionResult Read(int page_index, int page_size)
+        {
+            Page<WebshopUser> projects = applicationDatabase.Users
+            .GetPages(page_index,page_size, u => u.Email, "ShippingAddresses");
+
+            IEnumerable<object> resultToReturn = projects.Items.Select(user => new
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.PhoneNumber,
+                Address = user.ShippingAddresses
+                
+            });
+
+            if (resultToReturn == null)
+            {
+                return NotFound();
+            }
+
+            return new OkObjectResult(new { TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count() });
+        }
+
+        [HttpPut("{id}/{email}")]
+        public void Update([FromBody] UpdateInfoModel oldUser, string email, string id)
+        {
+            WebshopUser updateUser = applicationDatabase.Users
+            .FirstOrDefault(user => user.Id == id);
+
+            ShippingAddress address = addressRepository
+            .GetByGuid(updateUser.UserGuid);
+
+            if (updateUser != null)
+            {
+                updateUser.Email = email;
+                updateUser.FirstName = oldUser.FirstName;
+                updateUser.LastName = oldUser.LastName;
+                updateUser.PhoneNumber = oldUser.PhoneNumber;
+            }
+
+            if (oldUser.PostalCode != address.PostalCode ||
+                oldUser.StreetNumber != address.StreetNumber ||
+                oldUser.StreetName != address.StreetName ||
+                oldUser.CityName != address.CityName )
+                {
+                    ShippingAddress userAddress = new ShippingAddress
+                    {
+                        PostalCode = oldUser.PostalCode,
+                        StreetNumber = oldUser.StreetNumber,
+                        StreetName = oldUser.StreetName,
+                        CityName = oldUser.CityName,
+                        Country = oldUser.Country,
+                        Province = oldUser.Province,
+                        AssociatedUser = updateUser.UserGuid
+                    };
+                    addressRepository.DeleteAddress(updateUser.UserGuid);
+                    updateUser.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { userAddress });
+                }
+
+            applicationDatabase.SaveChanges();
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(String id)
+        {
+            WebshopUser deleteUser = applicationDatabase.Users.Find(id);
+
+            addressRepository.DeleteAddress(deleteUser.UserGuid);
+            applicationDatabase.Users.Remove(deleteUser);
+            applicationDatabase.SaveChanges();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult FetchId(String id)
+        {
+            WebshopUser user = applicationDatabase.Users
+            .FirstOrDefault(u => u.Id == id);
+
+            ShippingAddress address = addressRepository
+            .GetByGuid(user.UserGuid);
+            
+            user.ShippingAddresses = new List<ShippingAddress>(new ShippingAddress[] { address });
+
+            return Json(new {user = user});
+        }
     }
 }
