@@ -177,3 +177,7 @@
 .productImage{
 	max-width: 150px !important;
 }
+
+.shoppingCartImage{
+  height: 105px !important;
+}
