@@ -25,14 +25,26 @@ export class AddDiscount extends React.Component {
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
     toggle = () => this.setState({ check: !this.state.check })
     validate = () => {
-        if (this.state.check){
-            this.setState({loaded: false})
-            setTimeout (() => {
-                this.handleSubmit()
-            },200)
+
+        if ( this.state.code == "" && this.state.procent == "" && this.state.amount == "") {
+            alert("Niet alle velden zijn ingevuld");
+        } else {
+
+            if (this.state.procent === "Procent" && this.state.amount > 100){
+                alert("Een procentuele korting mag niet hoger zijn dan 100 procent");
+                
+            } else {
             
+                if (this.state.check){
+                    this.setState({loaded: false})
+                    setTimeout (() => {
+                        this.handleSubmit()
+                    },200)
+                    
+                }
+                else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+            }
         }
-        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
     }
     handleReset = () => {
         this.setState ({
@@ -60,27 +72,31 @@ export class AddDiscount extends React.Component {
             })
         }
 
-        if ( this.state.code !== "" && this.state.procent !== "" && this.state.amount !== "") {
-            console.log("Uitgevoerd"),
-            fetch('admin/creatediscount/', {
-                headers:{
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                body: bodyData
-            }).then (response => {
-                if (response.ok) {
-                    alert("Product is succesvol toegevoegd.");
-                    this.handleReset()
-                } 
-                else {
-                    this.setState({loaded: true})
-                    alert("Error! Product is niet toegevoegd.")
-                }
-            })
-        }
-        else console.log("Verplichte velden leeg");
+        
+
+         
+                console.log("Uitgevoerd"),
+                fetch('admin/creatediscount/', {
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: bodyData
+                }).then (response => {
+                    if (response.ok) {
+                        alert("Kortingscode is succesvol toegevoegd.");
+                        this.handleReset()
+                    } 
+                    else {
+                        this.setState({loaded: true})
+                        alert("Error! Kortingscode is niet toegevoegd.")
+                    }
+                })
+            
+           
+
+        
     }
 
     render() {

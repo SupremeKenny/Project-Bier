@@ -47,11 +47,26 @@ export class EditDiscount extends React.Component {
 	handleChange = (e, { name, value }) => this.setState({ [name]: value });
 	toggle = () => this.setState({ check: !this.state.check })
     validate = () => {
-        if (this.state.check){
-			this.setState({loaded: false})
-            this.handleSubmit()
+
+        if ( this.state.code == "" && this.state.procent == "" && this.state.amount == "") {
+            alert("Niet alle velden zijn ingevuld");
+        } else {
+
+            if (this.state.procent === "Procent" && this.state.amount > 100){
+                alert("Een procentuele korting mag niet hoger zijn dan 100 procent");
+                
+            } else {
+            
+                if (this.state.check){
+                    this.setState({loaded: false})
+                    setTimeout (() => {
+                        this.handleSubmit()
+                    },200)
+                    
+                }
+                else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
+            }
         }
-        else alert ("Mislukt! U heeft de checkbox nog niet aangevinkt.")
     }
 
 
