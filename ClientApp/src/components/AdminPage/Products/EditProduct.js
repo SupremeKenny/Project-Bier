@@ -229,7 +229,6 @@ export class EditProducts extends React.Component {
 								name="url"
 								value={this.state.url}
 								onChange={this.handleChange}
-								type="url"
 								required
 							/>
 
