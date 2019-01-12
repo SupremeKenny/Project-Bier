@@ -31,7 +31,7 @@ namespace Project_Bier.Repository
             var logger = loggerFactory.CreateLogger<ElasticSearchPopulator>();
             logger.LogInformation("Configuring ElasticSearch");
 
-            ConnectionSettings settings = new ConnectionSettings(new Uri("http://localhost:9200"))
+            ConnectionSettings settings = new ConnectionSettings(new Uri("http://188.166.66.203:9200"))
             .DefaultIndex("beer");
 
             ElasticClient client;
