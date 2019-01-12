@@ -262,5 +262,14 @@ namespace Project_Bier.Controllers
             user.ShippingAddresses = new List<ShippingAddress>(new[] {address});
             return Json(new {user});
         }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> AdminCheck()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            WebshopUser user = await UserManager.FindByIdAsync(userId);
+            return Ok(new{user.isAdmin});
+        }
     }
 }

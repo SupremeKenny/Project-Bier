@@ -18,7 +18,7 @@ import Overview from './components/Ordering/Overview.js';
 import AccountOverview from './components/User/AccountOverview.js';
 
 // Admin Components
-import { AdminPage } from './components/AdminPage.js';
+import  AdminPage from './components/AdminPage.js';
 import { Home } from './components/AdminPage/Home.js';
 import { AllProducts } from './components/AdminPage/Products/AllProducts.js';
 import { AddProducts } from './components/AdminPage/Products/AddProduct.js';
