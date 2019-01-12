@@ -13,7 +13,6 @@ export const Footer = () => {
                 <Grid.Column width={3}>
                   <Header inverted as="h4" content="Shortlinks"/>
                   <List link inverted>
-
                     <List.Item><Link to="/">Hoofdpagina</Link></List.Item>
                     <List.Item><Link to="/account/inloggen">Inloggen</Link></List.Item>
                     <List.Item><Link to="/winkelwagen">Winkelwagen</Link></List.Item>
@@ -22,8 +21,7 @@ export const Footer = () => {
                 <Grid.Column width={3}>
                   <Header inverted as="h4" content="Contact"/>
                   <List link inverted>
-                    <List.Item as="a">Email: <a>vragen@beerbuddy.nl</a></List.Item>
-
+                    <List.Item>Email: <a>vragen@beerbuddy.nl</a></List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column width={7}>
