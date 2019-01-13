@@ -134,7 +134,7 @@ class LoginComponent extends Component {
 
             <Button positive>Inloggen</Button>
 
-            <Link to="/">Wachtwoord vergeten?</Link>
+            {/* <Link to="/">Wachtwoord vergeten?</Link> */}
           </Form>
         </Container>
     );
