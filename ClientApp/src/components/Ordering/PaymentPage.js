@@ -7,6 +7,7 @@ import {
   Container,
   Button,
   Divider,
+  Icon,
 } from "semantic-ui-react";
 
 //TODO Refactoring
@@ -34,11 +35,14 @@ class Payment extends Component {
         <Button toggle active={active} onClick={this.handleClick} style={{ height: "100px", width: "200px" }}><h2>Simulator</h2></Button>
         <Divider hidden />
         <Divider />
-        <Button.Group size={'big'}>
-          <Button href="/input">Teruggaan</Button>
-          <Button.Or text="of" />
-          <Button positive onClick={this.handleClick1}>Doorgaan</Button>
-        </Button.Group>
+
+        <Button positive animated onClick={this.handleClick1} color="green" size={'big'}>
+						<Button.Content visible>Doorgaan</Button.Content>
+						<Button.Content hidden>
+							<Icon name="arrow right" />
+						</Button.Content>
+				</Button>
+
       </Container>
     );
   }

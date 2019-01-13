@@ -152,7 +152,8 @@ namespace Project_Bier.Controllers
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             WebshopUser user = await UserManager.FindByIdAsync(userId);
 
-            if (model.PostalCode != user.ShippingAddresses.FirstOrDefault()?.PostalCode)
+            ShippingAddress currentAddress = AddressRepository.GetByGuid(user.UserGuid);
+            if (model.PostalCode != currentAddress.PostalCode)
             {
                 ShippingAddress userAddress = new ShippingAddress
                 {
