@@ -50,11 +50,11 @@ export class AllUsers extends React.Component {
 			method: "delete",
 		}).then(response => {
 			if (response.ok) {
-				alert("Product is succesvol verwijderd");
+				alert("Gebruiker is succesvol verwijderd");
 				this.fetchData(this.state.activePage);
 			} else {
 				this.setState({ loaded: true });
-				alert("Error! Product is niet verwijderd");
+				alert("Error! Gebruiker is niet verwijderd");
 			}
 		});
 	};
