@@ -19,13 +19,10 @@ import AccountOverview from './components/User/AccountOverview.js';
 
 // Admin Components
 import  AdminPage from './components/AdminPage.js';
-import { Home } from './components/AdminPage/Home.js';
 import { AllProducts } from './components/AdminPage/Products/AllProducts.js';
 import { AddProducts } from './components/AdminPage/Products/AddProduct.js';
 import { EditProducts } from './components/AdminPage/Products/EditProduct.js';
-import { SearchProduct } from './components/AdminPage/Products/SearchProduct.js';
 import { AllUsers } from './components/AdminPage/Users/AllUsers.js';
-import { AddUser } from './components/AdminPage/Users/AddUser.js';
 import { EditUser } from './components/AdminPage/Users/EditUser.js';
 import { AllDiscounts } from './components/AdminPage/Discounts/AllDiscount';
 import { EditDiscount } from './components/AdminPage/Discounts/EditDiscount';
@@ -73,13 +70,10 @@ export default class App extends Component {
 						<AppRoute path='/favorieten' component={Favorites} layout={Layout} />
 						<AppRoute path='/account/overzicht' component={AccountOverview} layout={Layout} />
 
-						<AppRoute path='/admin' layout={AdminPage} component={Home} />
-						<AppRoute path='/admin-searchProduct' layout={AdminPage} component={SearchProduct} />
+						<AppRoute path='/admin' layout={AdminPage} component={Turnover} />
 						<AppRoute path='/admin-addProduct' layout={AdminPage} component={AddProducts} />
 						<AppRoute path='/admin-allProducts' layout={AdminPage} component={AllProducts} />
-						<AppRoute path='/admin-addUser' layout={AdminPage} component={AddUser} />
 						<AppRoute path='/admin-allUsers' layout={AdminPage} component={AllUsers} />
-						<AppRoute path='/admin-accountSettings' layout={AdminPage} component={Home} />
 						<AppRoute path='/admin-editProduct/:id' layout={AdminPage} component={EditProducts} />
 						<AppRoute path='/admin-editDiscount/:id' layout={AdminPage} component={EditDiscount} />
 						<AppRoute path='/admin-editUser/:id' layout={AdminPage} component={EditUser} />

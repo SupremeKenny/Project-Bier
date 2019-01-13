@@ -66,7 +66,6 @@ export class AllUsers extends React.Component {
 					console.log("Empty page");
 					this.fetchData(currentPage - 1);
 				} else {
-					// console.log("Total Pages: " + data.totalPages + " | Product Count: " + data.count);
 					this.setState({
 						totalPages: data.totalPages,
 						products: data.items,
@@ -121,16 +120,13 @@ export class AllUsers extends React.Component {
 													</Grid>
 												</Popup>
 											</List.Content>
-
-									
+								
 											<List.Content verticalAlign="bottom">
 												<Header as="h4">
 													<Link to={"/admin-editUser/" + p.id}>{p.email}</Link>
 												</Header>
 											</List.Content>
-											{/* <List.Content>
-												<h4>{p.id}</h4>
-											</List.Content> */}
+
 											<List.Content>
 												<h5>{p.firstName} {p.lastName}</h5>
 											</List.Content>

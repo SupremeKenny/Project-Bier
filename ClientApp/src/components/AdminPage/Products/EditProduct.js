@@ -31,7 +31,6 @@ export class EditProducts extends React.Component {
 			product: {},
 			loaded: false,
 
-			// shouldDisplayMessage: false,
 			check: false
 		};
 	}
@@ -103,19 +102,6 @@ export class EditProducts extends React.Component {
 	};
 
 	render() {
-		// const {
-		// 	id,
-		// 	name,
-		// 	categoryId,
-		// 	price,
-		// 	brewerName,
-		// 	countryName,
-		// 	alcoholPercentage,
-		// 	content,
-		// 	url,
-		// 	description,
-		// 	check
-		// } = this.state;
 
 		if (!this.state.loaded) {
 			return(
@@ -253,30 +239,6 @@ export class EditProducts extends React.Component {
 						</Form>
 					</Segment>
 
-					{/* <Segment>
-						<div>
-							<Header as="h3" content="JSON Request body" />
-							<pre>
-								{JSON.stringify(
-									{
-										id,
-										name,
-										categoryId,
-										price,
-										brewerName,
-										countryName,
-										alcoholPercentage,
-										content,
-										url,
-										description,
-										check
-									},
-									null,
-									2,
-								)}
-							</pre>
-						</div>
-					</Segment> */}
 				</Container>
 			);
 	}

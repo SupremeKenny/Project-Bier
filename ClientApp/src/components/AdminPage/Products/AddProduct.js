@@ -75,8 +75,7 @@ export class AddProducts extends React.Component {
             "Description":          this.state.description,
             "Available":            true
         })
-        // var validate = this.state.id
-        // console.log(validate)
+
         if (this.state.id !== "" && this.state.name !== "" && this.state.categoryId !== "" && this.state.price !== "") {
             console.log("Uitgevoerd"),
             fetch('admin/Create/', {
@@ -101,20 +100,6 @@ export class AddProducts extends React.Component {
     }
 
     render() {
-        // Todo: Can delete const states if I dont display the <pre> anymore in de return Render()
-        // const {
-        //     id,
-        //     name,
-        //     categoryId,
-        //     price,
-        //     brewerName,
-        //     countryName,
-        //     alcoholPercentage,
-        //     content,
-        //     url,
-        //     description,
-        //     check
-        // } = this.state;
 
         if (!this.state.loaded) {
 			return(
@@ -219,7 +204,6 @@ export class AddProducts extends React.Component {
                             name='url'
                             value={this.state.url}
                             onChange={this.handleChange}
-                            type='url'
                             required
                         />
 
@@ -249,24 +233,6 @@ export class AddProducts extends React.Component {
                         </Form.Button>
                     </Form>
                 </Segment>
-
-                {/* Todo: Can delete <pre> if I dont have to display states anymore */}
-                {/* <pre>
-                    {JSON.stringify({
-                        id,
-                        name,
-                        categoryId,
-                        price,
-                        brewerName,
-                        countryName,
-                        alcoholPercentage,
-                        content,
-                        url,
-                        description,
-                        check
-                    }, null, 2)}
-                </pre> */}
-
             </Container>
         );
     }
