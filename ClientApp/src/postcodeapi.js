@@ -5,25 +5,25 @@
  * Returns address on success and undefined when no address was found.
  */
 export async function fetchPostcodeApi(zip, number) {
-	return fetch("account/fetchAddress", {
-		method: "POST",
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			Zip: zip,
-			Number: number
-		})
-	}).then(handleResponse, handleNetworkError);
+  return fetch('account/fetchAddress', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      Zip: zip,
+      Number: number
+    })
+  }).then(handleResponse, handleNetworkError);
 }
 
 function handleResponse(response) {
-	if (response.ok) {
-		return response.json();
-	} 
+  if (response.ok) {
+    return response.json();
+  }
 }
 
 function handleNetworkError(error) {
-	throw error;
+  throw error;
 }
