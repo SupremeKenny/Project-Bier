@@ -1,8 +1,6 @@
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_Bier.Models
 {
@@ -15,8 +13,7 @@ namespace Project_Bier.Models
 
     public class Order
     {
-        [Key]
-        public Guid Guid { get; set; }
+        [Key] public Guid Guid { get; set; }
         public bool Paid { get; set; }
         public bool Shipped { get; set; }
 

@@ -1,9 +1,4 @@
-using System;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Nest;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_Bier.Models
 {
@@ -16,7 +11,7 @@ namespace Project_Bier.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string SuggestedName {get;set;}
+        public string SuggestedName { get; set; }
         public double Score { get; set; }
     }
 }

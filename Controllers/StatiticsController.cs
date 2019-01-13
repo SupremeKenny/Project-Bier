@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Repository;
-using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
-using Project_Bier.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 
-//TODO Sent confirmation email after payment
 namespace Project_Bier.Controllers
 {
     [Route("[controller]/[action]")]
@@ -21,7 +14,8 @@ namespace Project_Bier.Controllers
         IProductRepository ProductRepository { get; }
         IDiscountRepository DiscountRepository { get; }
 
-        public StatiticsController(IOrderRepository orderRepository, IProductRepository productRepository, UserManager<WebshopUser> userManager, IDiscountRepository discountRepository)
+        public StatiticsController(IOrderRepository orderRepository, IProductRepository productRepository,
+            UserManager<WebshopUser> userManager, IDiscountRepository discountRepository)
         {
             OrderRepository = orderRepository;
             ProductRepository = productRepository;
@@ -31,7 +25,7 @@ namespace Project_Bier.Controllers
 
 
         [HttpGet]
-        public IActionResult FetchTurnover() 
+        public IActionResult FetchTurnover()
         {
             decimal turnoverlastweek = OrderRepository.TurnOverLastWeek();
             decimal turnover1weekago = OrderRepository.TurnOverxWeeksago(1);
@@ -42,46 +36,45 @@ namespace Project_Bier.Controllers
             decimal ordercount1weekago = OrderRepository.OrderCountxWeeksago(1);
             decimal ordercount2weekago = OrderRepository.OrderCountxWeeksago(2);
             decimal ordercount3weekago = OrderRepository.OrderCountxWeeksago(3);
-        
+
 
             return new OkObjectResult(
-                new {
-                    turnoverlastweek = turnoverlastweek,
-                    turnover1weekago = turnover1weekago,
-                    turnover2weekago = turnover2weekago,
-                    turnover3weekago = turnover3weekago,
-                    
-                    ordercountlastweek = ordercountlastweek,
-                    ordercount1weekago = ordercount1weekago,
-                    ordercount2weekago = ordercount2weekago,
-                    ordercount3weekago = ordercount3weekago,
-                    });
+                new
+                {
+                    turnoverlastweek,
+                    turnover1weekago,
+                    turnover2weekago,
+                    turnover3weekago,
+
+                    ordercountlastweek,
+                    ordercount1weekago,
+                    ordercount2weekago,
+                    ordercount3weekago,
+                });
         }
 
         [HttpGet]
-        public IActionResult FetchPopularBeers() 
+        public IActionResult FetchPopularBeers()
         {
-
             var temp = OrderRepository.popularbeers();
 
             return new OkObjectResult(
-                new {
+                new
+                {
                     popularbeers = temp
-                    });
+                });
         }
 
         [HttpGet]
-        public IActionResult FetchPopularDiscounts() 
+        public IActionResult FetchPopularDiscounts()
         {
-
             var temp = OrderRepository.populardiscounts();
 
             return new OkObjectResult(
-                new {
+                new
+                {
                     populardiscounts = temp
-                    });
+                });
         }
-        
-
     }
 }

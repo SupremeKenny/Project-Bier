@@ -19,12 +19,10 @@ namespace Project_Bier.Repository
             this.context = applicationDatabaseContext;
         }
 
-        public Discount CheckDiscount(String input)
+        public Discount CheckDiscount(string input)
         {
             return context.Discount
-                .Where(b => b.Code == input)
-                 .FirstOrDefault();
-
+                .FirstOrDefault(b => b.Code == input);
         }
 
         public void AddDiscount(Discount discount)
@@ -32,14 +30,11 @@ namespace Project_Bier.Repository
             // throw new NotImplementedException();
             try
             {
-                
-                    context.Discount.Add(discount);
-                    context.SaveChanges();
-            
+                context.Discount.Add(discount);
+                context.SaveChanges();
             }
             catch (System.Exception)
             {
-                
                 throw;
             }
         }
@@ -51,13 +46,11 @@ namespace Project_Bier.Repository
 
         public void RemoveDiscount(string code)
         {
-
             try
             {
                 var deleteDiscount = this.CheckDiscount(code);
                 context.Discount.Remove(deleteDiscount);
                 context.SaveChanges();
-
             }
             catch (System.Exception)
             {
@@ -77,22 +70,20 @@ namespace Project_Bier.Repository
                         productToUpdate.Code = newDiscount.Code;
                         productToUpdate.Procent = newDiscount.Procent;
                         productToUpdate.Amount = newDiscount.Amount;
-                       
+
                         context.SaveChanges();
                     }
                 }
-                else {
+                else
+                {
                     RemoveDiscount(code);
                     AddDiscount(newDiscount);
                 }
-
             }
             catch (System.Exception)
             {
-                
                 throw;
             }
         }
-
     }
 }

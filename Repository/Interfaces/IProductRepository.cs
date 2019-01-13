@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 using Project_Bier.Pagination;
@@ -48,6 +46,5 @@ namespace Project_Bier.Repository
         ProductOverviewModel GetOverviewModel(ProductOrder order);
 
         Page<Beer> Pagination(int page_index, int page_size);
-
     }
 }

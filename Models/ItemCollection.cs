@@ -15,8 +15,8 @@ namespace Project_Bier.Models
     /// <typeparam name="T"> A model</typeparam>
     public class ItemCollection<T>
     {
-        public int Index {get;set;}
-        public IEnumerable<T> Items {get;set;}
-        public int TotalCollections {get;set;}
+        public int Index { get; set; }
+        public IEnumerable<T> Items { get; set; }
+        public int TotalCollections { get; set; }
     }
 }

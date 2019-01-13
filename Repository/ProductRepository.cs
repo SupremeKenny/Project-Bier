@@ -16,7 +16,11 @@ namespace Project_Bier.Repository
     public class ProductRepository : IProductRepository
     {
         private ApplicationDatabaseContext context;
-        public static int LoadSize { get => 8; }
+
+        public static int LoadSize
+        {
+            get => 8;
+        }
 
         public ProductRepository(ApplicationDatabaseContext applicationDatabaseContext)
         {
@@ -64,7 +68,7 @@ namespace Project_Bier.Repository
         public IEnumerable<Product> ListAll()
         {
             return context.Beers
-            .Select(p => p);
+                .Select(p => p);
         }
 
         public void RemoveProduct(String guid)
@@ -126,7 +130,7 @@ namespace Project_Bier.Repository
 
         public Category GetCategory(string category)
         {
-             return context.Categories.FirstOrDefault(p => p.CategoryId == category);
+            return context.Categories.FirstOrDefault(p => p.CategoryId == category);
         }
     }
 }

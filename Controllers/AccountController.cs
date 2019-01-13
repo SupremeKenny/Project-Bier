@@ -270,7 +270,7 @@ namespace Project_Bier.Controllers
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             WebshopUser user = await UserManager.FindByIdAsync(userId);
-            return Ok(new{user.isAdmin});
+            return Ok(new {user.isAdmin});
         }
     }
 }

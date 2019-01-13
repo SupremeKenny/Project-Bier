@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Project_Bier.Models;
 using Project_Bier.Models.ViewModels;
 
@@ -26,12 +24,12 @@ namespace Project_Bier.Repository
 
         Order GetOrderByGuid(Guid id);
 
-        IEnumerable<Order>  ListAll();
+        IEnumerable<Order> ListAll();
 
         decimal TurnOverLastWeek();
 
         decimal TurnOverxWeeksago(int weeks);
-        
+
         decimal OrderCountLastWeek();
 
         decimal OrderCountxWeeksago(int weeks);
@@ -41,6 +39,5 @@ namespace Project_Bier.Repository
         Dictionary<string, int> populardiscounts();
 
         List<OrderOverviewModel> GetAllUserOrders(Guid id);
-
     }
 }

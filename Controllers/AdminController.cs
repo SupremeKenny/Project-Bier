@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Repository;
-using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 
 namespace Project_Bier.Controllers
@@ -31,7 +29,8 @@ namespace Project_Bier.Controllers
             {
                 return NotFound();
             }
-            return new OkObjectResult(new { discounts = discounts });
+
+            return new OkObjectResult(new {discounts = discounts});
         }
 
         [HttpDelete("{code}")]
@@ -68,7 +67,8 @@ namespace Project_Bier.Controllers
                 return NotFound();
             }
 
-            return new OkObjectResult(new { TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count() });
+            return new OkObjectResult(new
+                {TotalPages = projects.TotalPages, Items = resultToReturn, Count = resultToReturn.Count()});
         }
 
         [HttpGet("{id}")]
@@ -79,7 +79,8 @@ namespace Project_Bier.Controllers
             {
                 return NotFound();
             }
-            return Json(new { product = product });
+
+            return Json(new {product = product});
         }
 
         [HttpDelete("{id}")]
@@ -99,6 +100,5 @@ namespace Project_Bier.Controllers
         {
             ProductRepository.UpdateProduct(product, id);
         }
-
     }
 }

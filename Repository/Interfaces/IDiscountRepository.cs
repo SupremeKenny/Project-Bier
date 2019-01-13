@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Project_Bier.Models;
 
 namespace Project_Bier.Repository
@@ -22,7 +21,6 @@ namespace Project_Bier.Repository
 
         void RemoveDiscount(string code);
 
-        IEnumerable<Discount>  ListAll();
-
+        IEnumerable<Discount> ListAll();
     }
 }

@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project_Bier.Repository;
-using Microsoft.AspNetCore.Http;
 using Project_Bier.Models;
 
-// TODO Document routes
+
 namespace Project_Bier.Controllers
 {
     [Route("[controller]/[action]")]
@@ -28,17 +25,20 @@ namespace Project_Bier.Controllers
             {
                 return NotFound();
             }
-            return Json(new { product = product });
+
+            return Json(new {product = product});
         }
 
         [HttpGet]
         public IActionResult GetCategoryItems(String categoryId, int index)
         {
-            ItemCollection<Product> itemCollection = ProductRepository.GetProductCollectionByCategory(categoryId, index);
+            ItemCollection<Product> itemCollection =
+                ProductRepository.GetProductCollectionByCategory(categoryId, index);
             if (itemCollection == null)
             {
                 return NotFound();
             }
+
             return Json(itemCollection);
         }
 
@@ -48,7 +48,7 @@ namespace Project_Bier.Controllers
             Category category = ProductRepository.GetCategory(categoryId);
             if (category != null)
             {
-                return Ok(new { category.Description });
+                return Ok(new {category.Description});
             }
             else
             {
@@ -69,8 +69,8 @@ namespace Project_Bier.Controllers
             {
                 return NotFound();
             }
-            return Json(new { products = products });
-        }
 
+            return Json(new {products = products});
+        }
     }
 }

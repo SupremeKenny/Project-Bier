@@ -16,7 +16,8 @@ namespace Project_Bier.Services
 
         public ElasticSearchService()
         {
-            ConnectionSettings settings = new ConnectionSettings(new Uri("http://188.166.66.203:9200")).DefaultIndex("beer");
+            ConnectionSettings settings =
+                new ConnectionSettings(new Uri("http://188.166.66.203:9200")).DefaultIndex("beer");
             this.client = new ElasticClient(settings);
         }
 
@@ -28,7 +29,7 @@ namespace Project_Bier.Services
         public IEnumerable<Product> Search(string query)
         {
             ISearchResponse<Product> searchResponse = client.Search<Product>(s => s.Query(
-                q => q.Fuzzy(c => c
+                    q => q.Fuzzy(c => c
                         .Name("named_query")
                         .Boost(1.1)
                         .Field(p => p.Name)
@@ -49,25 +50,25 @@ namespace Project_Bier.Services
         public SuggestResponse Suggest(string query)
         {
             ISearchResponse<Product> searchResponse = client.Search<Product>(s => s
-                                    .Suggest(su => su
-                                         .Completion("suggestions", c => c
-                                              .Field(f => f.Name)
-                                              .Prefix(query)
-                                              .Fuzzy(f => f
-                                                  .Fuzziness(Fuzziness.Auto)
-                                              )
-                                              .Size(5))
-                                            ));
+                .Suggest(su => su
+                    .Completion("suggestions", c => c
+                        .Field(f => f.Name)
+                        .Prefix(query)
+                        .Fuzzy(f => f
+                            .Fuzziness(Fuzziness.Auto)
+                        )
+                        .Size(5))
+                ));
 
             var suggests = from suggest in searchResponse.Suggest["suggestions"]
-                           from option in suggest.Options
-                           select new Suggestion
-                           {
-                               Id = option.Source.Id,
-                               Name = option.Source.Name,
-                               SuggestedName = option.Text,
-                               Score = option.Score
-                           };
+                from option in suggest.Options
+                select new Suggestion
+                {
+                    Id = option.Source.Id,
+                    Name = option.Source.Name,
+                    SuggestedName = option.Text,
+                    Score = option.Score
+                };
 
             return new SuggestResponse
             {

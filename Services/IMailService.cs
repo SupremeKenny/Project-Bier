@@ -11,7 +11,7 @@ namespace Project_Bier.Services
         /// <param name="lastName"></param>
         /// <param name="email"></param>
         void SendWelcomeEmail(string firstName, string lastName, string email);
-        
+
         /// <summary>
         /// Sends a generic email that confirms the order.
         /// </summary>

@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Project_Bier.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Project_Bier.Repository

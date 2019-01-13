@@ -43,7 +43,7 @@ namespace Project_Bier.Services
             };
 
             IList<Claim> userClaims = await userManager.GetClaimsAsync(user);
-    
+
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"]));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
@@ -53,7 +53,7 @@ namespace Project_Bier.Services
                 claims,
                 expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: credentials);
-            
+
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
 

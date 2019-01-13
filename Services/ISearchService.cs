@@ -11,7 +11,7 @@ namespace Project_Bier.Services
     /// Depency injection is used for the repository pattern. Where we need the product repository
     /// we have a inject an instance of the concrete class: ProductRepository
     /// </summary>
-    public interface ISearchService<T> 
+    public interface ISearchService<T>
     {
         IEnumerable<T> Search(String query);
         SuggestResponse Suggest(String query);

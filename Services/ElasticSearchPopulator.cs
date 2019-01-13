@@ -32,7 +32,7 @@ namespace Project_Bier.Repository
             logger.LogInformation("Configuring ElasticSearch");
 
             ConnectionSettings settings = new ConnectionSettings(new Uri("http://188.166.66.203:9200"))
-            .DefaultIndex("beer");
+                .DefaultIndex("beer");
 
             ElasticClient client;
             try
@@ -47,12 +47,11 @@ namespace Project_Bier.Repository
 
             // Create index and mapping
             var createIndexResponse = client.CreateIndex("beer", i => i
-            .Mappings(ms => ms
-                .Map<Product>(m => m
-                    .AutoMap().Properties(ps => ps
-                                    .Completion(c => c
-                                        .Name(p => p.Suggest))))
-
+                .Mappings(ms => ms
+                    .Map<Product>(m => m
+                        .AutoMap().Properties(ps => ps
+                            .Completion(c => c
+                                .Name(p => p.Suggest))))
                 ));
 
             return client;
@@ -89,12 +88,14 @@ namespace Project_Bier.Repository
         /// Indexes all products into ElasticSearch client index
         /// </summary>
         /// <param name="client"></param>
-        public static void InsertDocuments<T>(ILoggerFactory loggerFactory, ElasticClient client, string indexName, IEnumerable<T> documents) where T : class
+        public static void InsertDocuments<T>(ILoggerFactory loggerFactory, ElasticClient client, string indexName,
+            IEnumerable<T> documents) where T : class
         {
             var logger = loggerFactory.CreateLogger<ElasticSearchPopulator>();
             logger.LogInformation("Pushing items to Search Engine");
             var bulkResponse = client.IndexMany<T>(documents);
-            logger.LogInformation("Got response: {0}, {1}, {2}", bulkResponse.ApiCall, bulkResponse.DebugInformation, bulkResponse.Items);
+            logger.LogInformation("Got response: {0}, {1}, {2}", bulkResponse.ApiCall, bulkResponse.DebugInformation,
+                bulkResponse.Items);
         }
     }
 }
